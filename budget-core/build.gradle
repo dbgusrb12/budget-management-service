@@ -1,6 +1,3 @@
 dependencies {
-    implementation project(":budget-core")
-    implementation project(":budget-domain")
     implementation 'org.springframework:spring-context'
-    implementation 'org.springframework.boot:spring-boot-starter-test'
 }
