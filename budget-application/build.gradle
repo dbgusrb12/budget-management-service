@@ -1,0 +1,6 @@
+dependencies {
+    implementation project(":budget-core")
+    implementation project(':budget-domain')
+    implementation 'org.springframework:spring-context'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
