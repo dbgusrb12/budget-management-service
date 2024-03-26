@@ -23,6 +23,7 @@ public class AccountEntity {
     private String password;
     private String nickname;
     private String status;
+    private String role;
     private LocalDateTime signUpDateTime;
     private LocalDateTime signInDateTime;
 
@@ -31,10 +32,11 @@ public class AccountEntity {
         String password,
         String nickname,
         String status,
+        String role,
         LocalDateTime signUpDateTime,
         LocalDateTime signInDateTime
     ) {
-        return new AccountEntity(IdGenerator.generateRandomLong(), accountId, password, nickname, status, signUpDateTime, signInDateTime);
+        return new AccountEntity(IdGenerator.generateRandomLong(), accountId, password, nickname, status, role, signUpDateTime, signInDateTime);
     }
 
     @Override

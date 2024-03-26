@@ -15,7 +15,7 @@ public class AccountService {
         if (duplicatedAccount.exist()) {
             return duplicatedAccount;
         }
-        final Account account = Account.ofCreated(id, password, nickname);
+        final Account account = Account.ofCreated(id, password, nickname, AccountRole.USER);
         accountRepository.save(account);
         return account;
     }

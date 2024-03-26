@@ -13,12 +13,13 @@ class AccountTest {
     void ofCreatedTest() {
         // given
         // when
-        final var account = Account.ofCreated("id", "password", "nickname");
+        final var account = Account.ofCreated("id", "password", "nickname", AccountRole.USER);
 
         // then
         assertThat(account.getId()).isEqualTo("id");
         assertThat(account.getPassword()).isEqualTo("password");
         assertThat(account.getNickname()).isEqualTo("nickname");
+        assertThat(account.getRole()).isEqualTo(AccountRole.USER);
     }
 
     @Test
@@ -31,6 +32,7 @@ class AccountTest {
             "password",
             "nickname",
             "LIVED",
+            "ROLE_USER",
             LocalDateTime.of(2024, 3, 26, 0, 0, 0),
             LocalDateTime.of(2024, 3, 26, 0, 0, 0)
         );
@@ -40,6 +42,7 @@ class AccountTest {
         assertThat(account.getPassword()).isEqualTo("password");
         assertThat(account.getNickname()).isEqualTo("nickname");
         assertThat(account.getStatus()).isEqualTo(AccountStatus.LIVED);
+        assertThat(account.getRole()).isEqualTo(AccountRole.USER);
         assertThat(account.getSignUpDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 26, 0, 0, 0));
         assertThat(account.getSignInDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 26, 0, 0, 0));
     }
@@ -56,6 +59,7 @@ class AccountTest {
         assertThat(account.getPassword()).isNull();
         assertThat(account.getNickname()).isNull();
         assertThat(account.getStatus()).isNull();
+        assertThat(account.getRole()).isNull();
         assertThat(account.getSignUpDateTime()).isNull();
         assertThat(account.getSignInDateTime()).isNull();
     }
@@ -69,6 +73,7 @@ class AccountTest {
             "password",
             "nickname",
             "CREATED",
+            "ROLE_USER",
             LocalDateTime.of(2024, 3, 26, 0, 0, 0),
             LocalDateTime.of(2024, 3, 26, 0, 0, 0)
         );
@@ -89,6 +94,7 @@ class AccountTest {
             "password",
             "nickname",
             "CREATED",
+            "ROLE_USER",
             LocalDateTime.of(2024, 3, 26, 0, 0, 0),
             LocalDateTime.of(2024, 3, 26, 0, 0, 0)
         );
@@ -98,6 +104,7 @@ class AccountTest {
             "password",
             "nickname",
             "LIVED",
+            "ROLE_USER",
             LocalDateTime.of(2024, 3, 26, 0, 0, 0),
             LocalDateTime.of(2024, 3, 26, 0, 0, 0)
         );
