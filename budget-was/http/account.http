@@ -21,7 +21,12 @@ Content-Type: application/json
   client.global.set("accessToken", response.body.result.accessToken);
 %}
 
-###
+### 내 정보 조회
+GET {{host}}/api/v1/accounts/me
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+### 존재하지 않는 API 호출
 GET {{host}}/api/v1/accounts/mock
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
