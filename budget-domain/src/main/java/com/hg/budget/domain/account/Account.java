@@ -79,4 +79,16 @@ public class Account {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public Account login(LocalDateTime signInDateTime) {
+        return Account.of(
+            id,
+            password,
+            nickname,
+            status.name(),
+            role.getValue(),
+            signUpDateTime,
+            signInDateTime
+        );
+    }
 }

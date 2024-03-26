@@ -1,5 +1,6 @@
 package com.hg.budget.domain.account;
 
+import com.hg.budget.core.util.TimeUtils;
 import com.hg.budget.domain.account.port.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,13 @@ public class AccountService {
 
     public Account findAccount(String id) {
         return accountRepository.findById(id);
+    }
+
+    public Account login(String id) {
+        final Account loginUser = findAccount(id);
+        if (loginUser.notExist()) {
+            return loginUser;
+        }
+        return accountRepository.save(loginUser.login(TimeUtils.now()));
     }
 }

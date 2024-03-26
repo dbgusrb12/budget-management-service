@@ -1,0 +1,27 @@
+### 계정 생성
+POST {{host}}/api/v1/accounts/join
+Content-Type: application/json
+
+{
+  "id": "{{accountId}}",
+  "password": "{{password}}",
+  "nickname": "hyungyu"
+}
+
+### 게정 인증
+POST {{host}}/api/v1/accounts/login
+Content-Type: application/json
+
+{
+  "id": "{{accountId}}",
+  "password": "{{password}}"
+}
+
+> {%
+  client.global.set("accessToken", response.body.result.accessToken);
+%}
+
+###
+GET {{host}}/api/v1/accounts/mock
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}

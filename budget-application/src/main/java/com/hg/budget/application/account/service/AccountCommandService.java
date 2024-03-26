@@ -21,4 +21,12 @@ public class AccountCommandService {
             throw new ApplicationException(ApplicationCode.DUPLICATED_ACCOUNT);
         }
     }
+
+    @Transactional
+    public void login(String id) {
+        final Account loginAccount = accountService.login(id);
+        if (loginAccount.notExist()) {
+            throw new ApplicationException(ApplicationCode.UNKNOWN_SERVER_ERROR);
+        }
+    }
 }

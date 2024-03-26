@@ -13,7 +13,7 @@ public class OkResponse<T> {
     private final String message = ApplicationCode.SUCCESS.getMessage();
     private final T result;
 
-    private OkResponse(T result) {
+    public OkResponse(T result) {
         this.result = result;
     }
 
