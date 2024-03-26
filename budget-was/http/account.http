@@ -8,7 +8,7 @@ Content-Type: application/json
   "nickname": "hyungyu"
 }
 
-### 게정 인증
+### 계정 인증
 POST {{host}}/api/v1/accounts/login
 Content-Type: application/json
 

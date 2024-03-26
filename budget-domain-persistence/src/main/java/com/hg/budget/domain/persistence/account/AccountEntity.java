@@ -39,6 +39,19 @@ public class AccountEntity {
         return new AccountEntity(IdGenerator.generateRandomLong(), accountId, password, nickname, status, role, signUpDateTime, signInDateTime);
     }
 
+    public static AccountEntity ofUpdate(
+        Long id,
+        String accountId,
+        String password,
+        String nickname,
+        String status,
+        String role,
+        LocalDateTime signUpDateTime,
+        LocalDateTime signInDateTime
+    ) {
+        return new AccountEntity(id, accountId, password, nickname, status, role, signUpDateTime, signInDateTime);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

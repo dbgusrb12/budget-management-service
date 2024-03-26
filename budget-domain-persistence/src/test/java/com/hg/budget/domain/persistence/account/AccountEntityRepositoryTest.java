@@ -41,6 +41,7 @@ class AccountEntityRepositoryTest {
         assertThat(account.getPassword()).isEqualTo("password");
         assertThat(account.getNickname()).isEqualTo("nickname");
         assertThat(account.getStatus()).isEqualTo("LIVED");
+        assertThat(account.getRole()).isEqualTo("ROLE_USER");
         assertThat(account.getSignUpDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 26, 0, 0, 0));
         assertThat(account.getSignInDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 26, 0, 0, 0));
     }
