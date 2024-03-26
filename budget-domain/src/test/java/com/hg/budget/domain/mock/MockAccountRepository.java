@@ -17,6 +17,7 @@ public class MockAccountRepository implements AccountRepository {
             account.getPassword(),
             account.getNickname(),
             account.getStatus().name(),
+            account.getRole().getValue(),
             account.getSignUpDateTime(),
             account.getSignInDateTime()
         );

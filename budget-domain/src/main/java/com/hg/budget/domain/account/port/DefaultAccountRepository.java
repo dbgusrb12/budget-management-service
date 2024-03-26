@@ -20,6 +20,7 @@ public class DefaultAccountRepository implements AccountRepository {
                 account.getPassword(),
                 account.getNickname(),
                 account.getStatus().name(),
+                account.getRole().getValue(),
                 account.getSignUpDateTime(),
                 account.getSignInDateTime()
             ));
@@ -28,6 +29,7 @@ public class DefaultAccountRepository implements AccountRepository {
             saved.getPassword(),
             saved.getNickname(),
             saved.getStatus(),
+            saved.getRole(),
             saved.getSignUpDateTime(),
             saved.getSignInDateTime()
         );
@@ -44,6 +46,7 @@ public class DefaultAccountRepository implements AccountRepository {
             accountEntity.getPassword(),
             accountEntity.getNickname(),
             accountEntity.getStatus(),
+            accountEntity.getRole(),
             accountEntity.getSignUpDateTime(),
             accountEntity.getSignInDateTime()
         );

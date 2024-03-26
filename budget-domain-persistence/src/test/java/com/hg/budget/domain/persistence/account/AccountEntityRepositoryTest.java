@@ -27,6 +27,7 @@ class AccountEntityRepositoryTest {
             "password",
             "nickname",
             "LIVED",
+            "ROLE_USER",
             LocalDateTime.of(2024, 3, 26, 0, 0, 0),
             LocalDateTime.of(2024, 3, 26, 0, 0, 0)
         );

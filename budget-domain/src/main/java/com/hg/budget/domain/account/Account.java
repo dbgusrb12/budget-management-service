@@ -19,20 +19,29 @@ public class Account {
     private final String password;
     private final String nickname;
     private final AccountStatus status;
+    private final AccountRole role;
     private final LocalDateTime signUpDateTime;
     private LocalDateTime signInDateTime;
 
-    public static Account ofCreated(String id, String password, String nickname) {
+    public static Account ofCreated(String id, String password, String nickname, AccountRole role) {
         final LocalDateTime now = TimeUtils.now();
-        return new Account(id, password, nickname, AccountStatus.CREATED, now);
+        return new Account(id, password, nickname, AccountStatus.CREATED, role, now);
     }
 
-    public static Account of(String id, String password, String nickname, String status, LocalDateTime signUpDateTime, LocalDateTime signInDateTime) {
-        return new Account(id, password, nickname, AccountStatus.of(status), signUpDateTime, signInDateTime);
+    public static Account of(
+        String id,
+        String password,
+        String nickname,
+        String status,
+        String role,
+        LocalDateTime signUpDateTime,
+        LocalDateTime signInDateTime
+    ) {
+        return new Account(id, password, nickname, AccountStatus.of(status), AccountRole.of(role), signUpDateTime, signInDateTime);
     }
 
     public static Account ofNotExist() {
-        return new Account(null, null, null, null, null);
+        return new Account(null, null, null, null, null, null);
     }
 
     public AccountStatus getStatus() {
