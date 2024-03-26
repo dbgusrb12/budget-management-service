@@ -3,7 +3,6 @@ package com.hg.budget.was.account;
 import com.hg.budget.application.account.service.AccountCommandService;
 import com.hg.budget.was.account.command.JoinCommand;
 import com.hg.budget.was.core.annotation.AccountId;
-import com.hg.budget.was.core.security.UserDetailsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +18,6 @@ public class AccountController {
 
     private final AccountCommandService accountCommandService;
     private final PasswordEncoder passwordEncoder;
-    private final UserDetailsService userDetailsService;
 
     @PostMapping("/join")
     public void signUp(@Valid @RequestBody JoinCommand command) {
