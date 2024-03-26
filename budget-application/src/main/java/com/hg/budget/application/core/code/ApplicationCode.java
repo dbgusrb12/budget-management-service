@@ -1,4 +1,4 @@
-package com.hg.budget.application.code;
+package com.hg.budget.application.core.code;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

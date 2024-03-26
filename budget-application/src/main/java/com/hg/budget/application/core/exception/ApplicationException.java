@@ -1,6 +1,6 @@
-package com.hg.budget.application.exception;
+package com.hg.budget.application.core.exception;
 
-import com.hg.budget.application.code.ApplicationCode;
+import com.hg.budget.application.core.code.ApplicationCode;
 import lombok.Getter;
 
 @Getter
