@@ -117,4 +117,24 @@ class AccountTest {
         assertThat(createdExist).isFalse();
         assertThat(livedExist).isTrue();
     }
+
+    @Test
+    @DisplayName("login 메서드 실행 시 signInDateTime 이 채워진다.")
+    void loginTest() {
+        // given
+        final var createdAccount = Account.of(
+            "id",
+            "password",
+            "nickname",
+            "CREATED",
+            "ROLE_USER",
+            LocalDateTime.of(2024, 3, 26, 0, 0, 0),
+            null
+        );
+        // when
+        final var loginAccount = createdAccount.login(LocalDateTime.of(2024, 3, 26, 0, 0, 0));
+
+        // then
+        assertThat(loginAccount.getSignInDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 26, 0, 0, 0));
+    }
 }

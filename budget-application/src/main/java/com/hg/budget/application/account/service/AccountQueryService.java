@@ -26,6 +26,8 @@ public class AccountQueryService {
             account.getId(),
             account.getPassword(),
             account.getNickname(),
+            account.getStatus(),
+            account.getRole(),
             account.getSignUpDateTime(),
             account.getSignInDateTime()
         );
