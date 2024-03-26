@@ -1,7 +1,7 @@
 package com.hg.budget.was.core.config;
 
 import com.hg.budget.was.core.annotation.AccountId;
-import com.hg.budget.was.core.security.Interceptor;
+import com.hg.budget.was.core.security.AuthenticationInterceptor;
 import com.hg.budget.was.core.security.UserDetails;
 import com.hg.budget.was.core.security.context.UserDetailsContextHolder;
 import java.util.List;
@@ -22,7 +22,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
-    private final Interceptor interceptor;
+    private final AuthenticationInterceptor authenticationInterceptor;
 
     /*
      * HandlerMethodArgumentResolver 추가
@@ -56,7 +56,7 @@ public class WebConfig implements WebMvcConfigurer {
 //            .toStaticResources()
 //            .atCommonLocations();
         // TODO excludePathPatterns 에 위의 2개 RequestMatcher 등록 할 수 있는지 방법 찾아보기.(string 은 type safety 하지 않음)
-        registry.addInterceptor(interceptor)
+        registry.addInterceptor(authenticationInterceptor)
             .addPathPatterns("/**")
             .excludePathPatterns(
                 "/static/**",
