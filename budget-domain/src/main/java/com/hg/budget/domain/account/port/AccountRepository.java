@@ -4,7 +4,9 @@ import com.hg.budget.domain.account.Account;
 
 public interface AccountRepository {
 
-    Account save(Account account);
+    void save(Account account);
 
     Account findById(String id);
+
+    void update(Account account);
 }

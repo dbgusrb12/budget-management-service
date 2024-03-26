@@ -13,26 +13,17 @@ public class DefaultAccountRepository implements AccountRepository {
     private final AccountEntityRepository accountEntityRepository;
 
     @Override
-    public Account save(Account account) {
-        AccountEntity saved = accountEntityRepository.save(
-            AccountEntity.of(
-                account.getId(),
-                account.getPassword(),
-                account.getNickname(),
-                account.getStatus().name(),
-                account.getRole().getValue(),
-                account.getSignUpDateTime(),
-                account.getSignInDateTime()
-            ));
-        return Account.of(
-            saved.getAccountId(),
-            saved.getPassword(),
-            saved.getNickname(),
-            saved.getStatus(),
-            saved.getRole(),
-            saved.getSignUpDateTime(),
-            saved.getSignInDateTime()
+    public void save(Account account) {
+        final AccountEntity saved = AccountEntity.of(
+            account.getId(),
+            account.getPassword(),
+            account.getNickname(),
+            account.getStatus().name(),
+            account.getRole().getValue(),
+            account.getSignUpDateTime(),
+            account.getSignInDateTime()
         );
+        accountEntityRepository.save(saved);
     }
 
     @Override
@@ -50,5 +41,25 @@ public class DefaultAccountRepository implements AccountRepository {
             accountEntity.getSignUpDateTime(),
             accountEntity.getSignInDateTime()
         );
+    }
+
+    @Override
+    public void update(Account account) {
+        final AccountEntity accountEntity = accountEntityRepository.findByAccountId(account.getId());
+        if (accountEntity == null) {
+            return;
+        }
+
+        accountEntityRepository.save(
+            AccountEntity.ofUpdate(
+                accountEntity.getId(),
+                account.getId(),
+                account.getPassword(),
+                account.getNickname(),
+                account.getStatus().name(),
+                account.getRole().getValue(),
+                account.getSignUpDateTime(),
+                account.getSignInDateTime()
+            ));
     }
 }

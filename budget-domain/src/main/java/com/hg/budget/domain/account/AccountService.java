@@ -30,6 +30,8 @@ public class AccountService {
         if (loginUser.notExist()) {
             return loginUser;
         }
-        return accountRepository.save(loginUser.login(TimeUtils.now()));
+        final Account login = loginUser.login(TimeUtils.now());
+        accountRepository.update(login);
+        return login;
     }
 }

@@ -31,7 +31,7 @@ class AccountServiceTest {
         assertThat(account.getPassword()).isEqualTo("password");
         assertThat(account.getNickname()).isEqualTo("nickname");
         assertThat(account.getStatus()).isEqualTo(AccountStatus.LIVED);
-        assertThat(account.isDuplicated()).isFalse();
+        assertThat(account.getRole()).isEqualTo(AccountRole.USER);
     }
 
     @Test
@@ -62,6 +62,7 @@ class AccountServiceTest {
         assertThat(account.getPassword()).isEqualTo("password");
         assertThat(account.getNickname()).isEqualTo("nickname");
         assertThat(account.getStatus()).isEqualTo(AccountStatus.LIVED);
+        assertThat(account.getRole()).isEqualTo(AccountRole.USER);
     }
 
     @Test
@@ -74,5 +75,30 @@ class AccountServiceTest {
         // then
         assertThat(account.notExist()).isTrue();
         assertThat(account.getId()).isNull();
+    }
+
+    @Test
+    @DisplayName("login 으로 로그인 시간을 채울 수 있다.")
+    void loginTest() {
+        // given
+        accountService.createAccount("id", "password", "nickname");
+
+        // when
+        final var login = accountService.login("id");
+
+        // then
+        assertThat(login.getSignInDateTime()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("login 실행 시 유저가 존재하지 않는다면 빈 객체를 반환한다.")
+    void loginTest_notExist() {
+        // given
+        // when
+        final var login = accountService.login("id");
+
+        // then
+        assertThat(login.notExist()).isTrue();
+        assertThat(login.getId()).isNull();
     }
 }

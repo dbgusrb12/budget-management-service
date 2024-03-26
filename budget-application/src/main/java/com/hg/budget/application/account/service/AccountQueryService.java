@@ -15,7 +15,7 @@ public class AccountQueryService {
 
     private final AccountService accountService;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public AccountDto findAccount(String id) {
         final Account account = accountService.findAccount(id);
         if (account.notExist()) {

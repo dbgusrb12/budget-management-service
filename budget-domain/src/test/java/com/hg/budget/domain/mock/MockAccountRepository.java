@@ -10,7 +10,29 @@ public class MockAccountRepository implements AccountRepository {
     private final List<Account> accountList = new ArrayList<>();
 
     @Override
-    public Account save(Account account) {
+    public void save(Account account) {
+        final var saved = Account.of(
+            account.getId(),
+            account.getPassword(),
+            account.getNickname(),
+            account.getStatus().name(),
+            account.getRole().getValue(),
+            account.getSignUpDateTime(),
+            account.getSignInDateTime()
+        );
+        accountList.add(saved);
+    }
+
+    @Override
+    public Account findById(String id) {
+        return accountList.stream()
+            .filter(account -> account.getId().equals(id))
+            .findFirst()
+            .orElse(Account.ofNotExist());
+    }
+
+    @Override
+    public void update(Account account) {
         accountList.remove(account);
         final var saved = Account.of(
             account.getId(),
@@ -22,14 +44,5 @@ public class MockAccountRepository implements AccountRepository {
             account.getSignInDateTime()
         );
         accountList.add(saved);
-        return saved;
-    }
-
-    @Override
-    public Account findById(String id) {
-        return accountList.stream()
-            .filter(account -> account.getId().equals(id))
-            .findFirst()
-            .orElse(Account.ofNotExist());
     }
 }
