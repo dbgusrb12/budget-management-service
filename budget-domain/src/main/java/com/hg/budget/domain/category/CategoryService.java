@@ -12,11 +12,11 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     public Category createCategory(String name) {
-        Category duplicatedCategory = findCategory(name);
+        final Category duplicatedCategory = findCategory(name);
         if (duplicatedCategory.exist()) {
             return duplicatedCategory;
         }
-        Category category = Category.ofCreated(name);
+        final Category category = Category.ofCreated(name);
         categoryRepository.save(category);
         return category;
     }
