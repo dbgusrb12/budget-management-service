@@ -50,16 +50,16 @@ public class DefaultAccountRepository implements AccountRepository {
             return;
         }
 
-        accountEntityRepository.save(
-            AccountEntity.ofUpdate(
-                accountEntity.getId(),
-                account.getId(),
-                account.getPassword(),
-                account.getNickname(),
-                account.getStatus().name(),
-                account.getRole().getValue(),
-                account.getSignUpDateTime(),
-                account.getSignInDateTime()
-            ));
+        final AccountEntity updated = AccountEntity.ofUpdate(
+            accountEntity.getId(),
+            account.getId(),
+            account.getPassword(),
+            account.getNickname(),
+            account.getStatus().name(),
+            account.getRole().getValue(),
+            account.getSignUpDateTime(),
+            account.getSignInDateTime()
+        );
+        accountEntityRepository.save(updated);
     }
 }
