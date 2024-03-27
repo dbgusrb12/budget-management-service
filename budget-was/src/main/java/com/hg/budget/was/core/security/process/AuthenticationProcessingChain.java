@@ -8,11 +8,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AuthenticationProcessingManager {
+public class AuthenticationProcessingChain {
 
     private final List<AuthenticationProcessing> authenticationProcessingList;
 
-    public AuthenticationProcessingManager(AuthenticationProcessing... authenticationProcessingList) {
+    public AuthenticationProcessingChain(AuthenticationProcessing... authenticationProcessingList) {
         this.authenticationProcessingList = Arrays.stream(authenticationProcessingList)
             .sorted(Comparator.comparing(AuthenticationProcessing::getOrder))
             .collect(Collectors.toList());
