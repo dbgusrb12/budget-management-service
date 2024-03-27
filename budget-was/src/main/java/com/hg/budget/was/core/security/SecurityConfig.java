@@ -27,11 +27,6 @@ public class SecurityConfig {
     private final Gson gson;
 
     @Bean
-    public JwtUtil jwtUtil() {
-        return new JwtUtil();
-    }
-
-    @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
@@ -43,10 +38,11 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationProcessingChain authenticationProcessingManager() {
+        final JwtUtil jwtUtil = new JwtUtil();
         return new AuthenticationProcessingChain(
             new JoinRequestProcessing(JOIN_API_URL),
-            new LoginRequestProcessing(LOGIN_API_URL, gson, userDetailsService(), passwordEncoder(), jwtUtil()),
-            new JwtRequestProcessing(WILDCARD_API_URL, jwtUtil())
+            new LoginRequestProcessing(LOGIN_API_URL, gson, userDetailsService(), passwordEncoder(), jwtUtil),
+            new JwtRequestProcessing(WILDCARD_API_URL, jwtUtil)
         );
     }
 
