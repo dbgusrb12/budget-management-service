@@ -78,7 +78,7 @@ class AccountServiceTest {
     }
 
     @Test
-    @DisplayName("login 으로 로그인 시간을 채울 수 있다.")
+    @DisplayName("로그인 시 로그인 시간이 현재 시간으로 채워진다.")
     void loginTest() {
         // given
         accountService.createAccount("id", "password", "nickname");
@@ -91,7 +91,7 @@ class AccountServiceTest {
     }
 
     @Test
-    @DisplayName("login 실행 시 유저가 존재하지 않는다면 빈 객체를 반환한다.")
+    @DisplayName("로그인 시 유저가 존재하지 않는다면 빈 객체를 반환한다.")
     void loginTest_notExist() {
         // given
         // when
