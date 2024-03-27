@@ -17,10 +17,11 @@ import java.nio.charset.StandardCharsets;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 public class LoginRequestProcessing implements AuthenticationProcessing {
 
-    private final AntPathRequestMatcher loginRequestMatcher;
+    private final RequestMatcher loginRequestMatcher;
     private final Gson gson;
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
