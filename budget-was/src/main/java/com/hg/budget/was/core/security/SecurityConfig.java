@@ -7,7 +7,6 @@ import com.hg.budget.was.core.security.process.AuthenticationProcessingChain;
 import com.hg.budget.was.core.security.process.JoinRequestProcessing;
 import com.hg.budget.was.core.security.process.JwtRequestProcessing;
 import com.hg.budget.was.core.security.process.LoginRequestProcessing;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private static final String WILDCARD_API_URL = "/api/**";
     private static final String JOIN_API_URL = "/api/v*/accounts/join";
     private static final String LOGIN_API_URL = "/api/v*/accounts/login";
     private final AccountQueryService accountQueryService;
@@ -46,7 +46,7 @@ public class SecurityConfig {
         return new AuthenticationProcessingChain(
             new JoinRequestProcessing(JOIN_API_URL),
             new LoginRequestProcessing(LOGIN_API_URL, gson, userDetailsService(), passwordEncoder(), jwtUtil()),
-            new JwtRequestProcessing(List.of(JOIN_API_URL, LOGIN_API_URL), jwtUtil())
+            new JwtRequestProcessing(WILDCARD_API_URL, jwtUtil())
         );
     }
 
