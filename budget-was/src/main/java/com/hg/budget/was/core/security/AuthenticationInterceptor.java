@@ -1,7 +1,7 @@
 package com.hg.budget.was.core.security;
 
 import com.hg.budget.was.core.security.context.UserDetailsContextHolder;
-import com.hg.budget.was.core.security.process.AuthenticationProcessingManager;
+import com.hg.budget.was.core.security.process.AuthenticationProcessingChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -9,10 +9,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class AuthenticationInterceptor implements HandlerInterceptor {
 
-    private final AuthenticationProcessingManager authenticationProcessingManager;
+    private final AuthenticationProcessingChain authenticationProcessingChain;
 
-    public AuthenticationInterceptor(AuthenticationProcessingManager authenticationProcessingManager) {
-        this.authenticationProcessingManager = authenticationProcessingManager;
+    public AuthenticationInterceptor(AuthenticationProcessingChain authenticationProcessingChain) {
+        this.authenticationProcessingChain = authenticationProcessingChain;
     }
 
     /*
@@ -27,7 +27,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        return authenticationProcessingManager.authenticate(request, response);
+        return authenticationProcessingChain.authenticate(request, response);
     }
 
     /*

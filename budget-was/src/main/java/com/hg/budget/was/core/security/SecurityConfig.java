@@ -3,7 +3,7 @@ package com.hg.budget.was.core.security;
 import com.google.gson.Gson;
 import com.hg.budget.application.account.service.AccountQueryService;
 import com.hg.budget.was.core.security.jwt.JwtUtil;
-import com.hg.budget.was.core.security.process.AuthenticationProcessingManager;
+import com.hg.budget.was.core.security.process.AuthenticationProcessingChain;
 import com.hg.budget.was.core.security.process.JoinRequestProcessing;
 import com.hg.budget.was.core.security.process.JwtRequestProcessing;
 import com.hg.budget.was.core.security.process.LoginRequestProcessing;
@@ -42,8 +42,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProcessingManager authenticationProcessingManager() {
-        return new AuthenticationProcessingManager(
+    public AuthenticationProcessingChain authenticationProcessingManager() {
+        return new AuthenticationProcessingChain(
             new JoinRequestProcessing(JOIN_API_URL),
             new LoginRequestProcessing(LOGIN_API_URL, gson, userDetailsService(), passwordEncoder(), jwtUtil()),
             new JwtRequestProcessing(List.of(JOIN_API_URL, LOGIN_API_URL), jwtUtil())
