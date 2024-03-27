@@ -6,9 +6,8 @@ import com.hg.budget.was.core.security.context.UserDetailsContextHolder;
 import com.hg.budget.was.core.security.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.StringUtils;
 
 public class JwtRequestProcessing implements AuthenticationProcessing {
@@ -16,13 +15,11 @@ public class JwtRequestProcessing implements AuthenticationProcessing {
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String AUTHORIZATION_HEADER_JWT_SCHEMA = "Bearer";
 
-    private final List<AntPathRequestMatcher> excludeRequestMatchers;
+    private final RequestMatcher requiresAuthenticationRequestMatcher;
     private final JwtUtil jwtUtil;
 
-    public JwtRequestProcessing(List<String> excludePatterns, JwtUtil jwtUtil) {
-        this.excludeRequestMatchers = excludePatterns.stream()
-            .map(AntPathRequestMatcher::new)
-            .collect(Collectors.toList());
+    public JwtRequestProcessing(String pattern, JwtUtil jwtUtil) {
+        this.requiresAuthenticationRequestMatcher = new AntPathRequestMatcher(pattern);
         this.jwtUtil = jwtUtil;
     }
 
@@ -33,8 +30,7 @@ public class JwtRequestProcessing implements AuthenticationProcessing {
 
     @Override
     public boolean requiresAuthentication(HttpServletRequest request, HttpServletResponse response) {
-        return excludeRequestMatchers.stream()
-            .noneMatch(matcher -> matcher.matches(request));
+        return requiresAuthenticationRequestMatcher.matches(request);
     }
 
     @Override
