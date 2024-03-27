@@ -3,10 +3,11 @@ package com.hg.budget.was.core.security.process;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 public class JoinRequestProcessing implements AuthenticationProcessing {
 
-    private final AntPathRequestMatcher joinRequestMatcher;
+    private final RequestMatcher joinRequestMatcher;
 
     public JoinRequestProcessing(String joinProcessesUrl) {
         this.joinRequestMatcher = new AntPathRequestMatcher(joinProcessesUrl);
