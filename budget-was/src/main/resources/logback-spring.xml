@@ -2,45 +2,20 @@
 
 <configuration>
     <property resource="application.yaml"/>
-<!--    <property resource="application-{spring.profiles.active:-local}.properties"/>-->
-
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
                 <pattern>%d{yyMMdd HH:mm:ss.SSS} %highlight(%-5level) [%thread] %green(%logger{35}):%line - %magenta(%msg) %n</pattern>
-<!--                <withJansi>true</withJansi>-->
             </encoder>
         </appender>
-
-<!--    <springProfile name="local">-->
-<!--        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
-<!--            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
-                <!-- daily -->
-<!--                <fileNamePattern>./clap/log/application_clap_%d{yyyyMMdd}.log</fileNamePattern>-->
-<!--                <fileNamePattern>/Users/oh29o29/MySpace/MyProjects/solid/clap/log/application_clap_%d{yyyyMMdd}.log</fileNamePattern>-->
-<!--                <maxHistory>1</maxHistory>-->
-<!--                <totalSizeCap>12GB</totalSizeCap>-->
-<!--            </rollingPolicy>-->
-
-<!--            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">-->
-<!--                <charset>UTF-8</charset>-->
-<!--                <pattern>%date %level [%thread] [%mdc{__context_info__}] %logger{35}:%line - %msg%n</pattern>-->
-<!--            </encoder>-->
-<!--        </appender>-->
-<!--    </springProfile>-->
 
     <logger name="org.springframework" level="INFO"/>
     <logger name="org.apache" level="INFO"/>
     <logger name="org.hibernate" level="INFO"/>
 
-    <!--    <springProfile name="local">-->
     <logger name="com.hg.budget" level="DEBUG"/>
     <logger name="com.zaxxer.hikari.pool.HikariPool"/>
-    <!--    </springProfile>-->
 
     <root level="${logback.level.root}">
-<!--        <springProfile name="local">-->
-<!--            <appender-ref ref="FILE"/>-->
-            <appender-ref ref="CONSOLE"/>
-<!--        </springProfile>-->
+        <appender-ref ref="CONSOLE"/>
     </root>
 </configuration>
