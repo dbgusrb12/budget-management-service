@@ -1,6 +1,6 @@
 package com.hg.budget.domain.category;
 
-import com.hg.budget.core.config.IdGenerator;
+import com.hg.budget.core.client.IdGenerator;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

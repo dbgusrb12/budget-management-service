@@ -1,6 +1,6 @@
 package com.hg.budget.domain.category;
 
-import com.hg.budget.core.config.IdGenerator;
+import com.hg.budget.core.client.IdGenerator;
 import com.hg.budget.domain.category.port.CategoryRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

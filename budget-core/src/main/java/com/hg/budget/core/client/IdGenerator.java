@@ -1,4 +1,4 @@
-package com.hg.budget.core.config;
+package com.hg.budget.core.client;
 
 public interface IdGenerator {
 

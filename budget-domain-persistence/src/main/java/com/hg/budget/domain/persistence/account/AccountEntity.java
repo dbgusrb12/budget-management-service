@@ -1,6 +1,6 @@
 package com.hg.budget.domain.persistence.account;
 
-import com.hg.budget.core.config.IdGenerator;
+import com.hg.budget.core.client.IdGenerator;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;

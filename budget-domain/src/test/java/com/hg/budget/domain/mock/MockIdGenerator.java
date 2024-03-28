@@ -1,6 +1,6 @@
 package com.hg.budget.domain.mock;
 
-import com.hg.budget.core.config.IdGenerator;
+import com.hg.budget.core.client.IdGenerator;
 
 public class MockIdGenerator implements IdGenerator {
 
