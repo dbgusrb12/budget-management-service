@@ -3,6 +3,7 @@ package com.hg.budget.application.account.service;
 import com.hg.budget.application.account.service.dto.AccountDto;
 import com.hg.budget.application.core.code.ApplicationCode;
 import com.hg.budget.application.core.exception.ApplicationException;
+import com.hg.budget.core.client.DateTimeHolder;
 import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.account.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AccountQueryService {
 
+    private final DateTimeHolder dateTimeHolder;
     private final AccountService accountService;
 
     @Transactional(readOnly = true)
@@ -28,8 +30,8 @@ public class AccountQueryService {
             account.getNickname(),
             account.getStatus(),
             account.getRole(),
-            account.getSignUpDateTime(),
-            account.getSignInDateTime()
+            dateTimeHolder.toString(account.getSignUpDateTime()),
+            dateTimeHolder.toString(account.getSignInDateTime())
         );
     }
 }

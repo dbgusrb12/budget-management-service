@@ -1,6 +1,6 @@
 package com.hg.budget.domain.account;
 
-import com.hg.budget.core.util.TimeUtils;
+import com.hg.budget.core.client.DateTimeHolder;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.AccessLevel;
@@ -23,8 +23,8 @@ public class Account {
     private final LocalDateTime signUpDateTime;
     private LocalDateTime signInDateTime;
 
-    public static Account ofCreated(String id, String password, String nickname, AccountRole role) {
-        final LocalDateTime now = TimeUtils.now();
+    public static Account ofCreated(String id, String password, String nickname, AccountRole role, DateTimeHolder dateTimeHolder) {
+        final LocalDateTime now = dateTimeHolder.now();
         return new Account(id, password, nickname, AccountStatus.CREATED, role, now);
     }
 
@@ -80,7 +80,7 @@ public class Account {
         return Objects.hash(id);
     }
 
-    public Account login(LocalDateTime signInDateTime) {
+    public Account login(DateTimeHolder dateTimeHolder) {
         return Account.of(
             id,
             password,
@@ -88,7 +88,7 @@ public class Account {
             status.name(),
             role.getValue(),
             signUpDateTime,
-            signInDateTime
+            dateTimeHolder.now()
         );
     }
 }
