@@ -21,6 +21,19 @@ Content-Type: application/json
   client.global.set("accessToken", response.body.result.accessToken);
 %}
 
+### ADMIN 계정 인증
+POST {{host}}/api/v1/accounts/login
+Content-Type: application/json
+
+{
+  "id": "{{adminId}}",
+  "password": "{{adminPassword}}"
+}
+
+> {%
+  client.global.set("accessToken", response.body.result.accessToken);
+%}
+
 ### 내 정보 조회
 GET {{host}}/api/v1/accounts/me
 Content-Type: application/json
