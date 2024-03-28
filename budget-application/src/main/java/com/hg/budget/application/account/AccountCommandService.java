@@ -1,4 +1,4 @@
-package com.hg.budget.application.account.service;
+package com.hg.budget.application.account;
 
 import com.hg.budget.application.core.code.ApplicationCode;
 import com.hg.budget.application.core.exception.ApplicationException;

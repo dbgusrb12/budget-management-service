@@ -1,7 +1,7 @@
 package com.hg.budget.was.core.security;
 
 import com.google.gson.Gson;
-import com.hg.budget.application.account.service.AccountQueryService;
+import com.hg.budget.application.account.AccountQueryService;
 import com.hg.budget.was.core.security.jwt.JwtUtil;
 import com.hg.budget.was.core.security.process.AuthenticationProcessingChain;
 import com.hg.budget.was.core.security.process.JoinRequestProcessing;
