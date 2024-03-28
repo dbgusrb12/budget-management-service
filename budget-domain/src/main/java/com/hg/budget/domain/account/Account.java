@@ -63,6 +63,11 @@ public class Account {
         return exist();
     }
 
+    public Account login(DateTimeHolder dateTimeHolder) {
+        final LocalDateTime signInDateTime = dateTimeHolder.now();
+        return new Account(id, password, nickname, status, role, signUpDateTime, signInDateTime);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -78,17 +83,5 @@ public class Account {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    public Account login(DateTimeHolder dateTimeHolder) {
-        return Account.of(
-            id,
-            password,
-            nickname,
-            status.name(),
-            role.getValue(),
-            signUpDateTime,
-            dateTimeHolder.now()
-        );
     }
 }
