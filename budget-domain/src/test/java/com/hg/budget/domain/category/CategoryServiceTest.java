@@ -3,7 +3,7 @@ package com.hg.budget.domain.category;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.hg.budget.domain.category.port.CategoryRepository;
-import com.hg.budget.domain.category.port.DefaultCategoryRepository;
+import com.hg.budget.domain.mock.MockCategoryRepository;
 import com.hg.budget.domain.mock.MockIdGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +16,7 @@ class CategoryServiceTest {
 
     @BeforeEach
     void setUp() {
-        categoryRepository = new DefaultCategoryRepository();
+        categoryRepository = new MockCategoryRepository();
         categoryService = new CategoryService(new MockIdGenerator(1L), categoryRepository);
     }
 
