@@ -24,6 +24,11 @@ public class JoinRequestProcessing implements AuthenticationProcessing {
     }
 
     @Override
+    public boolean continueChain() {
+        return false;
+    }
+
+    @Override
     public boolean attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
         return true;
     }

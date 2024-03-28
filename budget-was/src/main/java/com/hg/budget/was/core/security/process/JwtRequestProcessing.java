@@ -34,6 +34,11 @@ public class JwtRequestProcessing implements AuthenticationProcessing {
     }
 
     @Override
+    public boolean continueChain() {
+        return true;
+    }
+
+    @Override
     public boolean attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
         UserDetailsContextHolder.clearContext();
         final String authorizationHeader = request.getHeader(AUTHORIZATION_HEADER);
@@ -42,7 +47,6 @@ public class JwtRequestProcessing implements AuthenticationProcessing {
         }
         final String accessToken = authorizationHeader.substring(7);
         final UserDetails loginUser = jwtUtil.parseToken(accessToken);
-        // TODO 권한 검사 추가 필요
         UserDetailsContextHolder.setContext(loginUser);
         return true;
     }
