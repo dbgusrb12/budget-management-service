@@ -1,8 +1,8 @@
 package com.hg.budget.was.account;
 
-import com.hg.budget.application.account.service.AccountCommandService;
-import com.hg.budget.application.account.service.AccountQueryService;
-import com.hg.budget.application.account.service.dto.AccountDto;
+import com.hg.budget.application.account.AccountCommandService;
+import com.hg.budget.application.account.AccountQueryService;
+import com.hg.budget.application.account.dto.AccountDto;
 import com.hg.budget.was.account.command.JoinCommand;
 import com.hg.budget.was.account.response.MyInfoResponse;
 import com.hg.budget.was.core.annotation.AccountId;
@@ -37,7 +37,7 @@ public class AccountController {
 
     @GetMapping("/me")
     public OkResponse<MyInfoResponse> getMyInfo(@AccountId String id) {
-        final AccountDto account = accountQueryService.findAccount(id);
+        final AccountDto account = accountQueryService.getAccount(id);
         return new OkResponse<>(
             new MyInfoResponse(
                 account.getId(),

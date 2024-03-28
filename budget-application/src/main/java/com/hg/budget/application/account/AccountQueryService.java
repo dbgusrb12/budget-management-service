@@ -1,6 +1,6 @@
-package com.hg.budget.application.account.service;
+package com.hg.budget.application.account;
 
-import com.hg.budget.application.account.service.dto.AccountDto;
+import com.hg.budget.application.account.dto.AccountDto;
 import com.hg.budget.application.core.code.ApplicationCode;
 import com.hg.budget.application.core.exception.ApplicationException;
 import com.hg.budget.core.client.DateTimeHolder;
@@ -18,7 +18,7 @@ public class AccountQueryService {
     private final AccountService accountService;
 
     @Transactional(readOnly = true)
-    public AccountDto findAccount(String id) {
+    public AccountDto getAccount(String id) {
         final Account account = accountService.findAccount(id);
         if (account.notExist()) {
             throw new ApplicationException(ApplicationCode.BAD_REQUEST);

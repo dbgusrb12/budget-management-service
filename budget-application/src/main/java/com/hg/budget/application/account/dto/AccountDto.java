@@ -1,4 +1,4 @@
-package com.hg.budget.application.account.service.dto;
+package com.hg.budget.application.account.dto;
 
 import com.hg.budget.domain.account.AccountRole;
 import com.hg.budget.domain.account.AccountStatus;
