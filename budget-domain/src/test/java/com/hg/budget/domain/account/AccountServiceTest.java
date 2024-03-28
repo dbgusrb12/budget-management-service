@@ -2,8 +2,11 @@ package com.hg.budget.domain.account;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.hg.budget.core.client.DateTimeHolder;
 import com.hg.budget.domain.account.port.AccountRepository;
 import com.hg.budget.domain.mock.MockAccountRepository;
+import com.hg.budget.domain.mock.MockDateTimeHolder;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +19,8 @@ class AccountServiceTest {
     @BeforeEach
     void setUp() {
         accountRepository = new MockAccountRepository();
-        accountService = new AccountService(accountRepository);
+        DateTimeHolder dateTimeHolder = new MockDateTimeHolder(LocalDateTime.of(2023, 3, 28, 0, 0, 0));
+        accountService = new AccountService(dateTimeHolder, accountRepository);
     }
 
     @Test
@@ -87,7 +91,7 @@ class AccountServiceTest {
         final var login = accountService.login("id");
 
         // then
-        assertThat(login.getSignInDateTime()).isNotNull();
+        assertThat(login.getSignInDateTime()).isEqualTo(LocalDateTime.of(2023, 3, 28, 0, 0, 0));
     }
 
     @Test

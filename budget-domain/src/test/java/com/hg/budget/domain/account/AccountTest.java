@@ -2,6 +2,8 @@ package com.hg.budget.domain.account;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.hg.budget.core.client.DateTimeHolder;
+import com.hg.budget.domain.mock.MockDateTimeHolder;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,14 +14,16 @@ class AccountTest {
     @DisplayName("ofCreated 메서드로 추가 할 유저 객체를 생성 할 수 있다.")
     void ofCreatedTest() {
         // given
+        DateTimeHolder dateTimeHolder = new MockDateTimeHolder(LocalDateTime.of(2024, 3, 28, 0, 0, 0));
         // when
-        final var account = Account.ofCreated("id", "password", "nickname", AccountRole.USER);
+        final var account = Account.ofCreated("id", "password", "nickname", AccountRole.USER, dateTimeHolder);
 
         // then
         assertThat(account.getId()).isEqualTo("id");
         assertThat(account.getPassword()).isEqualTo("password");
         assertThat(account.getNickname()).isEqualTo("nickname");
         assertThat(account.getRole()).isEqualTo(AccountRole.USER);
+        assertThat(account.getSignUpDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 28, 0, 0, 0));
     }
 
     @Test
@@ -131,8 +135,9 @@ class AccountTest {
             LocalDateTime.of(2024, 3, 26, 0, 0, 0),
             null
         );
+        DateTimeHolder dateTimeHolder = new MockDateTimeHolder(LocalDateTime.of(2024, 3, 26, 0, 0, 0));
         // when
-        final var loginAccount = createdAccount.login(LocalDateTime.of(2024, 3, 26, 0, 0, 0));
+        final var loginAccount = createdAccount.login(dateTimeHolder);
 
         // then
         assertThat(loginAccount.getSignInDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 26, 0, 0, 0));

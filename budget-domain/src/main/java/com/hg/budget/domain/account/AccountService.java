@@ -1,6 +1,6 @@
 package com.hg.budget.domain.account;
 
-import com.hg.budget.core.util.TimeUtils;
+import com.hg.budget.core.client.DateTimeHolder;
 import com.hg.budget.domain.account.port.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AccountService {
 
+    private final DateTimeHolder dateTimeHolder;
     private final AccountRepository accountRepository;
 
     public Account createAccount(String id, String password, String nickname) {
@@ -16,7 +17,7 @@ public class AccountService {
         if (duplicatedAccount.exist()) {
             return duplicatedAccount;
         }
-        final Account account = Account.ofCreated(id, password, nickname, AccountRole.USER);
+        final Account account = Account.ofCreated(id, password, nickname, AccountRole.USER, dateTimeHolder);
         accountRepository.save(account);
         return account;
     }
@@ -30,7 +31,7 @@ public class AccountService {
         if (loginUser.notExist()) {
             return loginUser;
         }
-        final Account login = loginUser.login(TimeUtils.now());
+        final Account login = loginUser.login(dateTimeHolder);
         accountRepository.update(login);
         return login;
     }
