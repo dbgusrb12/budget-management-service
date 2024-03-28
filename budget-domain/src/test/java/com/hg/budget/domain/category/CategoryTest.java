@@ -2,6 +2,8 @@ package com.hg.budget.domain.category;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.hg.budget.core.config.IdGenerator;
+import com.hg.budget.domain.mock.MockIdGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -11,11 +13,12 @@ class CategoryTest {
     @DisplayName("ofCreated 메서드로 추가 할 카테고리 객체를 생성 할 수 있다.")
     void ofCreatedTest() {
         // given
+        IdGenerator idGenerator = new MockIdGenerator(1L);
         // when
-        final var category = Category.ofCreated("식비");
+        final var category = Category.ofCreated(idGenerator, "식비");
 
         // then
-        assertThat(category.getId()).isNotNull();
+        assertThat(category.getId()).isEqualTo(1L);
         assertThat(category.getName()).isEqualTo("식비");
     }
 

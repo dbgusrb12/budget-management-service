@@ -2,6 +2,7 @@ package com.hg.budget.domain.persistence.account;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.hg.budget.domain.persistence.mock.MockIdGenerator;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ class AccountEntityRepositoryTest {
     void findByAccountIdTest() {
         // given
         final var accountEntity = AccountEntity.of(
+            new MockIdGenerator(1L),
             "accountId",
             "password",
             "nickname",
@@ -31,6 +33,7 @@ class AccountEntityRepositoryTest {
         final var account = accountEntityRepository.findByAccountId("accountId");
 
         // then
+        assertThat(account.getId()).isEqualTo(1L);
         assertThat(account.getAccountId()).isEqualTo("accountId");
         assertThat(account.getPassword()).isEqualTo("password");
         assertThat(account.getNickname()).isEqualTo("nickname");
