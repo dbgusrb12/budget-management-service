@@ -1,5 +1,6 @@
 package com.hg.budget.domain.category;
 
+import com.hg.budget.core.config.IdGenerator;
 import com.hg.budget.domain.category.port.CategoryRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CategoryService {
 
+    private final IdGenerator idGenerator;
     private final CategoryRepository categoryRepository;
 
     public Category createCategory(String name) {
@@ -16,7 +18,7 @@ public class CategoryService {
         if (duplicatedCategory.exist()) {
             return duplicatedCategory;
         }
-        final Category category = Category.ofCreated(name);
+        final Category category = Category.ofCreated(idGenerator, name);
         categoryRepository.save(category);
         return category;
     }

@@ -1,5 +1,6 @@
 package com.hg.budget.domain.account.port;
 
+import com.hg.budget.core.config.IdGenerator;
 import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.persistence.account.AccountEntity;
 import com.hg.budget.domain.persistence.account.AccountEntityRepository;
@@ -10,11 +11,13 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class DefaultAccountRepository implements AccountRepository {
 
+    private final IdGenerator idGenerator;
     private final AccountEntityRepository accountEntityRepository;
 
     @Override
     public void save(Account account) {
         final AccountEntity saved = AccountEntity.of(
+            idGenerator,
             account.getId(),
             account.getPassword(),
             account.getNickname(),

@@ -1,6 +1,6 @@
 package com.hg.budget.domain.persistence.account;
 
-import com.hg.budget.core.util.IdGenerator;
+import com.hg.budget.core.config.IdGenerator;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
@@ -28,6 +28,7 @@ public class AccountEntity {
     private LocalDateTime signInDateTime;
 
     public static AccountEntity of(
+        IdGenerator idGenerator,
         String accountId,
         String password,
         String nickname,
@@ -36,7 +37,7 @@ public class AccountEntity {
         LocalDateTime signUpDateTime,
         LocalDateTime signInDateTime
     ) {
-        return new AccountEntity(IdGenerator.generateRandomLong(), accountId, password, nickname, status, role, signUpDateTime, signInDateTime);
+        return new AccountEntity(idGenerator.generateRandomLong(), accountId, password, nickname, status, role, signUpDateTime, signInDateTime);
     }
 
     public static AccountEntity ofUpdate(
