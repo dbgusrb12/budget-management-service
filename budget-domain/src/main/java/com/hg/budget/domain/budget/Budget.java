@@ -39,7 +39,24 @@ public class Budget {
         return new Budget(id, category, amount, createdUser, createdDateTime, updatedDateTime);
     }
 
+    public static Budget ofNotExist() {
+        return new Budget(null, null, 0, null, null, null);
+    }
+
+    public boolean exist() {
+        return id != null;
+    }
+
+    public boolean notExist() {
+        return !exist();
+    }
+
     public Budget updateAmount(long amount, DateTimeHolder dateTimeHolder) {
+        final LocalDateTime updatedDateTime = dateTimeHolder.now();
+        return Budget.of(id, category, amount, createdUser, createdDateTime, updatedDateTime);
+    }
+
+    public Budget updateCategory(Category category, DateTimeHolder dateTimeHolder) {
         final LocalDateTime updatedDateTime = dateTimeHolder.now();
         return Budget.of(id, category, amount, createdUser, createdDateTime, updatedDateTime);
     }

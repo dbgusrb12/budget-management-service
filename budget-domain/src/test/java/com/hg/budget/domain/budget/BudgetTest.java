@@ -43,7 +43,7 @@ class BudgetTest {
         final var account = testHelper.createAccount("hg-yu", "hyungyu");
 
         // when
-        final Budget budget = Budget.of(
+        final var budget = Budget.of(
             1L,
             category,
             100L,
@@ -59,6 +59,58 @@ class BudgetTest {
         assertThat(budget.getCreatedUser()).isEqualTo(account);
         assertThat(budget.getCreatedDateTime()).isEqualTo(LocalDateTime.of(2024, 7, 12, 0, 0, 0));
         assertThat(budget.getUpdatedDateTime()).isEqualTo(LocalDateTime.of(2024, 7, 12, 0, 0, 0));
+    }
+
+    @Test
+    @DisplayName("ofNotExist 메서드로 빈 예산 객체를 생성 할 수 있다.")
+    void ofNotExistTest() {
+        // given
+        // when
+        final var budget = Budget.ofNotExist();
+
+        // then
+        assertThat(budget.getId()).isNull();
+        assertThat(budget.getCategory()).isNull();
+        assertThat(budget.getAmount()).isEqualTo(0L);
+        assertThat(budget.getCreatedUser()).isNull();
+        assertThat(budget.getCreatedDateTime()).isNull();
+        assertThat(budget.getUpdatedDateTime()).isNull();
+    }
+
+    @Test
+    @DisplayName("exist 메서드는 id 가 있다면 true 를 반환한다.")
+    void existTest() {
+        // given
+        final var testHelper = new BudgetTestHelper();
+        final var category = testHelper.createCategory("식비");
+        final var account = testHelper.createAccount("hg-yu", "hyungyu");
+        final var budget = Budget.of(
+            1L,
+            category,
+            100L,
+            account,
+            LocalDateTime.of(2024, 7, 12, 0, 0, 0),
+            LocalDateTime.of(2024, 7, 12, 0, 0, 0)
+        );
+
+        // when
+        final var exist = budget.exist();
+
+        // then
+        assertThat(exist).isTrue();
+    }
+
+    @Test
+    @DisplayName("notExist 메서드는 id 가 없다면 true 를 반환한다.")
+    void notExistTest() {
+        // given
+        final var budget = Budget.ofNotExist();
+
+        // when
+        final var notExist = budget.notExist();
+
+        // then
+        assertThat(notExist).isTrue();
     }
 
     @Test
