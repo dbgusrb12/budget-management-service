@@ -102,7 +102,7 @@ class CategoryServiceTest {
     @DisplayName("전체 카테고리를 조회 할 수 있다.")
     void findCategoriesTest() {
         // given
-        MockIdGenerator idGenerator = new MockIdGenerator(1L);
+        var idGenerator = new MockIdGenerator(1L);
         categoryRepository.save(Category.ofCreated(idGenerator, "식비"));
         idGenerator.setId(2L);
         categoryRepository.save(Category.ofCreated(idGenerator, "교통"));

@@ -2,7 +2,6 @@ package com.hg.budget.domain.account;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.hg.budget.core.client.DateTimeHolder;
 import com.hg.budget.domain.account.port.AccountRepository;
 import com.hg.budget.domain.mock.MockAccountRepository;
 import com.hg.budget.domain.mock.MockDateTimeHolder;
@@ -19,7 +18,7 @@ class AccountServiceTest {
     @BeforeEach
     void setUp() {
         accountRepository = new MockAccountRepository();
-        DateTimeHolder dateTimeHolder = new MockDateTimeHolder(LocalDateTime.of(2024, 7, 12, 0, 0, 0));
+        final var dateTimeHolder = new MockDateTimeHolder(LocalDateTime.of(2024, 7, 12, 0, 0, 0));
         accountService = new AccountService(dateTimeHolder, accountRepository);
     }
 
