@@ -1,6 +1,6 @@
 package com.hg.budget.domain.account.port;
 
-import com.hg.budget.core.config.IdGenerator;
+import com.hg.budget.core.client.IdGenerator;
 import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.persistence.account.AccountEntity;
 import com.hg.budget.domain.persistence.account.AccountEntityRepository;
