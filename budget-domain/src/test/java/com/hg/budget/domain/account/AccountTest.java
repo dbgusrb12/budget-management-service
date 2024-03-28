@@ -14,7 +14,7 @@ class AccountTest {
     @DisplayName("ofCreated 메서드로 추가 할 유저 객체를 생성 할 수 있다.")
     void ofCreatedTest() {
         // given
-        DateTimeHolder dateTimeHolder = new MockDateTimeHolder(LocalDateTime.of(2024, 3, 28, 0, 0, 0));
+        DateTimeHolder dateTimeHolder = new MockDateTimeHolder(LocalDateTime.of(2024, 7, 12, 0, 0, 0));
         // when
         final var account = Account.ofCreated("id", "password", "nickname", AccountRole.USER, dateTimeHolder);
 
@@ -23,7 +23,7 @@ class AccountTest {
         assertThat(account.getPassword()).isEqualTo("password");
         assertThat(account.getNickname()).isEqualTo("nickname");
         assertThat(account.getRole()).isEqualTo(AccountRole.USER);
-        assertThat(account.getSignUpDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 28, 0, 0, 0));
+        assertThat(account.getSignUpDateTime()).isEqualTo(LocalDateTime.of(2024, 7, 12, 0, 0, 0));
     }
 
     @Test
@@ -37,8 +37,8 @@ class AccountTest {
             "nickname",
             "LIVED",
             "ROLE_USER",
-            LocalDateTime.of(2024, 3, 26, 0, 0, 0),
-            LocalDateTime.of(2024, 3, 26, 0, 0, 0)
+            LocalDateTime.of(2024, 7, 12, 0, 0, 0),
+            LocalDateTime.of(2024, 7, 12, 0, 0, 0)
         );
 
         // then
@@ -47,8 +47,8 @@ class AccountTest {
         assertThat(account.getNickname()).isEqualTo("nickname");
         assertThat(account.getStatus()).isEqualTo(AccountStatus.LIVED);
         assertThat(account.getRole()).isEqualTo(AccountRole.USER);
-        assertThat(account.getSignUpDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 26, 0, 0, 0));
-        assertThat(account.getSignInDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 26, 0, 0, 0));
+        assertThat(account.getSignUpDateTime()).isEqualTo(LocalDateTime.of(2024, 7, 12, 0, 0, 0));
+        assertThat(account.getSignInDateTime()).isEqualTo(LocalDateTime.of(2024, 7, 12, 0, 0, 0));
     }
 
     @Test
@@ -78,8 +78,8 @@ class AccountTest {
             "nickname",
             "CREATED",
             "ROLE_USER",
-            LocalDateTime.of(2024, 3, 26, 0, 0, 0),
-            LocalDateTime.of(2024, 3, 26, 0, 0, 0)
+            LocalDateTime.of(2024, 7, 12, 0, 0, 0),
+            LocalDateTime.of(2024, 7, 12, 0, 0, 0)
         );
 
         // when
@@ -99,8 +99,8 @@ class AccountTest {
             "nickname",
             "CREATED",
             "ROLE_USER",
-            LocalDateTime.of(2024, 3, 26, 0, 0, 0),
-            LocalDateTime.of(2024, 3, 26, 0, 0, 0)
+            LocalDateTime.of(2024, 7, 12, 0, 0, 0),
+            LocalDateTime.of(2024, 7, 12, 0, 0, 0)
         );
 
         final var livedAccount = Account.of(
@@ -109,8 +109,8 @@ class AccountTest {
             "nickname",
             "LIVED",
             "ROLE_USER",
-            LocalDateTime.of(2024, 3, 26, 0, 0, 0),
-            LocalDateTime.of(2024, 3, 26, 0, 0, 0)
+            LocalDateTime.of(2024, 7, 12, 0, 0, 0),
+            LocalDateTime.of(2024, 7, 12, 0, 0, 0)
         );
 
         // when
@@ -132,14 +132,14 @@ class AccountTest {
             "nickname",
             "CREATED",
             "ROLE_USER",
-            LocalDateTime.of(2024, 3, 26, 0, 0, 0),
+            LocalDateTime.of(2024, 7, 12, 0, 0, 0),
             null
         );
-        DateTimeHolder dateTimeHolder = new MockDateTimeHolder(LocalDateTime.of(2024, 3, 26, 0, 0, 0));
+        DateTimeHolder dateTimeHolder = new MockDateTimeHolder(LocalDateTime.of(2024, 7, 12, 0, 0, 0));
         // when
         final var loginAccount = createdAccount.login(dateTimeHolder);
 
         // then
-        assertThat(loginAccount.getSignInDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 26, 0, 0, 0));
+        assertThat(loginAccount.getSignInDateTime()).isEqualTo(LocalDateTime.of(2024, 7, 12, 0, 0, 0));
     }
 }

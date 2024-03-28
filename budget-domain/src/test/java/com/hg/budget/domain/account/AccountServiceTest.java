@@ -19,7 +19,7 @@ class AccountServiceTest {
     @BeforeEach
     void setUp() {
         accountRepository = new MockAccountRepository();
-        DateTimeHolder dateTimeHolder = new MockDateTimeHolder(LocalDateTime.of(2023, 3, 28, 0, 0, 0));
+        DateTimeHolder dateTimeHolder = new MockDateTimeHolder(LocalDateTime.of(2024, 7, 12, 0, 0, 0));
         accountService = new AccountService(dateTimeHolder, accountRepository);
     }
 
@@ -91,7 +91,7 @@ class AccountServiceTest {
         final var login = accountService.login("id");
 
         // then
-        assertThat(login.getSignInDateTime()).isEqualTo(LocalDateTime.of(2023, 3, 28, 0, 0, 0));
+        assertThat(login.getSignInDateTime()).isEqualTo(LocalDateTime.of(2024, 7, 12, 0, 0, 0));
     }
 
     @Test
