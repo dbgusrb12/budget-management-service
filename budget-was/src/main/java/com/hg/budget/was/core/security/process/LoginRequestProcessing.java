@@ -52,6 +52,11 @@ public class LoginRequestProcessing implements AuthenticationProcessing {
     }
 
     @Override
+    public boolean continueChain() {
+        return false;
+    }
+
+    @Override
     public boolean attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
         UserDetailsContextHolder.clearContext();
         final LoginCommand command = gson.fromJson(request.getReader(), LoginCommand.class);

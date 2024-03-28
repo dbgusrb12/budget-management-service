@@ -21,7 +21,11 @@ public class AuthenticationProcessingChain {
     public boolean authenticate(HttpServletRequest request, HttpServletResponse response) throws IOException {
         for (AuthenticationProcessing authenticationProcessing : authenticationProcessingList) {
             if (authenticationProcessing.requiresAuthentication(request, response)) {
-                return authenticationProcessing.attemptAuthentication(request, response);
+                boolean authentication = authenticationProcessing.attemptAuthentication(request, response);
+                if (authenticationProcessing.continueChain()) {
+                    continue;
+                }
+                return authentication;
             }
         }
         return true;

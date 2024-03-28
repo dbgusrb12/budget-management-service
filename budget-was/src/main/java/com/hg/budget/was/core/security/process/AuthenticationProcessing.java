@@ -19,6 +19,12 @@ public interface AuthenticationProcessing {
     boolean requiresAuthentication(HttpServletRequest request, HttpServletResponse response);
 
     /*
+     * 다음 인증 process 의 진행 여부 설정
+     * 해당 반환값이 false 라면 다음 인증을 시도하지 않고 종료한다.
+     */
+    boolean continueChain();
+
+    /*
      * 인증 process 실행
      */
     boolean attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException;
