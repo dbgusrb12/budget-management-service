@@ -9,6 +9,13 @@ import java.io.IOException;
 import java.util.List;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+/*
+ * Admin 권한 인가 process
+ * Admin 인가는 네번째 인증 process 로 실행되며,
+ * JWT 인증 process 가 성공한 요청들을 대상으로 실행된다.
+ * Admin 권한이 필요한 요청이 들어오면 인증 시도를 한 뒤,
+ * 인증에 성공하거나, Admin 권한이 필요한 요청이 아니라면 다음 chain 으로 넘어간다.
+ */
 public class AdminAuthorizeProcessing implements AuthenticationProcessing {
 
     private final List<RequestMatcher> requiresAuthenticationRequestMatchers;

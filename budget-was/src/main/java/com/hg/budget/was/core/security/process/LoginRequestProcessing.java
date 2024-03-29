@@ -19,6 +19,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+/*
+ * 로그인 인증 process
+ * 로그인 인증은 두번째 인증 process 로 실행되며,
+ * 로그인 요청이 들어올 경우 인증 시도를 한 뒤,
+ * 인증이 성공하면 chain 을 종료한다.
+ *
+ * 인증 process 는 다음과 같다.
+ *
+ * RequestBody 에 id, password 를 가져와 DB 의 유저와 비교 한 후,
+ * JWT 토큰을 발급해 ResponseBody 에 넣는다.
+ * 이후, DB 에서 조회한 UserDetails 를 Context 에 저장한다.
+ */
 public class LoginRequestProcessing implements AuthenticationProcessing {
 
     private final RequestMatcher loginRequestMatcher;
