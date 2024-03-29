@@ -10,6 +10,19 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.StringUtils;
 
+/*
+ * JWT 인증 process
+ * JWT 인증은 세번째 인증 process 로 실행되며,
+ * 앞의 chain 에 걸리지 않은 요청들을 전부 인증 시도를 한 뒤,
+ * 인증에 성공하면 다음 chain 으로 넘어간다.
+ *
+ * 인증 process 는 다음과 같다.
+ *
+ * Authorization Header 를 가져와 Bearer 키워드가 붙은 토큰인지 확인 한 뒤,
+ * JWT 토큰을 검증하고, Claim 을 기반으로 UserDetails 를 Context 에 저장한다.
+ *
+ * (주의) JWT Token 검증만 하고, 실제 DB 에 존재하는 회원인지는 체크하지 않는다.
+ */
 public class JwtRequestProcessing implements AuthenticationProcessing {
 
     private static final String AUTHORIZATION_HEADER = "Authorization";

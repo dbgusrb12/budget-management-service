@@ -12,6 +12,13 @@ import java.util.stream.Collectors;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+/*
+ * User 권한 인가 process
+ * User 인가는 다섯번째 인증 process 로 실행되며,
+ * JWT 인증 process 가 성공한 요청들을 대상으로 실행된다.
+ * User 권한이 필요한 요청이 들어오면 인증 시도를 한 뒤,
+ * 인증에 성공하면 chain 을 종료한다.
+ */
 public class UserAuthorizeProcessing implements AuthenticationProcessing {
 
     private final List<RequestMatcher> requiresAuthenticationRequestMatchers;
