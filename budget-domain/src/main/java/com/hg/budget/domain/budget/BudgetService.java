@@ -20,7 +20,7 @@ public class BudgetService {
     public Budget createBudget(long amount, Category category, Account account) {
         final Budget duplicatedBudget = findBudget(category, account);
         if (duplicatedBudget.exist()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("중복된 예산 입니다.");
         }
         final Budget budget = Budget.ofCreated(idGenerator, category, amount, account, dateTimeHolder);
         budgetRepository.save(budget);
@@ -35,24 +35,6 @@ public class BudgetService {
         final Budget updateAmount = budget.updateAmount(amount, dateTimeHolder);
         budgetRepository.update(updateAmount);
         return updateAmount;
-    }
-
-    public Budget updateCategory(Long id, Category category) {
-        final Budget budget = findBudget(id);
-        if (budget.notExist()) {
-            return budget;
-        }
-        final Budget updateAmount = budget.updateCategory(category, dateTimeHolder);
-        budgetRepository.update(updateAmount);
-        return updateAmount;
-    }
-
-    public void deleteBudget(Long id) {
-        final Budget budget = findBudget(id);
-        if (budget.notExist()) {
-            return;
-        }
-        budgetRepository.delete(budget);
     }
 
     public Budget findBudget(Long id) {
