@@ -56,11 +56,6 @@ public class Budget {
         return Budget.of(id, category, amount, createdUser, createdDateTime, updatedDateTime);
     }
 
-    public Budget updateCategory(Category category, DateTimeHolder dateTimeHolder) {
-        final LocalDateTime updatedDateTime = dateTimeHolder.now();
-        return Budget.of(id, category, amount, createdUser, createdDateTime, updatedDateTime);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
