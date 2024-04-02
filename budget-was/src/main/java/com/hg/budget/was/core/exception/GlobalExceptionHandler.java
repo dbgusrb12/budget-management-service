@@ -67,7 +67,10 @@ public class GlobalExceptionHandler {
     }
 
     public void printErrorLog(Exception exception) {
-        String message = Arrays.stream(exception.getStackTrace())
+        if (exception instanceof ApplicationException applicationException && applicationException.getLogMessage() != null) {
+            log.error("Application Exception Log Message : {}", applicationException.getLogMessage());
+        }
+        final String message = Arrays.stream(exception.getStackTrace())
             .filter(stackTraceElement -> stackTraceElement.getClassName().startsWith("com.hg.budget"))
             .map(stackTraceElement -> "\tat " + stackTraceElement)
             .collect(Collectors.joining("\n"));
