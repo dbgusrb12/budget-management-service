@@ -12,6 +12,10 @@ Authorization: Bearer {{accessToken}}
   ]
 }
 
+### 내 예산 조회
+GET {{host}}/api/v1/budgets/me
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 ### 예산 수정
 PUT {{host}}/api/v1/budgets/{{budgetId}}
