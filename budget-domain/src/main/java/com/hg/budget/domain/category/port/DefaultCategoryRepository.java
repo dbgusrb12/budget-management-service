@@ -16,13 +16,13 @@ public class DefaultCategoryRepository implements CategoryRepository {
 
     @Override
     public void save(Category category) {
-        categoryEntityRepository.save(toEntity(category));
+        categoryEntityRepository.save(CategoryEntity.of(category.getId(), category.getName()));
     }
 
     @Override
     public Category findById(Long id) {
         return categoryEntityRepository.findById(id)
-            .map(this::fromEntity)
+            .map(category -> Category.of(category.getId(), category.getName()))
             .orElse(Category.ofNotExist());
     }
 
@@ -32,21 +32,13 @@ public class DefaultCategoryRepository implements CategoryRepository {
         if (category == null) {
             return Category.ofNotExist();
         }
-        return fromEntity(category);
+        return Category.of(category.getId(), category.getName());
     }
 
     @Override
     public List<Category> findAll() {
         return categoryEntityRepository.findAll().stream()
-            .map(this::fromEntity)
+            .map(category -> Category.of(category.getId(), category.getName()))
             .collect(Collectors.toList());
-    }
-
-    private Category fromEntity(CategoryEntity category) {
-        return Category.of(category.getId(), category.getName());
-    }
-
-    private CategoryEntity toEntity(Category category) {
-        return CategoryEntity.of(category.getId(), category.getName());
     }
 }
