@@ -4,14 +4,17 @@ import com.hg.budget.core.client.DateTimeHolder;
 import com.hg.budget.domain.account.port.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AccountService {
 
     private final DateTimeHolder dateTimeHolder;
     private final AccountRepository accountRepository;
 
+    @Transactional
     public Account createAccount(String id, String password, String nickname) {
         final Account duplicatedAccount = findAccount(id);
         if (duplicatedAccount.exist()) {
@@ -26,6 +29,7 @@ public class AccountService {
         return accountRepository.findById(id);
     }
 
+    @Transactional
     public Account login(String id) {
         final Account loginUser = findAccount(id);
         if (loginUser.notExist()) {

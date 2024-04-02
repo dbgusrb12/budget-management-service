@@ -8,15 +8,18 @@ import com.hg.budget.domain.category.Category;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BudgetService {
 
     private final IdGenerator idGenerator;
     private final DateTimeHolder dateTimeHolder;
     private final BudgetRepository budgetRepository;
 
+    @Transactional
     public Budget createBudget(long amount, Category category, Account account) {
         final Budget duplicatedBudget = findBudget(category, account);
         if (duplicatedBudget.exist()) {
@@ -27,6 +30,7 @@ public class BudgetService {
         return budget;
     }
 
+    @Transactional
     public Budget updateAmount(Long id, long amount) {
         final Budget budget = findBudget(id);
         if (budget.notExist()) {

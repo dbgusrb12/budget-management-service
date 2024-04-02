@@ -12,16 +12,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AccountQueryService {
 
     private final DateTimeHolder dateTimeHolder;
     private final AccountService accountService;
 
-    @Transactional(readOnly = true)
     public AccountDto getAccount(String id) {
         final Account account = accountService.findAccount(id);
         if (account.notExist()) {
-            throw new ApplicationException(ApplicationCode.BAD_REQUEST);
+            throw new ApplicationException(ApplicationCode.BAD_REQUEST, "유저가 존재하지 않습니다.");
         }
 
         return new AccountDto(

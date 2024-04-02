@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CategoryQueryService {
 
     private final CategoryService categoryService;
 
-    @Transactional(readOnly = true)
     public List<CategoryDto> findCategories() {
         return categoryService.findCategories().stream()
             .map(category -> new CategoryDto(category.getId(), category.getName()))
