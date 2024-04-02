@@ -11,6 +11,6 @@ public class UserDetailsService {
 
     public UserDetails loadUserByUsername(String username) {
         final AccountDto account = accountQueryService.getAccount(username);
-        return new UserDetails(account.getId(), account.getRole(), account.getPassword());
+        return new UserDetails(account.id(), account.role(), account.password());
     }
 }
