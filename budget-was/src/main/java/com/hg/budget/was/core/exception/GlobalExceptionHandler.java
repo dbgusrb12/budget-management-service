@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -52,8 +53,24 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ApplicationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse applicationExceptionHandler(ApplicationException exception) {
+        if (exception.getLogMessage() != null) {
+            log.error("Application Exception Log Message : {}", exception.getLogMessage());
+        }
         printErrorLog(exception);
         return new ErrorResponse(exception.getApplicationCode());
+    }
+
+    /**
+     * Controller 에서 @Valid @RequestBody 어노테이션 검증 시 발생하는 에러
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException exception) {
+        final String message = exception.getBindingResult().getFieldErrors().stream()
+            .map(f -> f.getField() + ":" + f.getDefaultMessage())
+            .collect(Collectors.joining(", "));
+        log.error("error message : {}\n{}", exception.getMessage(), message);
+        return new ErrorResponse(ApplicationCode.BAD_REQUEST);
     }
 
     /**
@@ -67,17 +84,14 @@ public class GlobalExceptionHandler {
     }
 
     public void printErrorLog(Exception exception) {
-        if (exception instanceof ApplicationException applicationException && applicationException.getLogMessage() != null) {
-            log.error("Application Exception Log Message : {}", applicationException.getLogMessage());
-        }
         final String message = Arrays.stream(exception.getStackTrace())
             .filter(stackTraceElement -> stackTraceElement.getClassName().startsWith("com.hg.budget"))
             .map(stackTraceElement -> "\tat " + stackTraceElement)
             .collect(Collectors.joining("\n"));
         if (message.isBlank()) {
-            exception.printStackTrace();
+            log.error("not inner package exception", exception);
             return;
         }
-        log.error(message);
+        log.error("error message : {}\n{}", exception.getMessage(), message);
     }
 }
