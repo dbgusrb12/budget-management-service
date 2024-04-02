@@ -1,4 +1,4 @@
-package com.hg.budget.domain.persistence;
+package com.hg.budget;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
