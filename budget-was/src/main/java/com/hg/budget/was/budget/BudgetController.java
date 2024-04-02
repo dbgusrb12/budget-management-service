@@ -24,7 +24,7 @@ public class BudgetController {
 
     @PostMapping
     public void createBudget(@AccountId String accountId, @Valid @RequestBody CreateBudgetsCommand command) {
-        List<CreateBudget> createBudgets = command.createBudgets().stream()
+        final List<CreateBudget> createBudgets = command.createBudgets().stream()
             .map(createBudgetCommand -> new CreateBudget(createBudgetCommand.categoryId(), createBudgetCommand.amount()))
             .toList();
         budgetCommandService.createBudgets(createBudgets, accountId);
