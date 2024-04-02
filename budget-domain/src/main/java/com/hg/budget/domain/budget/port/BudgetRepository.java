@@ -9,8 +9,6 @@ public interface BudgetRepository {
 
     void save(Budget budget);
 
-    void update(Budget budget);
-
     void delete(Budget budget);
 
     Budget findById(Long id);

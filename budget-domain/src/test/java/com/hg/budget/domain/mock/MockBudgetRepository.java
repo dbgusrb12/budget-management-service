@@ -18,12 +18,6 @@ public class MockBudgetRepository implements BudgetRepository {
     }
 
     @Override
-    public void update(Budget budget) {
-        budgets.remove(budget);
-        budgets.add(budget);
-    }
-
-    @Override
     public void delete(Budget budget) {
         budgets.remove(budget);
     }
