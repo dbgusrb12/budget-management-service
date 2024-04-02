@@ -14,7 +14,7 @@ public class CategoryQueryService {
 
     private final CategoryService categoryService;
 
-    public List<CategoryDto> findCategories() {
+    public List<CategoryDto> getCategories() {
         return categoryService.findCategories().stream()
             .map(category -> new CategoryDto(category.getId(), category.getName()))
             .toList();

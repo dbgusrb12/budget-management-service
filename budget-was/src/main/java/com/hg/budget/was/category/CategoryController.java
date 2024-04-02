@@ -29,7 +29,7 @@ public class CategoryController {
 
     @GetMapping
     public OkResponse<List<CategoryResponse>> getCategories() {
-        List<CategoryResponse> categories = categoryQueryService.findCategories().stream()
+        final List<CategoryResponse> categories = categoryQueryService.getCategories().stream()
             .map(categoryDto -> new CategoryResponse(categoryDto.id(), categoryDto.name()))
             .toList();
         return new OkResponse<>(categories);
