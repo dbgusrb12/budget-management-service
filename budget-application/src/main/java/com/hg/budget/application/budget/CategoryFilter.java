@@ -22,7 +22,7 @@ class CategoryFilter {
             .collect(Collectors.toMap(Category::getId, Function.identity()));
     }
 
-    Category getCategory(Long categoryId) {
+    Category get(Long categoryId) {
         if (notContains(categoryId)) {
             throw new ApplicationException(ApplicationCode.BAD_REQUEST, "카테고리가 존재하지 않습니다.");
         }
