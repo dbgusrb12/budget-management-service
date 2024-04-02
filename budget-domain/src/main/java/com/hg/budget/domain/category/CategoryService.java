@@ -5,14 +5,17 @@ import com.hg.budget.domain.category.port.CategoryRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CategoryService {
 
     private final IdGenerator idGenerator;
     private final CategoryRepository categoryRepository;
 
+    @Transactional
     public Category createCategory(String name) {
         final Category duplicatedCategory = findCategory(name);
         if (duplicatedCategory.exist()) {
