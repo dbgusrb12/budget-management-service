@@ -1,0 +1,23 @@
+### 예산 생성
+POST {{host}}/api/v1/budgets
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "createBudgets": [
+    {
+      "categoryId": 1,
+      "amount": 1000
+    }
+  ]
+}
+
+
+### 예산 수정
+PUT {{host}}/api/v1/budgets/{{budgetId}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "amount": 2000
+}
