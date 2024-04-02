@@ -33,7 +33,7 @@ public class BudgetService {
             return budget;
         }
         final Budget updateAmount = budget.updateAmount(amount, dateTimeHolder);
-        budgetRepository.update(updateAmount);
+        budgetRepository.save(updateAmount);
         return updateAmount;
     }
 
