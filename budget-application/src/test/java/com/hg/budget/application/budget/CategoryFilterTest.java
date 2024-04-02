@@ -31,7 +31,7 @@ class CategoryFilterTest {
     }
 
     @Test
-    @DisplayName("getCategory 로 특정 id 의 카테고리를 조회 할 수 있다.")
+    @DisplayName("get 으로 특정 id 의 카테고리를 조회 할 수 있다.")
     void getCategoryTest() {
         // given
         final var categories = List.of(
@@ -43,7 +43,7 @@ class CategoryFilterTest {
         final var categoryFilter = new CategoryFilter(categories);
 
         // when
-        final var category = categoryFilter.getCategory(1L);
+        final var category = categoryFilter.get(1L);
 
         // then
         assertThat(category.getId()).isEqualTo(1L);
@@ -64,7 +64,7 @@ class CategoryFilterTest {
 
         // when
         ApplicationException applicationException = catchThrowableOfType(
-            () -> categoryFilter.getCategory(6L),
+            () -> categoryFilter.get(6L),
             ApplicationException.class
         );
 

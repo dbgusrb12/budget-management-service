@@ -32,7 +32,7 @@ public class BudgetCommandService {
         final CategoryFilter categoryFilter = new CategoryFilter(categoryService.findCategories());
 
         for (CreateBudget createBudget : createBudgets) {
-            final Category category = categoryFilter.getCategory(createBudget.categoryId());
+            final Category category = categoryFilter.get(createBudget.categoryId());
             createBudget(createBudget.amount(), category, account);
         }
     }
