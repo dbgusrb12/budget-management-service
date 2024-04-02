@@ -28,8 +28,8 @@ public class AccountQueryService {
             account.getId(),
             account.getPassword(),
             account.getNickname(),
-            account.getStatus(),
-            account.getRole(),
+            account.getStatus().name(),
+            account.getRole().getValue(),
             dateTimeHolder.toString(account.getSignUpDateTime()),
             dateTimeHolder.toString(account.getSignInDateTime())
         );

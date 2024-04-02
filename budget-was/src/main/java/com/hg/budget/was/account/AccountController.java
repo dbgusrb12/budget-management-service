@@ -40,12 +40,12 @@ public class AccountController {
         final AccountDto account = accountQueryService.getAccount(id);
         return new OkResponse<>(
             new MyInfoResponse(
-                account.getId(),
-                account.getNickname(),
-                account.getStatus(),
-                account.getRole(),
-                account.getSignUpDateTime(),
-                account.getSignInDateTime()
+                account.id(),
+                account.nickname(),
+                account.status(),
+                account.role(),
+                account.signUpDateTime(),
+                account.signInDateTime()
             )
         );
     }
