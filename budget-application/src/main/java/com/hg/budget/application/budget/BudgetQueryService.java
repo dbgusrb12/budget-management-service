@@ -1,7 +1,9 @@
 package com.hg.budget.application.budget;
 
+import com.hg.budget.application.budget.client.BudgetRecommendStrategy;
 import com.hg.budget.application.budget.dto.BudgetDto;
 import com.hg.budget.application.budget.dto.CreatedUser;
+import com.hg.budget.application.budget.dto.RecommendBudget;
 import com.hg.budget.application.category.dto.CategoryDto;
 import com.hg.budget.application.core.code.ApplicationCode;
 import com.hg.budget.application.core.exception.ApplicationException;
@@ -23,6 +25,7 @@ public class BudgetQueryService {
     private final DateTimeHolder dateTimeHolder;
     private final BudgetService budgetService;
     private final AccountService accountService;
+    private final BudgetRecommendStrategy budgetRecommendStrategy;
 
     public List<BudgetDto> getBudgets(String accountId) {
         final Account account = accountService.findAccount(accountId);
@@ -43,5 +46,9 @@ public class BudgetQueryService {
                 );
             })
             .toList();
+    }
+
+    public List<RecommendBudget> recommend(long totalAmount) {
+        return budgetRecommendStrategy.recommend(totalAmount, budgetService.findBudgets());
     }
 }
