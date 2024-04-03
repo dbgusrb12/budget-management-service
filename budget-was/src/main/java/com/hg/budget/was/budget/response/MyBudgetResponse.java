@@ -7,9 +7,4 @@ public record MyBudgetResponse(
     String createdDateTime,
     String updatedDateTime
 ) {
-
-
-    public record BudgetCategory(Long id, String name) {
-
-    }
 }
