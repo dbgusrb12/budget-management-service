@@ -5,9 +5,11 @@ import com.hg.budget.application.budget.BudgetQueryService;
 import com.hg.budget.application.budget.dto.CreateBudget;
 import com.hg.budget.application.category.dto.CategoryDto;
 import com.hg.budget.was.budget.command.CreateBudgetsCommand;
+import com.hg.budget.was.budget.command.RecommendCommand;
 import com.hg.budget.was.budget.command.UpdateAmountCommand;
+import com.hg.budget.was.budget.response.BudgetCategory;
 import com.hg.budget.was.budget.response.MyBudgetResponse;
-import com.hg.budget.was.budget.response.MyBudgetResponse.BudgetCategory;
+import com.hg.budget.was.budget.response.RecommendBudgetResponse;
 import com.hg.budget.was.core.annotation.AccountId;
 import com.hg.budget.was.core.response.OkResponse;
 import jakarta.validation.Valid;
@@ -59,5 +61,16 @@ public class BudgetController {
             .toList();
 
         return new OkResponse<>(budgets);
+    }
+
+    @PostMapping("/recommend")
+    public OkResponse<List<RecommendBudgetResponse>> recommend(@RequestBody RecommendCommand command) {
+        final List<RecommendBudgetResponse> recommendBudgets = budgetQueryService.recommend(command.totalAmount()).stream()
+            .map(recommendBudgetDto -> {
+                final CategoryDto category = recommendBudgetDto.category();
+                return new RecommendBudgetResponse(new BudgetCategory(category.id(), category.name()), recommendBudgetDto.amount());
+            })
+            .toList();
+        return new OkResponse<>(recommendBudgets);
     }
 }

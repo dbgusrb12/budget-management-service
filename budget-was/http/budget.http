@@ -8,6 +8,34 @@ Authorization: Bearer {{accessToken}}
     {
       "categoryId": 1,
       "amount": 1000
+    },
+    {
+      "categoryId": 2,
+      "amount": 2000
+    },
+    {
+      "categoryId": 3,
+      "amount": 3000
+    },
+    {
+      "categoryId": 4,
+      "amount": 4000
+    },
+    {
+      "categoryId": 5,
+      "amount": 2000
+    },
+    {
+      "categoryId": 6,
+      "amount": 3000
+    },
+    {
+      "categoryId": 7,
+      "amount": 3000
+    },
+    {
+      "categoryId": 8,
+      "amount": 1000
     }
   ]
 }
@@ -24,4 +52,14 @@ Authorization: Bearer {{accessToken}}
 
 {
   "amount": 2000
+}
+
+
+### 예산 추천
+POST {{host}}/api/v1/budgets/recommend
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "totalAmount": 200000
 }
