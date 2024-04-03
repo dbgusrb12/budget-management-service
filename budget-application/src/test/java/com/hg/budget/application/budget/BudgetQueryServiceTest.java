@@ -1,6 +1,6 @@
 package com.hg.budget.application.budget;
 
-import com.hg.budget.application.budget.dto.RecommendBudget;
+import com.hg.budget.application.budget.dto.RecommendBudgetDto;
 import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.budget.Budget;
 import com.hg.budget.domain.budget.BudgetService;
@@ -58,36 +58,36 @@ class BudgetQueryServiceTest {
         final var 기타 = testHelper.createCategory("기타");
 
         final var budgets = List.of(
-            testHelper.createBudget(식비, 100000, hgyu),
-            testHelper.createBudget(교통, 100000, hgyu),
-            testHelper.createBudget(주거, 1000000, hgyu),
-            testHelper.createBudget(문화여가, 100000, hgyu),
-            testHelper.createBudget(카페, 100000, hgyu),
-            testHelper.createBudget(여행, 100000, hgyu),
-            testHelper.createBudget(교육, 100000, hgyu),
-            testHelper.createBudget(기타, 100000, hgyu),
+            testHelper.createBudget(식비, 10, hgyu),
+            testHelper.createBudget(교통, 20, hgyu),
+            testHelper.createBudget(주거, 30, hgyu),
+            testHelper.createBudget(문화여가, 10, hgyu),
+            testHelper.createBudget(카페, 5, hgyu),
+            testHelper.createBudget(여행, 10, hgyu),
+            testHelper.createBudget(교육, 10, hgyu),
+            testHelper.createBudget(기타, 5, hgyu),
 
-            testHelper.createBudget(식비, 400000, hgyu2),
-            testHelper.createBudget(교통, 100000, hgyu2),
-            testHelper.createBudget(주거, 1500000, hgyu2),
-            testHelper.createBudget(문화여가, 70000, hgyu2),
-            testHelper.createBudget(카페, 10000, hgyu2),
-            testHelper.createBudget(여행, 10000, hgyu2),
-            testHelper.createBudget(교육, 10000, hgyu2),
-            testHelper.createBudget(기타, 60000, hgyu2),
+            testHelper.createBudget(식비, 5, hgyu2),
+            testHelper.createBudget(교통, 5, hgyu2),
+            testHelper.createBudget(주거, 10, hgyu2),
+            testHelper.createBudget(문화여가, 10, hgyu2),
+            testHelper.createBudget(카페, 30, hgyu2),
+            testHelper.createBudget(여행, 10, hgyu2),
+            testHelper.createBudget(교육, 10, hgyu2),
+            testHelper.createBudget(기타, 20, hgyu2)
 
-            testHelper.createBudget(식비, 7000000, hgyu3),
-            testHelper.createBudget(교통, 100000, hgyu3),
-            testHelper.createBudget(주거, 500000, hgyu3),
-            testHelper.createBudget(문화여가, 120000, hgyu3),
-            testHelper.createBudget(카페, 70000, hgyu3),
-            testHelper.createBudget(여행, 120000, hgyu3),
-            testHelper.createBudget(교육, 500000, hgyu3),
-            testHelper.createBudget(기타, 50000, hgyu3)
+//            testHelper.createBudget(식비, 30, hgyu3),
+//            testHelper.createBudget(교통, 10, hgyu3),
+//            testHelper.createBudget(주거, 10, hgyu3),
+//            testHelper.createBudget(문화여가, 10, hgyu3),
+//            testHelper.createBudget(카페, 10, hgyu3),
+//            testHelper.createBudget(여행, 10, hgyu3),
+//            testHelper.createBudget(교육, 10, hgyu3),
+//            testHelper.createBudget(기타, 10, hgyu3)
         );
 
         // when
-        List<RecommendBudget> recommend = budgetQueryService.recommend(1000000);
+        List<RecommendBudgetDto> recommend = budgetQueryService.recommend(100);
 
         recommend.forEach(System.out::println);
     }

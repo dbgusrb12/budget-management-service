@@ -1,7 +1,6 @@
 package com.hg.budget.application.budget.infrastructure.average;
 
-import com.hg.budget.application.budget.dto.RecommendBudget;
-import com.hg.budget.application.category.dto.CategoryDto;
+import com.hg.budget.application.budget.client.dto.RecommendBudget;
 import com.hg.budget.domain.category.Category;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,36 +19,42 @@ public class AverageCalculator {
     }
 
     public List<RecommendBudget> calculate() {
+        final List<Average> averages = mergeAverage();
+        return averages.stream()
+            .map(average -> {
+                // FIXME 반올림 시 1 오차 나는 부분 수정 필요
+                final long amount = findAmount(average.percent());
+                return new RecommendBudget(average.category(), amount);
+            })
+            .toList();
+    }
+
+    private List<Average> mergeAverage() {
         final Average etcAverage = getTotalEtcAverage();
         final List<Average> averages = getNotEtcAverage();
 
         List<Average> totalAverages = new ArrayList<>(averages);
-        totalAverages.add(etcAverage);
-
-        return totalAverages.stream()
-            .map(average -> {
-                final Category category = average.category();
-                final long amount = findAmount(average.percent());
-                return new RecommendBudget(new CategoryDto(category.getId(), category.getName()), amount);
-            }).toList();
+        if (etcAverage.percent() > 0) {
+            totalAverages.add(etcAverage);
+        }
+        return totalAverages;
     }
 
-    private long findAmount(long percent) {
-        return Math.round((double) totalAmount * percent / 100);
+    private long findAmount(double percent) {
+        return Math.round(totalAmount * percent / 100);
     }
 
     private Average getTotalEtcAverage() {
         final Average etcAverage = getEtcAverage();
-        final long etcPercent = getTotalEtcPercent();
+        final double etcPercent = getTotalEtcPercent();
         return etcAverage.plus(etcPercent);
     }
 
-    private long getTotalEtcPercent() {
+    private List<Average> getNotEtcAverage() {
         return this.averages.stream()
             .filter(average -> !etcCategory.equals(average.category()))
-            .filter(average -> average.percent() < MIN_PERCENT)
-            .mapToLong(Average::percent)
-            .sum();
+            .filter(average -> average.percent() >= MIN_PERCENT)
+            .toList();
     }
 
     private Average getEtcAverage() {
@@ -59,10 +64,11 @@ public class AverageCalculator {
             .orElse(new Average(etcCategory, 0));
     }
 
-    private List<Average> getNotEtcAverage() {
+    private double getTotalEtcPercent() {
         return this.averages.stream()
             .filter(average -> !etcCategory.equals(average.category()))
-            .filter(average -> average.percent() >= MIN_PERCENT)
-            .toList();
+            .filter(average -> average.percent() < MIN_PERCENT)
+            .mapToDouble(Average::percent)
+            .sum();
     }
 }

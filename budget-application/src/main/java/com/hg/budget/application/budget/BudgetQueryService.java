@@ -3,13 +3,14 @@ package com.hg.budget.application.budget;
 import com.hg.budget.application.budget.client.BudgetRecommendStrategy;
 import com.hg.budget.application.budget.dto.BudgetDto;
 import com.hg.budget.application.budget.dto.CreatedUser;
-import com.hg.budget.application.budget.dto.RecommendBudget;
+import com.hg.budget.application.budget.dto.RecommendBudgetDto;
 import com.hg.budget.application.category.dto.CategoryDto;
 import com.hg.budget.application.core.code.ApplicationCode;
 import com.hg.budget.application.core.exception.ApplicationException;
 import com.hg.budget.core.client.DateTimeHolder;
 import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.account.AccountService;
+import com.hg.budget.domain.budget.Budget;
 import com.hg.budget.domain.budget.BudgetService;
 import com.hg.budget.domain.category.Category;
 import java.util.List;
@@ -48,7 +49,12 @@ public class BudgetQueryService {
             .toList();
     }
 
-    public List<RecommendBudget> recommend(long totalAmount) {
-        return budgetRecommendStrategy.recommend(totalAmount, budgetService.findBudgets());
+    public List<RecommendBudgetDto> recommend(long totalAmount) {
+        final List<Budget> budgets = budgetService.findBudgets();
+        return budgetRecommendStrategy.recommend(totalAmount, budgets).stream()
+            .map(recommendBudget -> {
+                final Category category = recommendBudget.category();
+                return new RecommendBudgetDto(new CategoryDto(category.getId(), category.getName()), recommendBudget.amount());
+            }).toList();
     }
 }

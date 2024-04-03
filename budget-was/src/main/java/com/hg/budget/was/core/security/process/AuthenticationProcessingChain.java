@@ -21,7 +21,8 @@ public class AuthenticationProcessingChain {
 
     public AuthenticationProcessingChain(AuthenticationProcessing... authenticationProcessingList) {
         this.authenticationProcessingList = Arrays.stream(authenticationProcessingList)
-            .sorted(Comparator.comparing(AuthenticationProcessing::getOrder)).collect(Collectors.toList());
+            .sorted(Comparator.comparing(AuthenticationProcessing::getOrder))
+            .collect(Collectors.toList());
     }
 
     public boolean authenticate(HttpServletRequest request, HttpServletResponse response) throws IOException {
