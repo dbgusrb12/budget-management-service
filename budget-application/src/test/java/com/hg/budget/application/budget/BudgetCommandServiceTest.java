@@ -168,12 +168,12 @@ class BudgetCommandServiceTest {
             this.categoryEntityRepository = categoryEntityRepository;
         }
 
-        CategoryEntity createCategory(String name) {
+        void createCategory(String name) {
             final var entity = CategoryEntity.of(categoryGeneratedId++, name);
-            return categoryEntityRepository.save(entity);
+            categoryEntityRepository.save(entity);
         }
 
-        AccountEntity createAccount(String id, String nickname) {
+        void createAccount(String id, String nickname) {
             final var entity = AccountEntity.ofUpdate(
                 accountGeneratedId++,
                 id,
@@ -184,7 +184,7 @@ class BudgetCommandServiceTest {
                 LocalDateTime.of(2024, 7, 12, 0, 0, 0),
                 LocalDateTime.of(2024, 7, 12, 0, 0, 0)
             );
-            return accountEntityRepository.save(entity);
+            accountEntityRepository.save(entity);
         }
     }
 }
