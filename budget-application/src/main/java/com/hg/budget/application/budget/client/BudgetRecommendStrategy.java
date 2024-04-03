@@ -1,6 +1,6 @@
 package com.hg.budget.application.budget.client;
 
-import com.hg.budget.application.budget.dto.RecommendBudget;
+import com.hg.budget.application.budget.client.dto.RecommendBudget;
 import com.hg.budget.domain.budget.Budget;
 import java.util.List;
 

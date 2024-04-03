@@ -1,11 +1,10 @@
 package com.hg.budget.application.budget.infrastructure;
 
 import com.hg.budget.application.budget.client.BudgetRecommendStrategy;
-import com.hg.budget.application.budget.dto.RecommendBudget;
+import com.hg.budget.application.budget.client.dto.RecommendBudget;
 import com.hg.budget.application.budget.infrastructure.average.AmountPercentAverage;
 import com.hg.budget.application.budget.infrastructure.average.Average;
 import com.hg.budget.application.budget.infrastructure.average.AverageCalculator;
-import com.hg.budget.application.budget.infrastructure.average.TotalAmount;
 import com.hg.budget.domain.budget.Budget;
 import com.hg.budget.domain.category.Category;
 import java.util.List;
@@ -19,8 +18,8 @@ public class AverageBudgetRecommendStrategy implements BudgetRecommendStrategy {
 
     @Override
     public List<RecommendBudget> recommend(long totalAmount, List<Budget> budgets) {
-        final AmountPercentAverage amountPercentAverage = new AmountPercentAverage(budgets, new TotalAmount(budgets));
-        final List<Average> averages = amountPercentAverage.getAverage();
+        final AmountPercentAverage amountPercentAverage = new AmountPercentAverage(budgets);
+        final List<Average> averages = amountPercentAverage.getAverages();
         final AverageCalculator averageCalculator = new AverageCalculator(totalAmount, averages, etcCategory);
         return averageCalculator.calculate();
     }
