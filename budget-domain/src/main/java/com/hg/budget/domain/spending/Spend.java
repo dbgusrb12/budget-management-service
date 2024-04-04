@@ -4,6 +4,7 @@ import com.hg.budget.core.client.IdGenerator;
 import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.category.Category;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -63,5 +64,24 @@ public class Spend {
 
     public Spend update(UpdateSpend updateSpend) {
         return Spend.of(id, updateSpend.category(), updateSpend.amount(), updateSpend.memo(), spentUser, updateSpend.spentDateTime(), excludeTotal);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Spend spend = (Spend) o;
+
+        return Objects.equals(id, spend.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }
