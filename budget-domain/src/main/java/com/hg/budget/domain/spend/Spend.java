@@ -1,4 +1,4 @@
-package com.hg.budget.domain.spending;
+package com.hg.budget.domain.spend;
 
 import com.hg.budget.core.client.IdGenerator;
 import com.hg.budget.domain.account.Account;

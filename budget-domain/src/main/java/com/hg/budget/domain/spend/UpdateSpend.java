@@ -1,4 +1,4 @@
-package com.hg.budget.domain.spending;
+package com.hg.budget.domain.spend;
 
 import com.hg.budget.domain.category.Category;
 import java.time.LocalDateTime;

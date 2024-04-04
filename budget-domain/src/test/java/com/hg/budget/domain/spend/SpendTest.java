@@ -1,4 +1,4 @@
-package com.hg.budget.domain.spending;
+package com.hg.budget.domain.spend;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
