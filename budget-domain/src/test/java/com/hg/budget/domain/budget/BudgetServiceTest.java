@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 
 class BudgetServiceTest {
 
-
     BudgetService budgetService;
     MockIdGenerator idGenerator;
 
