@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration>
-    <property resource="application.yaml"/>
-        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder>
-                <pattern>%d{yyMMdd HH:mm:ss.SSS} %highlight(%-5level) [%thread] %green(%logger{35}):%line - %magenta(%msg) %n</pattern>
-            </encoder>
-        </appender>
+  <property resource="application.yaml"/>
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{yyMMdd HH:mm:ss.SSS} %highlight(%-5level) [%thread] %green(%logger{35}):%line - %magenta(%msg) %n</pattern>
+    </encoder>
+  </appender>
 
-    <logger name="org.springframework" level="INFO"/>
-    <logger name="org.apache" level="INFO"/>
-    <logger name="org.hibernate" level="INFO"/>
+  <logger name="org.springframework" level="INFO"/>
+  <logger name="org.apache" level="INFO"/>
+  <logger name="org.hibernate" level="INFO"/>
 
-    <logger name="com.hg.budget" level="DEBUG"/>
-    <logger name="com.zaxxer.hikari.pool.HikariPool"/>
+  <logger name="com.hg.budget" level="DEBUG"/>
+  <logger name="com.zaxxer.hikari.pool.HikariPool"/>
 
-    <root level="${logback.level.root}">
-        <appender-ref ref="CONSOLE"/>
-    </root>
+  <root level="${logback.level.root}">
+    <appender-ref ref="CONSOLE"/>
+  </root>
 </configuration>
