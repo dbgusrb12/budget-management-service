@@ -13,6 +13,7 @@ class CategoryTest {
     void ofCreatedTest() {
         // given
         final var idGenerator = new MockIdGenerator(1L);
+
         // when
         final var category = Category.ofCreated(idGenerator, "식비");
 
