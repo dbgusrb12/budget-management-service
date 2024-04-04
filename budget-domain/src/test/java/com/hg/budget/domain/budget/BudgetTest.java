@@ -27,9 +27,10 @@ class BudgetTest {
 
         // then
         assertThat(budget.getId()).isEqualTo(1L);
-        assertThat(budget.getCategory()).isEqualTo(category);
+        assertThat(budget.getCategory().getName()).isEqualTo("식비");
         assertThat(budget.getAmount()).isEqualTo(100L);
-        assertThat(budget.getCreatedUser()).isEqualTo(account);
+        assertThat(budget.getCreatedUser().getId()).isEqualTo("hg-yu");
+        assertThat(budget.getCreatedUser().getNickname()).isEqualTo("hyungyu");
         assertThat(budget.getCreatedDateTime()).isEqualTo(LocalDateTime.of(2024, 7, 12, 0, 0, 0));
         assertThat(budget.getUpdatedDateTime()).isEqualTo(LocalDateTime.of(2024, 7, 12, 0, 0, 0));
     }
@@ -54,9 +55,10 @@ class BudgetTest {
 
         // then
         assertThat(budget.getId()).isEqualTo(1L);
-        assertThat(budget.getCategory()).isEqualTo(category);
+        assertThat(budget.getCategory().getName()).isEqualTo("식비");
         assertThat(budget.getAmount()).isEqualTo(100L);
-        assertThat(budget.getCreatedUser()).isEqualTo(account);
+        assertThat(budget.getCreatedUser().getId()).isEqualTo("hg-yu");
+        assertThat(budget.getCreatedUser().getNickname()).isEqualTo("hyungyu");
         assertThat(budget.getCreatedDateTime()).isEqualTo(LocalDateTime.of(2024, 7, 12, 0, 0, 0));
         assertThat(budget.getUpdatedDateTime()).isEqualTo(LocalDateTime.of(2024, 7, 12, 0, 0, 0));
     }
