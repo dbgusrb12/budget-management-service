@@ -7,4 +7,5 @@ public record MyBudgetResponse(
     String createdDateTime,
     String updatedDateTime
 ) {
+
 }
