@@ -8,6 +8,7 @@ import com.hg.budget.domain.category.Category;
 import com.hg.budget.domain.mock.MockIdGenerator;
 import com.hg.budget.domain.mock.MockSpendRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -185,7 +186,7 @@ class SpendServiceTest {
     }
 
     @Test
-    @DisplayName("findSpendList 로 페이징 된 지출 내역을 조회 할 수 있다.")
+    @DisplayName("findSpendList 로 특정 유저의 모든 지출 내역을 조회 할 수 있다.")
     void findSpendListTest() {
         // given
         final var testHelper = new SpendServiceTestHelper();
@@ -196,7 +197,29 @@ class SpendServiceTest {
         spendService.createSpend(2000L, "메모2", category, account, LocalDateTime.of(2024, 7, 12, 0, 0, 0));
 
         // when
-        Page<Spend> spendList = spendService.findSpendList(
+        List<Spend> spendList = spendService.findSpendList(account);
+
+        // then
+        assertThat(spendList.size()).isEqualTo(2);
+        assertThat(spendList.get(0).getAmount()).isEqualTo(1000L);
+        assertThat(spendList.get(0).getMemo()).isEqualTo("메모");
+        assertThat(spendList.get(1).getAmount()).isEqualTo(2000L);
+        assertThat(spendList.get(1).getMemo()).isEqualTo("메모2");
+    }
+
+    @Test
+    @DisplayName("pageSpendList 로 페이징 된 지출 내역을 조회 할 수 있다.")
+    void pageSpendListTest() {
+        // given
+        final var testHelper = new SpendServiceTestHelper();
+        final var category = testHelper.createCategory("식비");
+        final var account = testHelper.createAccount("hg-yu", "hyungyu");
+        spendService.createSpend(1000L, "메모", category, account, LocalDateTime.of(2024, 7, 12, 0, 0, 0));
+        idGenerator.setId(2L);
+        spendService.createSpend(2000L, "메모2", category, account, LocalDateTime.of(2024, 7, 12, 0, 0, 0));
+
+        // when
+        Page<Spend> spendList = spendService.pageSpendList(
             1,
             5,
             LocalDateTime.of(2024, 7, 11, 0, 0, 0),

@@ -10,6 +10,8 @@ import com.hg.budget.domain.persistence.spend.SpendEntity;
 import com.hg.budget.domain.persistence.spend.SpendEntityRepository;
 import com.hg.budget.domain.spend.Spend;
 import com.hg.budget.domain.spend.port.specification.SpendSpecification;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -35,6 +37,13 @@ public class DefaultSpendRepository implements SpendRepository {
         return spendEntityRepository.findById(id)
             .map(this::toDomain)
             .orElse(Spend.ofNotExist());
+    }
+
+    @Override
+    public List<Spend> findAll(Account account) {
+        return spendEntityRepository.findBySpentUser_AccountId(account.getId()).stream()
+            .map(this::toDomain)
+            .collect(Collectors.toList());
     }
 
     @Override
