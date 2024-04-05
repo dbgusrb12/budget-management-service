@@ -18,7 +18,6 @@ public class AccountEntity {
 
     @Id
     private Long id;
-
     private String accountId;
     private String password;
     private String nickname;
