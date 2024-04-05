@@ -3,9 +3,13 @@ package com.hg.budget.domain.spend.port;
 import com.hg.budget.core.dto.Page;
 import com.hg.budget.domain.spend.port.specification.SpendSpecification;
 import com.hg.budget.domain.spend.Spend;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import com.hg.budget.domain.persistence.spend.SpendEntityRepository;
+import com.hg.budget.domain.account.Account;
+import com.hg.budget.domain.category.Category;
+import com.hg.budget.domain.persistence.account.AccountEntity;
+import com.hg.budget.domain.persistence.account.AccountEntityRepository;
+import com.hg.budget.domain.persistence.category.CategoryEntity;
+import com.hg.budget.domain.persistence.spend.SpendEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -13,54 +17,81 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class DefaultSpendRepository implements SpendRepository {
 
-    private final List<Spend> spendList = new ArrayList<>();
+    private final SpendEntityRepository spendEntityRepository;
+    private final AccountEntityRepository accountEntityRepository;
 
     @Override
     public void save(Spend spend) {
-        spendList.remove(spend);
-        spendList.add(spend);
+        spendEntityRepository.save(toEntity(spend));
     }
 
     @Override
     public Spend findById(Long id) {
-        return spendList.stream()
-            .filter(spend -> id.equals(spend.getId()))
-            .findFirst()
+        return spendEntityRepository.findById(id)
+            .map(this::toDomain)
             .orElse(Spend.ofNotExist());
     }
 
     @Override
     public Page<Spend> findAll(SpendSpecification specification) {
-        final List<Spend> spends = spendList.stream()
-            .filter(spend ->
-                spend.getSpentDateTime().isAfter(specification.startSpentDateTime())
-                    && spend.getSpentDateTime().isBefore(specification.endSpentDateTime())
-            )
-            .filter(spend -> spend.getSpentUser().equals(specification.account()))
-            .filter(spend -> {
-                if (specification.category() == null) {
-                    return true;
-                }
-                return specification.category().equals(spend.getCategory());
-            })
-            .filter(spend -> {
-                if (specification.minAmount() == null) {
-                    return true;
-                }
-                return specification.minAmount() <= spend.getAmount();
-            })
-            .filter(spend -> {
-                if (specification.maxAmount() == null) {
-                    return true;
-                }
-                return specification.maxAmount() >= spend.getAmount();
-            })
-            .sorted(Comparator.comparing(Spend::getSpentDateTime))
-            .toList();
-        final List<Spend> page = spends.stream()
-            .skip((specification.page() - 1) * specification.size())
-            .limit(specification.size())
-            .toList();
-        return Page.of(page, spendList.size());
+        final Account account = specification.account();
+        final AccountEntity accountEntity = accountEntityRepository.findByAccountId(account.getId());
+        final Category category = specification.category();
+        final CategoryEntity categoryEntity = category == null ? null : CategoryEntity.of(category.getId(), category.getName());
+        org.springframework.data.domain.Page<SpendEntity> page = spendEntityRepository.findAll(
+            specification.page(),
+            specification.size(),
+            specification.startSpentDateTime(),
+            specification.endSpentDateTime(),
+            accountEntity,
+            categoryEntity,
+            specification.minAmount(),
+            specification.maxAmount()
+        );
+
+        return Page.of(page.getContent(), page.getTotalElements())
+            .map(this::toDomain);
+    }
+
+    private Spend toDomain(SpendEntity spend) {
+        final CategoryEntity categoryEntity = spend.getCategory();
+        final Category category = Category.of(categoryEntity.getId(), categoryEntity.getName());
+        final AccountEntity accountEntity = spend.getSpentUser();
+        final Account spentUser = Account.of(
+            accountEntity.getAccountId(),
+            accountEntity.getPassword(),
+            accountEntity.getNickname(),
+            accountEntity.getStatus(),
+            accountEntity.getRole(),
+            accountEntity.getSignUpDateTime(),
+            accountEntity.getSignInDateTime()
+        );
+        return Spend.of(
+            spend.getId(),
+            category,
+            spend.getAmount(),
+            spend.getMemo(),
+            spentUser,
+            spend.getSpentDateTime(),
+            spend.getExcludeTotal()
+        );
+    }
+
+    private SpendEntity toEntity(Spend spend) {
+        final Category category = spend.getCategory();
+        final CategoryEntity categoryEntity = CategoryEntity.of(category.getId(), category.getName());
+
+        final Account spentUser = spend.getSpentUser();
+        final AccountEntity accountEntity = accountEntityRepository.findByAccountId(spentUser.getId());
+
+        return SpendEntity.of(
+            spend.getId(),
+            categoryEntity,
+            spend.getAmount(),
+            spend.getMemo(),
+            accountEntity,
+            spend.getSpentDateTime(),
+            spend.isExcludeTotal()
+        );
     }
 }
