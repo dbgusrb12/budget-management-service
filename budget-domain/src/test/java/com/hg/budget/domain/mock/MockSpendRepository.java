@@ -1,9 +1,9 @@
 package com.hg.budget.domain.mock;
 
 import com.hg.budget.core.dto.Page;
-import com.hg.budget.domain.spend.port.specification.SpendSpecification;
 import com.hg.budget.domain.spend.Spend;
 import com.hg.budget.domain.spend.port.SpendRepository;
+import com.hg.budget.domain.spend.port.specification.SpendSpecification;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -16,6 +16,11 @@ public class MockSpendRepository implements SpendRepository {
     public void save(Spend spend) {
         spendList.remove(spend);
         spendList.add(spend);
+    }
+
+    @Override
+    public void delete(Spend spend) {
+        spendList.remove(spend);
     }
 
     @Override

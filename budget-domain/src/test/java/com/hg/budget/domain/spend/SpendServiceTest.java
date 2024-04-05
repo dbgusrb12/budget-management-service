@@ -123,6 +123,34 @@ class SpendServiceTest {
     }
 
     @Test
+    @DisplayName("delete 로 지출을 삭제 할 수 있다.")
+    void deleteTest() {
+        // given
+        final var testHelper = new SpendServiceTestHelper();
+        final var category = testHelper.createCategory("식비");
+        final var account = testHelper.createAccount("hg-yu", "hyungyu");
+        spendService.createSpend(1000L, "메모", category, account, LocalDateTime.of(2024, 7, 12, 0, 0, 0));
+
+        // when
+        spendService.delete(1L);
+        final Spend spend = spendService.findSpend(1L);
+
+        // then
+        assertThat(spend.notExist()).isTrue();
+    }
+
+    @Test
+    @DisplayName("delete 호출 시 해당 지출 정보가 없으면 빈 지출 객체가 반환된다.")
+    void deleteTest_NotExist() {
+        // given
+        // when
+        final Spend deleted = spendService.delete(1L);
+
+        // then
+        assertThat(deleted.notExist()).isTrue();
+    }
+
+    @Test
     @DisplayName("findSpend 로 지출을 조회 할 수 있다.")
     void findSpendTest() {
         // given
