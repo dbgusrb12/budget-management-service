@@ -1,4 +1,4 @@
-package com.hg.budget.domain.category.port.specification;
+package com.hg.budget.domain.spend.port.specification;
 
 import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.category.Category;

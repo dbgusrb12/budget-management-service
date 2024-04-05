@@ -82,7 +82,6 @@ class BudgetEntityRepositoryTest {
         assertThat(budget.get(0).getCreatedUser().getNickname()).isEqualTo("hyungyu");
     }
 
-
     static class BudgetEntityRepositoryTestHelper {
 
         private final AccountEntityRepository accountEntityRepository;
