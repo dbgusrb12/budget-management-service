@@ -1,12 +1,14 @@
 package com.hg.budget.domain.mock;
 
 import com.hg.budget.core.dto.Page;
+import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.spend.Spend;
 import com.hg.budget.domain.spend.port.SpendRepository;
 import com.hg.budget.domain.spend.port.specification.SpendSpecification;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MockSpendRepository implements SpendRepository {
 
@@ -29,6 +31,13 @@ public class MockSpendRepository implements SpendRepository {
             .filter(spend -> id.equals(spend.getId()))
             .findFirst()
             .orElse(Spend.ofNotExist());
+    }
+
+    @Override
+    public List<Spend> findAll(Account account) {
+        return spendList.stream()
+            .filter(spend -> account.equals(spend.getSpentUser()))
+            .collect(Collectors.toList());
     }
 
     @Override

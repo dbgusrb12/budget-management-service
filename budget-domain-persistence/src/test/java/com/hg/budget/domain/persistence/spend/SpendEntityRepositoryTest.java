@@ -67,6 +67,39 @@ class SpendEntityRepositoryTest {
         assertThat(spendEntity.getExcludeTotal()).isFalse();
     }
 
+    @Test
+    void findBySpentUser_AccountId() {
+        // given
+        final var testHelper = new SpendEntityRepositoryTestHelper(accountEntityRepository, categoryEntityRepository);
+        final var accountEntity = testHelper.createAccount("hg-yu", "hyungyu");
+        final var categoryEntity = testHelper.createCategory("식비");
+        final var spend = SpendEntity.of(
+            1L,
+            categoryEntity,
+            1000L,
+            "메모",
+            accountEntity,
+            LocalDateTime.of(2024, 7, 12, 0, 0, 0),
+            false
+        );
+        spendEntityRepository.save(spend);
+
+        // when
+        final var spendList = spendEntityRepository.findBySpentUser_AccountId("hg-yu");
+
+        // then
+        assertThat(spendList.size()).isEqualTo(1);
+        final var spendEntity = spendList.get(0);
+        assertThat(spendEntity.getId()).isEqualTo(1L);
+        assertThat(spendEntity.getAmount()).isEqualTo(1000L);
+        assertThat(spendEntity.getMemo()).isEqualTo("메모");
+        assertThat(spendEntity.getCategory().getName()).isEqualTo("식비");
+        assertThat(spendEntity.getSpentUser().getAccountId()).isEqualTo("hg-yu");
+        assertThat(spendEntity.getSpentUser().getNickname()).isEqualTo("hyungyu");
+        assertThat(spendEntity.getSpentDateTime()).isEqualTo(LocalDateTime.of(2024, 7, 12, 0, 0, 0));
+        assertThat(spendEntity.getExcludeTotal()).isFalse();
+    }
+
 
     static class SpendEntityRepositoryTestHelper {
 

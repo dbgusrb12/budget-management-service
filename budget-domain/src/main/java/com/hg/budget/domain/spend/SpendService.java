@@ -7,6 +7,7 @@ import com.hg.budget.domain.category.Category;
 import com.hg.budget.domain.spend.port.SpendRepository;
 import com.hg.budget.domain.spend.port.specification.SpendSpecification;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,7 +64,11 @@ public class SpendService {
         return spendRepository.findById(id);
     }
 
-    public Page<Spend> findSpendList(
+    public List<Spend> findSpendList(Account account) {
+        return spendRepository.findAll(account);
+    }
+
+    public Page<Spend> pageSpendList(
         int page,
         int size,
         LocalDateTime startSpentDateTime,
