@@ -4,7 +4,7 @@ import com.hg.budget.core.client.IdGenerator;
 import com.hg.budget.core.dto.Page;
 import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.category.Category;
-import com.hg.budget.domain.category.port.specification.SpendSpecification;
+import com.hg.budget.domain.spend.port.specification.SpendSpecification;
 import com.hg.budget.domain.spend.port.SpendRepository;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
