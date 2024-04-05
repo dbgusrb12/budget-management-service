@@ -24,13 +24,10 @@ public class BudgetEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CATEGORY_ID")
     private CategoryEntity category;
-
     private Long amount;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CREATED_USER_ID")
     private AccountEntity createdUser;
-
     private LocalDateTime createdDateTime;
     private LocalDateTime updatedDateTime;
 
