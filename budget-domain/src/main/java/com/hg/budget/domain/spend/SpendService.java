@@ -4,8 +4,8 @@ import com.hg.budget.core.client.IdGenerator;
 import com.hg.budget.core.dto.Page;
 import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.category.Category;
-import com.hg.budget.domain.spend.port.specification.SpendSpecification;
 import com.hg.budget.domain.spend.port.SpendRepository;
+import com.hg.budget.domain.spend.port.specification.SpendSpecification;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -47,6 +47,16 @@ public class SpendService {
         final Spend updated = spend.update(updateSpend);
         spendRepository.save(updated);
         return updated;
+    }
+
+    @Transactional
+    public Spend delete(Long id) {
+        final Spend spend = findSpend(id);
+        if (spend.notExist()) {
+            return spend;
+        }
+        spendRepository.delete(spend);
+        return spend;
     }
 
     public Spend findSpend(Long id) {

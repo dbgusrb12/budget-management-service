@@ -1,15 +1,15 @@
 package com.hg.budget.domain.spend.port;
 
 import com.hg.budget.core.dto.Page;
-import com.hg.budget.domain.spend.port.specification.SpendSpecification;
-import com.hg.budget.domain.spend.Spend;
-import com.hg.budget.domain.persistence.spend.SpendEntityRepository;
 import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.category.Category;
 import com.hg.budget.domain.persistence.account.AccountEntity;
 import com.hg.budget.domain.persistence.account.AccountEntityRepository;
 import com.hg.budget.domain.persistence.category.CategoryEntity;
 import com.hg.budget.domain.persistence.spend.SpendEntity;
+import com.hg.budget.domain.persistence.spend.SpendEntityRepository;
+import com.hg.budget.domain.spend.Spend;
+import com.hg.budget.domain.spend.port.specification.SpendSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -23,6 +23,11 @@ public class DefaultSpendRepository implements SpendRepository {
     @Override
     public void save(Spend spend) {
         spendEntityRepository.save(toEntity(spend));
+    }
+
+    @Override
+    public void delete(Spend spend) {
+        spendEntityRepository.deleteById(spend.getId());
     }
 
     @Override
