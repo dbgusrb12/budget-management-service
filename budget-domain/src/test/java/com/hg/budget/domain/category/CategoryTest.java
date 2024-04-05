@@ -58,4 +58,17 @@ class CategoryTest {
         // then
         assertThat(exist).isTrue();
     }
+
+    @Test
+    @DisplayName("notExist 메서드는 id 가 없다면 true를 반환한다.")
+    void notExistTest() {
+        // given
+        final var category = Category.ofNotExist();
+
+        // when
+        final var notExist = category.notExist();
+
+        // then
+        assertThat(notExist).isTrue();
+    }
 }

@@ -31,6 +31,10 @@ public class Category {
         return id != null;
     }
 
+    public boolean notExist() {
+        return !exist();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
