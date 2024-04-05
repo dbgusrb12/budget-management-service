@@ -54,8 +54,8 @@ public class SpendService {
     }
 
     public Page<Spend> findSpendList(
-        long page,
-        long size,
+        int page,
+        int size,
         LocalDateTime startSpentDateTime,
         LocalDateTime endSpentDateTime,
         Account account,

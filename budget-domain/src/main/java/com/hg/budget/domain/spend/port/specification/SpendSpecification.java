@@ -5,8 +5,8 @@ import com.hg.budget.domain.category.Category;
 import java.time.LocalDateTime;
 
 public record SpendSpecification(
-    long page,
-    long size,
+    int page,
+    int size,
     LocalDateTime startSpentDateTime,
     LocalDateTime endSpentDateTime,
     Account account,
