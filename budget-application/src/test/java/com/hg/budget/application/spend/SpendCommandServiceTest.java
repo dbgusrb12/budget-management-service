@@ -11,10 +11,8 @@ import com.hg.budget.domain.persistence.account.AccountEntityRepository;
 import com.hg.budget.domain.persistence.category.CategoryEntity;
 import com.hg.budget.domain.persistence.category.CategoryEntityRepository;
 import com.hg.budget.domain.persistence.spend.SpendEntityRepository;
-import com.hg.budget.domain.spend.Spend;
 import com.hg.budget.domain.spend.SpendService;
 import java.time.LocalDateTime;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -79,7 +77,7 @@ class SpendCommandServiceTest {
         testHelper.createCategory("식비");
 
         // when
-        ApplicationException applicationException = catchThrowableOfType(
+        final var applicationException = catchThrowableOfType(
             () -> spendCommandService.createSpend(1000L, "메모", 1L, LocalDateTime.of(2024, 7, 12, 0, 0, 0), "hg-yu"),
             ApplicationException.class
         );
@@ -97,7 +95,7 @@ class SpendCommandServiceTest {
         testHelper.createAccount("hg-yu", "hyungyu");
 
         // when
-        ApplicationException applicationException = catchThrowableOfType(
+        final var applicationException = catchThrowableOfType(
             () -> spendCommandService.createSpend(1000L, "메모", 1L, LocalDateTime.of(2024, 7, 12, 0, 0, 0), "hg-yu"),
             ApplicationException.class
         );
@@ -159,7 +157,7 @@ class SpendCommandServiceTest {
         spendCommandService.delete(saved.id(), "hg-yu");
 
         // then
-        List<Spend> spendList = spendService.findSpendList(account);
+        final var spendList = spendService.findSpendList(account);
         assertThat(spendList.isEmpty()).isTrue();
     }
 

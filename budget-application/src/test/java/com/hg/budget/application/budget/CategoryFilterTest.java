@@ -63,7 +63,7 @@ class CategoryFilterTest {
         final var categoryFilter = new CategoryFilter(categories);
 
         // when
-        ApplicationException applicationException = catchThrowableOfType(
+        final var applicationException = catchThrowableOfType(
             () -> categoryFilter.get(6L),
             ApplicationException.class
         );
