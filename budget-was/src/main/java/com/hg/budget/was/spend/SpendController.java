@@ -1,16 +1,19 @@
 package com.hg.budget.was.spend;
 
-import com.hg.budget.application.category.dto.CategoryDto;
 import com.hg.budget.application.spend.SpendCommandService;
 import com.hg.budget.application.spend.SpendQueryService;
 import com.hg.budget.application.spend.dto.SpendDto;
+import com.hg.budget.application.spend.dto.SpendPage;
 import com.hg.budget.was.core.annotation.AccountId;
 import com.hg.budget.was.core.response.OkResponse;
 import com.hg.budget.was.spend.command.CreateSpendCommand;
 import com.hg.budget.was.spend.command.UpdateSpendCommand;
 import com.hg.budget.was.spend.response.MySpendResponse;
-import com.hg.budget.was.spend.response.SpendCategory;
+import com.hg.budget.was.spend.response.SpendPageResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -39,17 +43,7 @@ public class SpendController {
             accountId
         );
 
-        final CategoryDto category = spend.category();
-        return new OkResponse<>(
-            new MySpendResponse(
-                spend.id(),
-                new SpendCategory(category.id(), category.name()),
-                spend.amount(),
-                spend.memo(),
-                spend.spentDateTime(),
-                spend.excludeTotal()
-            )
-        );
+        return new OkResponse<>(MySpendResponse.from(spend));
     }
 
     @PutMapping("/{id}")
@@ -67,17 +61,7 @@ public class SpendController {
             accountId
         );
 
-        final CategoryDto category = spend.category();
-        return new OkResponse<>(
-            new MySpendResponse(
-                spend.id(),
-                new SpendCategory(category.id(), category.name()),
-                spend.amount(),
-                spend.memo(),
-                spend.spentDateTime(),
-                spend.excludeTotal()
-            )
-        );
+        return new OkResponse<>(MySpendResponse.from(spend));
     }
 
     @DeleteMapping("/{id}")
@@ -95,19 +79,24 @@ public class SpendController {
         spendCommandService.updateExcludeTotal(id, false, accountId);
     }
 
+    @GetMapping
+    public OkResponse<SpendPageResponse> pageSpend(
+        @AccountId String accountId,
+        @RequestParam(defaultValue = "1") @PositiveOrZero int page,
+        @RequestParam(defaultValue = "5") @Positive int size,
+        @RequestParam LocalDateTime startDateTime,
+        @RequestParam LocalDateTime endDateTime,
+        @RequestParam(required = false) Long categoryId,
+        @RequestParam(required = false) Long minAmount,
+        @RequestParam(required = false) Long maxAmount
+    ) {
+        final SpendPage spendPage = spendQueryService.pageSpend(page, size, startDateTime, endDateTime, categoryId, minAmount, maxAmount, accountId);
+        return new OkResponse<>(SpendPageResponse.from(spendPage));
+    }
+
     @GetMapping("/{id}")
     public OkResponse<MySpendResponse> getSpend(@AccountId String accountId, @PathVariable Long id) {
         final SpendDto spend = spendQueryService.getSpend(id, accountId);
-        final CategoryDto category = spend.category();
-        return new OkResponse<>(
-            new MySpendResponse(
-                spend.id(),
-                new SpendCategory(category.id(), category.name()),
-                spend.amount(),
-                spend.memo(),
-                spend.spentDateTime(),
-                spend.excludeTotal()
-            )
-        );
+        return new OkResponse<>(MySpendResponse.from(spend));
     }
 }
