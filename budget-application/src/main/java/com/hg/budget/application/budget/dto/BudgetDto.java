@@ -18,7 +18,7 @@ public class BudgetDto {
     private final String createdDateTime;
     private final String updatedDateTime;
 
-    public static BudgetDto from(Budget budget, DateTimeHolder dateTimeHolder) {
+    public static BudgetDto of(Budget budget, DateTimeHolder dateTimeHolder) {
         final CategoryDto category = CategoryDto.from(budget.getCategory());
         final CreatedUser createdUser = CreatedUser.from(budget.getCreatedUser());
         return new BudgetDto(

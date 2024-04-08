@@ -30,7 +30,7 @@ public class SpendCommandService {
         final Account account = getAccount(accountId);
         final Category category = getCategory(categoryId);
         final Spend saved = spendService.createSpend(amount, memo, category, account, spentDateTime);
-        return SpendDto.from(saved, dateTimeHolder);
+        return SpendDto.of(saved, dateTimeHolder);
     }
 
     @Transactional
@@ -40,7 +40,7 @@ public class SpendCommandService {
         final Spend updated = spendService.update(id, amount, memo, category, spentDateTime);
         spendValidator.validateExist(updated);
         spendValidator.validateOwner(updated, account);
-        return SpendDto.from(updated, dateTimeHolder);
+        return SpendDto.of(updated, dateTimeHolder);
     }
 
     @Transactional
@@ -57,7 +57,7 @@ public class SpendCommandService {
         final Spend updated = spendService.updateExcludeTotal(id, excludeTotal);
         spendValidator.validateExist(updated);
         spendValidator.validateOwner(updated, account);
-        return SpendDto.from(updated, dateTimeHolder);
+        return SpendDto.of(updated, dateTimeHolder);
     }
 
     private Account getAccount(String accountId) {

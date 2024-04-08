@@ -31,7 +31,7 @@ public class BudgetQueryService {
             throw new ApplicationException(ApplicationCode.BAD_REQUEST, "유저가 존재하지 않습니다.");
         }
         return budgetService.findBudgets(account).stream()
-            .map(budget -> BudgetDto.from(budget, dateTimeHolder))
+            .map(budget -> BudgetDto.of(budget, dateTimeHolder))
             .toList();
     }
 

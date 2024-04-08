@@ -18,7 +18,7 @@ public class AccountDto {
     private final String signUpDateTime;
     private final String signInDateTime;
 
-    public static AccountDto from(Account account, DateTimeHolder dateTimeHolder) {
+    public static AccountDto of(Account account, DateTimeHolder dateTimeHolder) {
         return new AccountDto(
             account.getId(),
             account.getPassword(),
