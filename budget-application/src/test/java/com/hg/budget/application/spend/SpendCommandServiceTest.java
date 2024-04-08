@@ -1,7 +1,10 @@
 package com.hg.budget.application.spend;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowableOfType;
 
+import com.hg.budget.application.core.code.ApplicationCode;
+import com.hg.budget.application.core.exception.ApplicationException;
 import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.persistence.account.AccountEntity;
 import com.hg.budget.domain.persistence.account.AccountEntityRepository;
@@ -67,6 +70,42 @@ class SpendCommandServiceTest {
         assertThat(spend.spentDateTime()).isEqualTo("2024-07-12T00:00");
         assertThat(spend.spentUser().nickname()).isEqualTo("hyungyu");
         assertThat(spend.excludeTotal()).isFalse();
+    }
+
+    @Test
+    @DisplayName("지출을 등록 할 때 회원이 없다면 에러가 발생한다.")
+    void createSpendTest_notExistAccount() {
+        // given
+        testHelper.createCategory("식비");
+
+        // when
+        ApplicationException applicationException = catchThrowableOfType(
+            () -> spendCommandService.createSpend(1000L, "메모", 1L, LocalDateTime.of(2024, 7, 12, 0, 0, 0), "hg-yu"),
+            ApplicationException.class
+        );
+
+        // then
+        assertThat(applicationException.getApplicationCode()).isEqualTo(ApplicationCode.BAD_REQUEST);
+        assertThat(applicationException.getLogMessage()).isEqualTo("유저가 존재하지 않습니다.");
+        assertThat(applicationException.getMessage()).isEqualTo("잘못된 요청입니다.");
+    }
+
+    @Test
+    @DisplayName("지출을 등록 할 때 회원이 없다면 에러가 발생한다.")
+    void createSpendTest_notExistCategory() {
+        // given
+        testHelper.createAccount("hg-yu", "hyungyu");
+
+        // when
+        ApplicationException applicationException = catchThrowableOfType(
+            () -> spendCommandService.createSpend(1000L, "메모", 1L, LocalDateTime.of(2024, 7, 12, 0, 0, 0), "hg-yu"),
+            ApplicationException.class
+        );
+
+        // then
+        assertThat(applicationException.getApplicationCode()).isEqualTo(ApplicationCode.BAD_REQUEST);
+        assertThat(applicationException.getLogMessage()).isEqualTo("카테고리가 존재하지 않습니다.");
+        assertThat(applicationException.getMessage()).isEqualTo("잘못된 요청입니다.");
     }
 
     @Test

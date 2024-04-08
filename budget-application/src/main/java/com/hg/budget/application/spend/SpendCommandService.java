@@ -1,11 +1,8 @@
 package com.hg.budget.application.spend;
 
-import com.hg.budget.application.category.dto.CategoryDto;
 import com.hg.budget.application.core.code.ApplicationCode;
 import com.hg.budget.application.core.exception.ApplicationException;
 import com.hg.budget.application.spend.dto.SpendDto;
-import com.hg.budget.application.spend.dto.SpentUser;
-import com.hg.budget.core.client.DateTimeHolder;
 import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.account.AccountService;
 import com.hg.budget.domain.category.Category;
@@ -24,14 +21,15 @@ public class SpendCommandService {
     private final SpendService spendService;
     private final CategoryService categoryService;
     private final AccountService accountService;
-    private final DateTimeHolder dateTimeHolder;
+    private final SpendValidator spendValidator;
+    private final SpendConverter spendConverter;
 
     @Transactional
     public SpendDto createSpend(long amount, String memo, Long categoryId, LocalDateTime spentDateTime, String accountId) {
         final Account account = getAccount(accountId);
         final Category category = getCategory(categoryId);
         final Spend saved = spendService.createSpend(amount, memo, category, account, spentDateTime);
-        return convertDto(saved);
+        return spendConverter.convertDto(saved);
     }
 
     @Transactional
@@ -39,38 +37,26 @@ public class SpendCommandService {
         final Account account = getAccount(accountId);
         final Category category = getCategory(categoryId);
         final Spend updated = spendService.update(id, amount, memo, category, spentDateTime);
-        if (updated.notExist()) {
-            throw new ApplicationException(ApplicationCode.BAD_REQUEST, "지출이 존재하지 않습니다.");
-        }
-        if (!account.equals(updated.getSpentUser())) {
-            throw new ApplicationException(ApplicationCode.BAD_REQUEST, "지출 설정자가 아닙니다.");
-        }
-        return convertDto(updated);
+        spendValidator.validateExist(updated);
+        spendValidator.validateOwner(updated, account);
+        return spendConverter.convertDto(updated);
     }
 
     @Transactional
     public void delete(Long id, String accountId) {
         final Account account = getAccount(accountId);
         final Spend deleted = spendService.delete(id);
-        if (deleted.notExist()) {
-            throw new ApplicationException(ApplicationCode.BAD_REQUEST, "지출이 존재하지 않습니다.");
-        }
-        if (!account.equals(deleted.getSpentUser())) {
-            throw new ApplicationException(ApplicationCode.BAD_REQUEST, "지출 설정자가 아닙니다.");
-        }
+        spendValidator.validateExist(deleted);
+        spendValidator.validateOwner(deleted, account);
     }
 
     @Transactional
     public SpendDto updateExcludeTotal(Long id, boolean excludeTotal, String accountId) {
         final Account account = getAccount(accountId);
         final Spend updated = spendService.updateExcludeTotal(id, excludeTotal);
-        if (updated.notExist()) {
-            throw new ApplicationException(ApplicationCode.BAD_REQUEST, "지출이 존재하지 않습니다.");
-        }
-        if (!account.equals(updated.getSpentUser())) {
-            throw new ApplicationException(ApplicationCode.BAD_REQUEST, "지출 설정자가 아닙니다.");
-        }
-        return convertDto(updated);
+        spendValidator.validateExist(updated);
+        spendValidator.validateOwner(updated, account);
+        return spendConverter.convertDto(updated);
     }
 
     private Account getAccount(String accountId) {
@@ -87,19 +73,5 @@ public class SpendCommandService {
             throw new ApplicationException(ApplicationCode.BAD_REQUEST, "카테고리가 존재하지 않습니다.");
         }
         return category;
-    }
-
-    private SpendDto convertDto(Spend spend) {
-        final Category spendCategory = spend.getCategory();
-        final Account spentUser = spend.getSpentUser();
-        return new SpendDto(
-            spend.getId(),
-            new CategoryDto(spendCategory.getId(), spendCategory.getName()),
-            spend.getAmount(),
-            spend.getMemo(),
-            new SpentUser(spentUser.getId(), spentUser.getNickname()),
-            dateTimeHolder.toString(spend.getSpentDateTime()),
-            spend.isExcludeTotal()
-        );
     }
 }
