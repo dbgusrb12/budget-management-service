@@ -3,6 +3,7 @@ package com.hg.budget.application.spend;
 import com.hg.budget.application.core.code.ApplicationCode;
 import com.hg.budget.application.core.exception.ApplicationException;
 import com.hg.budget.application.spend.dto.SpendDto;
+import com.hg.budget.application.spend.dto.SpendPage;
 import com.hg.budget.core.dto.Page;
 import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.account.AccountService;
@@ -33,11 +34,11 @@ public class SpendQueryService {
         return spendConverter.convertDto(spend);
     }
 
-    public Page<SpendDto> pageSpend(
+    public SpendPage pageSpend(
         int page,
         int size,
-        LocalDateTime startSpentDateTime,
-        LocalDateTime endSpentDateTime,
+        LocalDateTime startDateTime,
+        LocalDateTime endDateTime,
         Long categoryId,
         Long minAmount,
         Long maxAmount,
@@ -45,8 +46,12 @@ public class SpendQueryService {
     ) {
         final Account account = getAccount(accountId);
         final Category category = getCategory(categoryId);
-        Page<Spend> spendPage = spendService.pageSpendList(page, size, startSpentDateTime, endSpentDateTime, account, category, minAmount, maxAmount);
-        return spendPage.map(spendConverter::convertDto);
+        final Page<Spend> spendPage = spendService.pageSpendList(page, size, startDateTime, endDateTime, account, category, minAmount, maxAmount);
+        final SpendTotalAmountCalculator spendTotalAmountCalculator = new SpendTotalAmountCalculator(spendPage.getContent());
+        return new SpendPage(
+            spendTotalAmountCalculator.calculate(),
+            spendPage.map(spendConverter::convertDto)
+        );
     }
 
     private Account getAccount(String accountId) {
