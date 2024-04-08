@@ -10,20 +10,14 @@ public record TotalAmountResponse(long totalAmount, List<TotalAmountByCategoryRe
         final List<TotalAmountByCategoryResponse> totalAmountByCategories = totalAmount.totalAmountByCategory().stream()
             .map(TotalAmountByCategoryResponse::from)
             .toList();
-        return new TotalAmountResponse(
-            totalAmount.totalAmount(),
-            totalAmountByCategories
-        );
+        return new TotalAmountResponse(totalAmount.totalAmount(), totalAmountByCategories);
     }
 
     public record TotalAmountByCategoryResponse(SpendCategory category, long totalAmount) {
 
         public static TotalAmountByCategoryResponse from(TotalAmountByCategory totalAmountByCategory) {
             final SpendCategory category = SpendCategory.from(totalAmountByCategory.category());
-            return new TotalAmountByCategoryResponse(
-                category,
-                totalAmountByCategory.totalAmount()
-            );
+            return new TotalAmountByCategoryResponse(category, totalAmountByCategory.totalAmount());
         }
     }
 

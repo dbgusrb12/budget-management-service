@@ -9,9 +9,8 @@ public record SpendPageResponse(
 ) {
 
     public static SpendPageResponse from(SpendPage spendPage) {
-        return new SpendPageResponse(
-            TotalAmountResponse.from(spendPage.totalAmounts()),
-            spendPage.page().map(MySpendResponse::from)
-        );
+        final TotalAmountResponse totalAmount = TotalAmountResponse.from(spendPage.totalAmounts());
+        final Page<MySpendResponse> pageSpend = spendPage.page().map(MySpendResponse::from);
+        return new SpendPageResponse(totalAmount, pageSpend);
     }
 }
