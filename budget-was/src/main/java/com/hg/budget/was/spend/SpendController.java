@@ -2,6 +2,7 @@ package com.hg.budget.was.spend;
 
 import com.hg.budget.application.category.dto.CategoryDto;
 import com.hg.budget.application.spend.SpendCommandService;
+import com.hg.budget.application.spend.SpendQueryService;
 import com.hg.budget.application.spend.dto.SpendDto;
 import com.hg.budget.was.core.annotation.AccountId;
 import com.hg.budget.was.core.response.OkResponse;
@@ -12,6 +13,7 @@ import com.hg.budget.was.spend.response.SpendCategory;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SpendController {
 
     private final SpendCommandService spendCommandService;
+    private final SpendQueryService spendQueryService;
 
     @PostMapping
     public OkResponse<MySpendResponse> createSpend(@AccountId String accountId, @Valid @RequestBody CreateSpendCommand command) {
@@ -90,5 +93,21 @@ public class SpendController {
     @PutMapping("/{id}/include-total")
     public void includeTotal(@AccountId String accountId, @PathVariable Long id) {
         spendCommandService.updateExcludeTotal(id, false, accountId);
+    }
+
+    @GetMapping("/{id}")
+    public OkResponse<MySpendResponse> getSpend(@AccountId String accountId, @PathVariable Long id) {
+        final SpendDto spend = spendQueryService.getSpend(id, accountId);
+        final CategoryDto category = spend.category();
+        return new OkResponse<>(
+            new MySpendResponse(
+                spend.id(),
+                new SpendCategory(category.id(), category.name()),
+                spend.amount(),
+                spend.memo(),
+                spend.spentDateTime(),
+                spend.excludeTotal()
+            )
+        );
     }
 }

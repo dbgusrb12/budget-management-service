@@ -14,6 +14,11 @@ Authorization: Bearer {{accessToken}}
   client.global.set("spendId", response.body.result.id.toString());
 %}
 
+### 지출 상세
+GET {{host}}/api/v1/spend/{{spendId}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
 ### 지출 수정
 PUT {{host}}/api/v1/spend/{{spendId}}
 Content-Type: application/json
