@@ -34,7 +34,7 @@ public class SpendQueryService {
         final Spend spend = spendService.findSpend(id);
         spendValidator.validateExist(spend);
         spendValidator.validateOwner(spend, account);
-        return SpendDto.from(spend, dateTimeHolder);
+        return SpendDto.of(spend, dateTimeHolder);
     }
 
     public SpendPage pageSpend(
@@ -50,11 +50,8 @@ public class SpendQueryService {
         final Account account = getAccount(accountId);
         final Category category = getCategory(categoryId);
         final Page<Spend> spendPage = spendService.pageSpendList(page, size, startDateTime, endDateTime, account, category, minAmount, maxAmount);
-        final SpendTotalAmountCalculator spendTotalAmountCalculator = new SpendTotalAmountCalculator(spendPage.getContent());
-        return new SpendPage(
-            spendTotalAmountCalculator.calculate(),
-            spendPage.map(spend -> SpendDto.from(spend, dateTimeHolder))
-        );
+        final SpendAmountCalculator spendAmountCalculator = new SpendAmountCalculator(spendPage.getContent());
+        return SpendPage.of(spendAmountCalculator, spendPage.map(spend -> SpendDto.of(spend, dateTimeHolder)));
     }
 
     private Account getAccount(String accountId) {

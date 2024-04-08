@@ -19,7 +19,7 @@ public class SpendDto {
     private final String spentDateTime;
     private final boolean excludeTotal;
 
-    public static SpendDto from(Spend spend, DateTimeHolder dateTimeHolder) {
+    public static SpendDto of(Spend spend, DateTimeHolder dateTimeHolder) {
         final CategoryDto category = CategoryDto.from(spend.getCategory());
         final SpentUser spentUser = SpentUser.from(spend.getSpentUser());
         return new SpendDto(

@@ -1,24 +1,12 @@
 package com.hg.budget.was.spend.response;
 
 import com.hg.budget.application.spend.dto.TotalAmount;
-import com.hg.budget.application.spend.dto.TotalAmount.TotalAmountByCategory;
-import java.util.List;
 
-public record TotalAmountResponse(long totalAmount, List<TotalAmountByCategoryResponse> totalAmountByCategory) {
+public record TotalAmountResponse(SpendCategory category, long totalAmount) {
 
-    public static TotalAmountResponse from(TotalAmount totalAmount) {
-        final List<TotalAmountByCategoryResponse> totalAmountByCategories = totalAmount.totalAmountByCategory().stream()
-            .map(TotalAmountByCategoryResponse::from)
-            .toList();
-        return new TotalAmountResponse(totalAmount.totalAmount(), totalAmountByCategories);
-    }
-
-    public record TotalAmountByCategoryResponse(SpendCategory category, long totalAmount) {
-
-        public static TotalAmountByCategoryResponse from(TotalAmountByCategory totalAmountByCategory) {
-            final SpendCategory category = SpendCategory.from(totalAmountByCategory.category());
-            return new TotalAmountByCategoryResponse(category, totalAmountByCategory.totalAmount());
-        }
+    public static TotalAmountResponse from(TotalAmount totalAmountByCategory) {
+        final SpendCategory category = SpendCategory.from(totalAmountByCategory.category());
+        return new TotalAmountResponse(category, totalAmountByCategory.totalAmount());
     }
 
 }
