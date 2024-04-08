@@ -14,7 +14,7 @@ class AmountPercentAverageTest {
 
     @Test
     @DisplayName("AmountPercentAverage 로 각 카테고리 별 평균 퍼센트를 구할 수 있다.")
-    void sample() {
+    void getAveragesTest() {
         // given
         final var testHelper = new AmountPercentAverageTestHelper();
         final var 식비 = testHelper.createCategory("식비");
