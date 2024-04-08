@@ -10,10 +10,7 @@ import org.springframework.stereotype.Component;
 public class SpendValidator {
 
     public void validateExist(Spend spend) {
-        if (spend == null) {
-            throw new ApplicationException(ApplicationCode.BAD_REQUEST, "지출이 존재하지 않습니다.");
-        }
-        if (spend.notExist()) {
+        if (spend == null || spend.notExist()) {
             throw new ApplicationException(ApplicationCode.BAD_REQUEST, "지출이 존재하지 않습니다.");
         }
     }
