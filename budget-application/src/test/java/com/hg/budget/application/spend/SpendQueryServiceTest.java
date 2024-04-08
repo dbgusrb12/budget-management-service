@@ -84,14 +84,18 @@ class SpendQueryServiceTest {
         );
 
         // then
-        assertThat(spend.getTotalElements()).isEqualTo(1);
-        assertThat(spend.getContent().get(0).id()).isEqualTo(1L);
-        assertThat(spend.getContent().get(0).amount()).isEqualTo(1000L);
-        assertThat(spend.getContent().get(0).memo()).isEqualTo("메모");
-        assertThat(spend.getContent().get(0).category().name()).isEqualTo("식비");
-        assertThat(spend.getContent().get(0).spentDateTime()).isEqualTo("2024-07-12T00:00");
-        assertThat(spend.getContent().get(0).spentUser().nickname()).isEqualTo("hyungyu");
-        assertThat(spend.getContent().get(0).excludeTotal()).isFalse();
+        final var totalAmounts = spend.totalAmounts();
+        final var contents = spend.page().getContent();
+        assertThat(totalAmounts.totalAmount()).isEqualTo(1000);
+        assertThat(totalAmounts.totalAmountByCategory().get(0).category().name()).isEqualTo("식비");
+        assertThat(totalAmounts.totalAmountByCategory().get(0).totalAmount()).isEqualTo(1000L);
+        assertThat(contents.get(0).id()).isEqualTo(1L);
+        assertThat(contents.get(0).amount()).isEqualTo(1000L);
+        assertThat(contents.get(0).memo()).isEqualTo("메모");
+        assertThat(contents.get(0).category().name()).isEqualTo("식비");
+        assertThat(contents.get(0).spentDateTime()).isEqualTo("2024-07-12T00:00");
+        assertThat(contents.get(0).spentUser().nickname()).isEqualTo("hyungyu");
+        assertThat(contents.get(0).excludeTotal()).isFalse();
     }
 
     static class SpendQueryServiceTestHelper {
