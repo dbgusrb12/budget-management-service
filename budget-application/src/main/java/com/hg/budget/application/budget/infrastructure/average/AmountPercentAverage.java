@@ -44,8 +44,11 @@ public class AmountPercentAverage {
 
     private List<Average> calculateDiff(List<Average> averages) {
         List<Average> cloneAverage = new ArrayList<>(averages);
+        if (cloneAverage.isEmpty()) {
+            return cloneAverage;
+        }
         cloneAverage.sort(Comparator.comparing(average -> average.category().getId()));
-        final long diff = getDiff(averages);
+        final long diff = getDiff(cloneAverage);
         for (int i = 0; i < diff; i++) {
             final int index = i % cloneAverage.size();
             final Average average = cloneAverage.remove(index).plus(1);
