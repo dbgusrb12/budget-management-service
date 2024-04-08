@@ -1,14 +1,33 @@
 package com.hg.budget.application.budget.dto;
 
 import com.hg.budget.application.category.dto.CategoryDto;
+import com.hg.budget.core.client.DateTimeHolder;
+import com.hg.budget.domain.budget.Budget;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public record BudgetDto(
-    Long id,
-    CategoryDto category,
-    long amount,
-    CreatedUser createdUser,
-    String createdDateTime,
-    String updatedDateTime
-) {
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class BudgetDto {
 
+    private final Long id;
+    private final CategoryDto category;
+    private final long amount;
+    private final CreatedUser createdUser;
+    private final String createdDateTime;
+    private final String updatedDateTime;
+
+    public static BudgetDto from(Budget budget, DateTimeHolder dateTimeHolder) {
+        final CategoryDto category = CategoryDto.from(budget.getCategory());
+        final CreatedUser createdUser = CreatedUser.from(budget.getCreatedUser());
+        return new BudgetDto(
+            budget.getId(),
+            category,
+            budget.getAmount(),
+            createdUser,
+            dateTimeHolder.toString(budget.getCreatedDateTime()),
+            dateTimeHolder.toString(budget.getUpdatedDateTime())
+        );
+    }
 }

@@ -3,6 +3,7 @@ package com.hg.budget.application.spend;
 import com.hg.budget.application.core.code.ApplicationCode;
 import com.hg.budget.application.core.exception.ApplicationException;
 import com.hg.budget.application.spend.dto.SpendDto;
+import com.hg.budget.core.client.DateTimeHolder;
 import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.account.AccountService;
 import com.hg.budget.domain.category.Category;
@@ -22,14 +23,14 @@ public class SpendCommandService {
     private final CategoryService categoryService;
     private final AccountService accountService;
     private final SpendValidator spendValidator;
-    private final SpendConverter spendConverter;
+    private final DateTimeHolder dateTimeHolder;
 
     @Transactional
     public SpendDto createSpend(long amount, String memo, Long categoryId, LocalDateTime spentDateTime, String accountId) {
         final Account account = getAccount(accountId);
         final Category category = getCategory(categoryId);
         final Spend saved = spendService.createSpend(amount, memo, category, account, spentDateTime);
-        return spendConverter.convertDto(saved);
+        return SpendDto.from(saved, dateTimeHolder);
     }
 
     @Transactional
@@ -39,7 +40,7 @@ public class SpendCommandService {
         final Spend updated = spendService.update(id, amount, memo, category, spentDateTime);
         spendValidator.validateExist(updated);
         spendValidator.validateOwner(updated, account);
-        return spendConverter.convertDto(updated);
+        return SpendDto.from(updated, dateTimeHolder);
     }
 
     @Transactional
@@ -56,7 +57,7 @@ public class SpendCommandService {
         final Spend updated = spendService.updateExcludeTotal(id, excludeTotal);
         spendValidator.validateExist(updated);
         spendValidator.validateOwner(updated, account);
-        return spendConverter.convertDto(updated);
+        return SpendDto.from(updated, dateTimeHolder);
     }
 
     private Account getAccount(String accountId) {

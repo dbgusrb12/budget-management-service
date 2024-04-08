@@ -24,14 +24,6 @@ public class AccountQueryService {
             throw new ApplicationException(ApplicationCode.BAD_REQUEST, "유저가 존재하지 않습니다.");
         }
 
-        return new AccountDto(
-            account.getId(),
-            account.getPassword(),
-            account.getNickname(),
-            account.getStatus().name(),
-            account.getRole().getValue(),
-            dateTimeHolder.toString(account.getSignUpDateTime()),
-            dateTimeHolder.toString(account.getSignInDateTime())
-        );
+        return AccountDto.from(account, dateTimeHolder);
     }
 }

@@ -13,12 +13,12 @@ public record MyInfoResponse(
 
     public static MyInfoResponse from(AccountDto account) {
         return new MyInfoResponse(
-            account.id(),
-            account.nickname(),
-            account.status(),
-            account.role(),
-            account.signUpDateTime(),
-            account.signInDateTime()
+            account.getId(),
+            account.getNickname(),
+            account.getStatus(),
+            account.getRole(),
+            account.getSignUpDateTime(),
+            account.getSignInDateTime()
         );
     }
 }

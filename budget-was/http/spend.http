@@ -33,7 +33,7 @@ Authorization: Bearer {{accessToken}}
   "amount": 2000,
   "memo": "메모수정",
   "categoryId": 2,
-  "spentDateTime": "2024-07-11T00:00:00"
+  "spentDateTime": "2024-07-12T00:00:00"
 }
 
 ### 지출 합계 제외

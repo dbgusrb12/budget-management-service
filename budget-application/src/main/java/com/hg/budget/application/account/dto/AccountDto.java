@@ -1,13 +1,32 @@
 package com.hg.budget.application.account.dto;
 
-public record AccountDto(
-    String id,
-    String password,
-    String nickname,
-    String status,
-    String role,
-    String signUpDateTime,
-    String signInDateTime
-) {
+import com.hg.budget.core.client.DateTimeHolder;
+import com.hg.budget.domain.account.Account;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class AccountDto {
+
+    private final String id;
+    private final String password;
+    private final String nickname;
+    private final String status;
+    private final String role;
+    private final String signUpDateTime;
+    private final String signInDateTime;
+
+    public static AccountDto from(Account account, DateTimeHolder dateTimeHolder) {
+        return new AccountDto(
+            account.getId(),
+            account.getPassword(),
+            account.getNickname(),
+            account.getStatus().name(),
+            account.getRole().getValue(),
+            dateTimeHolder.toString(account.getSignUpDateTime()),
+            dateTimeHolder.toString(account.getSignInDateTime())
+        );
+    }
 }

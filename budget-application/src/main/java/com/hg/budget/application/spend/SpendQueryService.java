@@ -4,6 +4,7 @@ import com.hg.budget.application.core.code.ApplicationCode;
 import com.hg.budget.application.core.exception.ApplicationException;
 import com.hg.budget.application.spend.dto.SpendDto;
 import com.hg.budget.application.spend.dto.SpendPage;
+import com.hg.budget.core.client.DateTimeHolder;
 import com.hg.budget.core.dto.Page;
 import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.account.AccountService;
@@ -14,16 +15,18 @@ import com.hg.budget.domain.spend.SpendService;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class SpendQueryService {
 
     private final SpendService spendService;
     private final AccountService accountService;
     private final CategoryService categoryService;
     private final SpendValidator spendValidator;
-    private final SpendConverter spendConverter;
+    private final DateTimeHolder dateTimeHolder;
 
     public SpendDto getSpend(Long id, String accountId) {
         final Account account = getAccount(accountId);
@@ -31,7 +34,7 @@ public class SpendQueryService {
         final Spend spend = spendService.findSpend(id);
         spendValidator.validateExist(spend);
         spendValidator.validateOwner(spend, account);
-        return spendConverter.convertDto(spend);
+        return SpendDto.from(spend, dateTimeHolder);
     }
 
     public SpendPage pageSpend(
@@ -50,7 +53,7 @@ public class SpendQueryService {
         final SpendTotalAmountCalculator spendTotalAmountCalculator = new SpendTotalAmountCalculator(spendPage.getContent());
         return new SpendPage(
             spendTotalAmountCalculator.calculate(),
-            spendPage.map(spendConverter::convertDto)
+            spendPage.map(spend -> SpendDto.from(spend, dateTimeHolder))
         );
     }
 
