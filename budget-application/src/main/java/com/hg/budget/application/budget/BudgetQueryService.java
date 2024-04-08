@@ -2,9 +2,7 @@ package com.hg.budget.application.budget;
 
 import com.hg.budget.application.budget.client.BudgetRecommendStrategy;
 import com.hg.budget.application.budget.dto.BudgetDto;
-import com.hg.budget.application.budget.dto.CreatedUser;
 import com.hg.budget.application.budget.dto.RecommendBudgetDto;
-import com.hg.budget.application.category.dto.CategoryDto;
 import com.hg.budget.application.core.code.ApplicationCode;
 import com.hg.budget.application.core.exception.ApplicationException;
 import com.hg.budget.core.client.DateTimeHolder;
@@ -12,7 +10,6 @@ import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.account.AccountService;
 import com.hg.budget.domain.budget.Budget;
 import com.hg.budget.domain.budget.BudgetService;
-import com.hg.budget.domain.category.Category;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,28 +30,15 @@ public class BudgetQueryService {
         if (account.notExist()) {
             throw new ApplicationException(ApplicationCode.BAD_REQUEST, "유저가 존재하지 않습니다.");
         }
-        final CreatedUser createdUser = new CreatedUser(account.getId(), account.getNickname());
         return budgetService.findBudgets(account).stream()
-            .map(budget -> {
-                final Category category = budget.getCategory();
-                return new BudgetDto(
-                    budget.getId(),
-                    new CategoryDto(category.getId(), category.getName()),
-                    budget.getAmount(),
-                    createdUser,
-                    dateTimeHolder.toString(budget.getCreatedDateTime()),
-                    dateTimeHolder.toString(budget.getUpdatedDateTime())
-                );
-            })
+            .map(budget -> BudgetDto.from(budget, dateTimeHolder))
             .toList();
     }
 
     public List<RecommendBudgetDto> recommend(long totalAmount) {
         final List<Budget> budgets = budgetService.findBudgets();
         return budgetRecommendStrategy.recommend(totalAmount, budgets).stream()
-            .map(recommendBudget -> {
-                final Category category = recommendBudget.category();
-                return new RecommendBudgetDto(new CategoryDto(category.getId(), category.getName()), recommendBudget.amount());
-            }).toList();
+            .map(RecommendBudgetDto::from)
+            .toList();
     }
 }

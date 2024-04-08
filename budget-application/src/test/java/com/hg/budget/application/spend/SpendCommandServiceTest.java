@@ -62,12 +62,12 @@ class SpendCommandServiceTest {
         );
 
         // then
-        assertThat(spend.amount()).isEqualTo(1000L);
-        assertThat(spend.memo()).isEqualTo("메모");
-        assertThat(spend.category().name()).isEqualTo("식비");
-        assertThat(spend.spentDateTime()).isEqualTo("2024-07-12T00:00");
-        assertThat(spend.spentUser().nickname()).isEqualTo("hyungyu");
-        assertThat(spend.excludeTotal()).isFalse();
+        assertThat(spend.getAmount()).isEqualTo(1000L);
+        assertThat(spend.getMemo()).isEqualTo("메모");
+        assertThat(spend.getCategory().getName()).isEqualTo("식비");
+        assertThat(spend.getSpentDateTime()).isEqualTo("2024-07-12T00:00");
+        assertThat(spend.getSpentUser().getNickname()).isEqualTo("hyungyu");
+        assertThat(spend.isExcludeTotal()).isFalse();
     }
 
     @Test
@@ -122,7 +122,7 @@ class SpendCommandServiceTest {
 
         // when
         final var updated = spendCommandService.update(
-            saved.id(),
+            saved.getId(),
             2000L,
             "수정된메모",
             1L,
@@ -131,12 +131,12 @@ class SpendCommandServiceTest {
         );
 
         // then
-        assertThat(updated.amount()).isEqualTo(2000L);
-        assertThat(updated.memo()).isEqualTo("수정된메모");
-        assertThat(updated.category().name()).isEqualTo("식비");
-        assertThat(updated.spentDateTime()).isEqualTo("2025-07-12T00:00");
-        assertThat(updated.spentUser().nickname()).isEqualTo("hyungyu");
-        assertThat(updated.excludeTotal()).isFalse();
+        assertThat(updated.getAmount()).isEqualTo(2000L);
+        assertThat(updated.getMemo()).isEqualTo("수정된메모");
+        assertThat(updated.getCategory().getName()).isEqualTo("식비");
+        assertThat(updated.getSpentDateTime()).isEqualTo("2025-07-12T00:00");
+        assertThat(updated.getSpentUser().getNickname()).isEqualTo("hyungyu");
+        assertThat(updated.isExcludeTotal()).isFalse();
     }
 
     @Test
@@ -154,7 +154,7 @@ class SpendCommandServiceTest {
         );
 
         // when
-        spendCommandService.delete(saved.id(), "hg-yu");
+        spendCommandService.delete(saved.getId(), "hg-yu");
 
         // then
         final var spendList = spendService.findSpendList(account);
@@ -176,10 +176,10 @@ class SpendCommandServiceTest {
         );
 
         // when
-        final var updated = spendCommandService.updateExcludeTotal(saved.id(), true, "hg-yu");
+        final var updated = spendCommandService.updateExcludeTotal(saved.getId(), true, "hg-yu");
 
         // then
-        assertThat(updated.excludeTotal()).isTrue();
+        assertThat(updated.isExcludeTotal()).isTrue();
     }
 
     static class SpendCommandServiceTestHelper {

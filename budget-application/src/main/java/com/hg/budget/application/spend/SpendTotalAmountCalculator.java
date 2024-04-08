@@ -47,7 +47,7 @@ public class SpendTotalAmountCalculator {
         return totalAmountByCategory.entrySet().stream()
             .map(totalAmount -> {
                 final Category category = totalAmount.getKey();
-                return new TotalAmountByCategory(new CategoryDto(category.getId(), category.getName()), totalAmount.getValue());
+                return new TotalAmountByCategory(CategoryDto.from(category), totalAmount.getValue());
             }).toList();
     }
 }
