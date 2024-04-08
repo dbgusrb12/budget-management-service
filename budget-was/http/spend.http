@@ -1,0 +1,43 @@
+### 지출 생성
+POST {{host}}/api/v1/spend
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "amount": 1000,
+  "memo": "메모",
+  "categoryId": 1,
+  "spentDateTime": "2024-07-12T00:00:00"
+}
+
+> {%
+  client.global.set("spendId", response.body.result.id.toString());
+%}
+
+### 지출 수정
+PUT {{host}}/api/v1/spend/{{spendId}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "amount": 2000,
+  "memo": "메모수정",
+  "categoryId": 2,
+  "spentDateTime": "2024-07-11T00:00:00"
+}
+
+### 지출 합계 제외
+PUT {{host}}/api/v1/spend/{{spendId}}/exclude-total
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+### 지출 합계 포함
+PUT {{host}}/api/v1/spend/{{spendId}}/include-total
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+### 지출 삭제
+DELETE {{host}}/api/v1/spend/{{spendId}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
