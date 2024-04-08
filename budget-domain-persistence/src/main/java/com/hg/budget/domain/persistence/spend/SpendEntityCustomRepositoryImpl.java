@@ -88,8 +88,7 @@ public class SpendEntityCustomRepositoryImpl implements SpendEntityCustomReposit
             .join(spendEntity.category, categoryEntity)
             .join(spendEntity.spentUser, accountEntity)
             .where(
-                spendEntity.spentDateTime.after(startSpentDateTime),
-                spendEntity.spentDateTime.before(endSpentDateTime),
+                spendEntity.spentDateTime.between(startSpentDateTime, endSpentDateTime),
                 spendEntity.spentUser.accountId.eq(account.getAccountId()),
 
                 equalsCategoryIfPresent(category),
