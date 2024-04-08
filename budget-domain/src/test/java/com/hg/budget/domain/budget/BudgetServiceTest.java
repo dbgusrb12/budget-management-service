@@ -9,7 +9,6 @@ import com.hg.budget.domain.mock.MockBudgetRepository;
 import com.hg.budget.domain.mock.MockDateTimeHolder;
 import com.hg.budget.domain.mock.MockIdGenerator;
 import java.time.LocalDateTime;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,7 +55,7 @@ class BudgetServiceTest {
         budgetService.createBudget(1000, category, account);
 
         // when
-        IllegalArgumentException exception = catchThrowableOfType(
+        final var exception = catchThrowableOfType(
             () -> budgetService.createBudget(1000, category, account),
             IllegalArgumentException.class
         );
@@ -148,7 +147,7 @@ class BudgetServiceTest {
         budgetService.createBudget(2000, category2, account);
 
         // when
-        List<Budget> budgets = budgetService.findBudgets(account);
+        final var budgets = budgetService.findBudgets(account);
 
         // then
         assertThat(budgets.size()).isEqualTo(2);
@@ -173,7 +172,7 @@ class BudgetServiceTest {
         budgetService.createBudget(2000, category2, account2);
 
         // when
-        List<Budget> budgets = budgetService.findBudgets();
+        final var budgets = budgetService.findBudgets();
 
         // then
         assertThat(budgets.size()).isEqualTo(2);

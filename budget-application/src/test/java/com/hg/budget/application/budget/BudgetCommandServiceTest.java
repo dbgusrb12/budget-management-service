@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import com.hg.budget.application.budget.dto.CreateBudget;
 import com.hg.budget.application.core.code.ApplicationCode;
 import com.hg.budget.application.core.exception.ApplicationException;
-import com.hg.budget.domain.budget.Budget;
 import com.hg.budget.domain.budget.BudgetService;
 import com.hg.budget.domain.persistence.account.AccountEntity;
 import com.hg.budget.domain.persistence.account.AccountEntityRepository;
@@ -59,7 +58,7 @@ class BudgetCommandServiceTest {
         budgetCommandService.createBudgets(createBudgets, "hg-yu");
 
         // then
-        Budget saved = budgetService.findBudgets().get(0);
+        final var saved = budgetService.findBudgets().get(0);
         assertThat(saved.getAmount()).isEqualTo(1000);
         assertThat(saved.getCategory().getName()).isEqualTo("식비");
         assertThat(saved.getCreatedUser().getNickname()).isEqualTo("hyungyu");
@@ -73,7 +72,7 @@ class BudgetCommandServiceTest {
         final var createBudgets = List.of(new CreateBudget(1L, 1000L));
 
         // when
-        ApplicationException applicationException = catchThrowableOfType(
+        final var applicationException = catchThrowableOfType(
             () -> budgetCommandService.createBudgets(createBudgets, "hg-yu"),
             ApplicationException.class
         );
@@ -92,7 +91,7 @@ class BudgetCommandServiceTest {
         final var createBudgets = List.of(new CreateBudget(1L, 1000L));
 
         // when
-        ApplicationException applicationException = catchThrowableOfType(
+        final var applicationException = catchThrowableOfType(
             () -> budgetCommandService.createBudgets(createBudgets, "hg-yu"),
             ApplicationException.class
         );
@@ -110,13 +109,13 @@ class BudgetCommandServiceTest {
         testHelper.createAccount("hg-yu", "hyungyu");
         testHelper.createCategory("식비");
         budgetCommandService.createBudgets(List.of(new CreateBudget(1L, 1000L)), "hg-yu");
-        Budget budget = budgetService.findBudgets().get(0);
+        final var budget = budgetService.findBudgets().get(0);
 
         // when
         budgetCommandService.updateAmount(budget.getId(), 2000L, "hg-yu");
 
         // then
-        Budget updated = budgetService.findBudgets().get(0);
+        final var updated = budgetService.findBudgets().get(0);
         assertThat(updated.getAmount()).isEqualTo(2000);
     }
 
@@ -126,7 +125,7 @@ class BudgetCommandServiceTest {
         // given
 
         // when
-        ApplicationException applicationException = catchThrowableOfType(
+        final var applicationException = catchThrowableOfType(
             () -> budgetCommandService.updateAmount(1L, 2000L, "hg-yu"),
             ApplicationException.class
         );
@@ -144,10 +143,10 @@ class BudgetCommandServiceTest {
         testHelper.createAccount("hg-yu", "hyungyu");
         testHelper.createCategory("식비");
         budgetCommandService.createBudgets(List.of(new CreateBudget(1L, 1000L)), "hg-yu");
-        Budget budget = budgetService.findBudgets().get(0);
+        final var budget = budgetService.findBudgets().get(0);
 
         // when
-        ApplicationException applicationException = catchThrowableOfType(
+        final var applicationException = catchThrowableOfType(
             () -> budgetCommandService.updateAmount(budget.getId(), 2000L, "hg-yu2"),
             ApplicationException.class
         );
