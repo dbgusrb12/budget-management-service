@@ -2,13 +2,11 @@ package com.hg.budget.domain.spend;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.hg.budget.core.dto.Page;
 import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.category.Category;
 import com.hg.budget.domain.mock.MockIdGenerator;
 import com.hg.budget.domain.mock.MockSpendRepository;
 import java.time.LocalDateTime;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -134,7 +132,7 @@ class SpendServiceTest {
 
         // when
         spendService.delete(1L);
-        final Spend spend = spendService.findSpend(1L);
+        final var spend = spendService.findSpend(1L);
 
         // then
         assertThat(spend.notExist()).isTrue();
@@ -145,7 +143,7 @@ class SpendServiceTest {
     void deleteTest_NotExist() {
         // given
         // when
-        final Spend deleted = spendService.delete(1L);
+        final var deleted = spendService.delete(1L);
 
         // then
         assertThat(deleted.notExist()).isTrue();
@@ -197,7 +195,7 @@ class SpendServiceTest {
         spendService.createSpend(2000L, "메모2", category, account, LocalDateTime.of(2024, 7, 12, 0, 0, 0));
 
         // when
-        List<Spend> spendList = spendService.findSpendList(account);
+        final var spendList = spendService.findSpendList(account);
 
         // then
         assertThat(spendList.size()).isEqualTo(2);
@@ -219,7 +217,7 @@ class SpendServiceTest {
         spendService.createSpend(2000L, "메모2", category, account, LocalDateTime.of(2024, 7, 12, 0, 0, 0));
 
         // when
-        Page<Spend> spendList = spendService.pageSpendList(
+        final var spendList = spendService.pageSpendList(
             1,
             5,
             LocalDateTime.of(2024, 7, 11, 0, 0, 0),
