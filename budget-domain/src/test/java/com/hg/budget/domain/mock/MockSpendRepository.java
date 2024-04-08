@@ -45,7 +45,11 @@ public class MockSpendRepository implements SpendRepository {
         final List<Spend> spends = spendList.stream()
             .filter(spend ->
                 spend.getSpentDateTime().isAfter(specification.startSpentDateTime())
-                    && spend.getSpentDateTime().isBefore(specification.endSpentDateTime())
+                    || spend.getSpentDateTime().isEqual(specification.startSpentDateTime())
+            )
+            .filter(spend ->
+                spend.getSpentDateTime().isBefore(specification.endSpentDateTime())
+                    || spend.getSpentDateTime().isEqual(specification.endSpentDateTime())
             )
             .filter(spend -> spend.getSpentUser().equals(specification.account()))
             .filter(spend -> {

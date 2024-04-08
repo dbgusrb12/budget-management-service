@@ -51,7 +51,9 @@ public class DefaultSpendRepository implements SpendRepository {
         final Account account = specification.account();
         final AccountEntity accountEntity = accountEntityRepository.findByAccountId(account.getId());
         final Category category = specification.category();
-        final CategoryEntity categoryEntity = category == null ? null : CategoryEntity.of(category.getId(), category.getName());
+        final CategoryEntity categoryEntity = category == null || category.notExist()
+            ? null
+            : CategoryEntity.of(category.getId(), category.getName());
         org.springframework.data.domain.Page<SpendEntity> page = spendEntityRepository.findAll(
             specification.page(),
             specification.size(),
