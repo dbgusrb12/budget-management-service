@@ -3,6 +3,7 @@ package com.hg.budget.application.budget.infrastructure.average;
 import com.hg.budget.domain.budget.Budget;
 import com.hg.budget.domain.category.Category;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -10,6 +11,8 @@ import java.util.stream.Collectors;
 
 public class AmountPercentAverage {
 
+    private final static int HUNDRED_PERCENT = 100;
+    private final static int ZERO_PERCENT = 0;
     private final long totalAmount;
     private final Map<Category, Long> totalAmountByCategory;
 
@@ -28,20 +31,47 @@ public class AmountPercentAverage {
     }
 
     public List<Average> getAverages() {
+        final List<Average> averages = convertAverage();
+        // 오차 보정
+        return calculateDiff(averages);
+    }
+
+    private List<Average> convertAverage() {
         return totalAmountByCategory.entrySet().stream()
             .map(this::convertAverage)
-            .peek(System.out::println)
-            .toList();
+            .collect(Collectors.toList());
+    }
+
+    private List<Average> calculateDiff(List<Average> averages) {
+        List<Average> cloneAverage = new ArrayList<>(averages);
+        cloneAverage.sort(Comparator.comparing(average -> average.category().getId()));
+        final long diff = getDiff(averages);
+        for (int i = 0; i < diff; i++) {
+            final int index = i % cloneAverage.size();
+            final Average average = cloneAverage.remove(index).plus(1);
+            cloneAverage.add(index, average);
+        }
+        cloneAverage.forEach(System.out::println);
+        return cloneAverage;
+    }
+
+    private long getDiff(List<Average> averages) {
+        final long sumPercentage = averages.stream()
+            .mapToLong(Average::percent)
+            .sum();
+        return HUNDRED_PERCENT - sumPercentage;
     }
 
     private Average convertAverage(Entry<Category, Long> amountPercentAverage) {
-        return new Average(amountPercentAverage.getKey(), findPercent(amountPercentAverage.getValue()));
+        final Category category = amountPercentAverage.getKey();
+        final long percent = findPercent(amountPercentAverage.getValue());
+        return new Average(category, percent);
     }
 
-    private double findPercent(long amount) {
-        if (totalAmount == 0) {
-            return 0;
+    private long findPercent(long amount) {
+        if (totalAmount == ZERO_PERCENT) {
+            return ZERO_PERCENT;
         }
-        return amount / (double) totalAmount * 100;
+        return HUNDRED_PERCENT * amount / totalAmount;
     }
 }

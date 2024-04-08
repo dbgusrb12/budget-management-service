@@ -7,6 +7,8 @@ import java.util.List;
 
 public class AverageCalculator {
 
+    private final static int HUNDRED_PERCENT = 100;
+    private final static int ZERO_PERCENT = 0;
     private static final long MIN_PERCENT = 10;
     private final long totalAmount;
     private final List<Average> averages;
@@ -22,7 +24,6 @@ public class AverageCalculator {
         final List<Average> averages = mergeAverage();
         return averages.stream()
             .map(average -> {
-                // FIXME 반올림 시 1 오차 나는 부분 수정 필요
                 final long amount = findAmount(average.percent());
                 return new RecommendBudget(average.category(), amount);
             })
@@ -34,19 +35,19 @@ public class AverageCalculator {
         final List<Average> averages = getNotEtcAverage();
 
         List<Average> totalAverages = new ArrayList<>(averages);
-        if (etcAverage.percent() > 0) {
+        if (etcAverage.percent() > ZERO_PERCENT) {
             totalAverages.add(etcAverage);
         }
         return totalAverages;
     }
 
-    private long findAmount(double percent) {
-        return Math.round(totalAmount * percent / 100);
+    private long findAmount(long percent) {
+        return totalAmount / HUNDRED_PERCENT * percent;
     }
 
     private Average getTotalEtcAverage() {
         final Average etcAverage = getEtcAverage();
-        final double etcPercent = getTotalEtcPercent();
+        final long etcPercent = getTotalEtcPercent();
         return etcAverage.plus(etcPercent);
     }
 
@@ -64,11 +65,11 @@ public class AverageCalculator {
             .orElse(new Average(etcCategory, 0));
     }
 
-    private double getTotalEtcPercent() {
+    private long getTotalEtcPercent() {
         return this.averages.stream()
             .filter(average -> !etcCategory.equals(average.category()))
             .filter(average -> average.percent() < MIN_PERCENT)
-            .mapToDouble(Average::percent)
+            .mapToLong(Average::percent)
             .sum();
     }
 }
