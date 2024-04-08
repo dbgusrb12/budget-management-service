@@ -51,7 +51,6 @@ public class AmountPercentAverage {
             final Average average = cloneAverage.remove(index).plus(1);
             cloneAverage.add(index, average);
         }
-        cloneAverage.forEach(System.out::println);
         return cloneAverage;
     }
 
