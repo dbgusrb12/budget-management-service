@@ -38,15 +38,6 @@ public class AccountController {
     @GetMapping("/me")
     public OkResponse<MyInfoResponse> getMyInfo(@AccountId String id) {
         final AccountDto account = accountQueryService.getAccount(id);
-        return new OkResponse<>(
-            new MyInfoResponse(
-                account.id(),
-                account.nickname(),
-                account.status(),
-                account.role(),
-                account.signUpDateTime(),
-                account.signInDateTime()
-            )
-        );
+        return new OkResponse<>(MyInfoResponse.from(account));
     }
 }

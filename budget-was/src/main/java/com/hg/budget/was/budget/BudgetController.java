@@ -3,11 +3,9 @@ package com.hg.budget.was.budget;
 import com.hg.budget.application.budget.BudgetCommandService;
 import com.hg.budget.application.budget.BudgetQueryService;
 import com.hg.budget.application.budget.dto.CreateBudget;
-import com.hg.budget.application.category.dto.CategoryDto;
 import com.hg.budget.was.budget.command.CreateBudgetsCommand;
 import com.hg.budget.was.budget.command.RecommendCommand;
 import com.hg.budget.was.budget.command.UpdateAmountCommand;
-import com.hg.budget.was.budget.response.BudgetCategory;
 import com.hg.budget.was.budget.response.MyBudgetResponse;
 import com.hg.budget.was.budget.response.RecommendBudgetResponse;
 import com.hg.budget.was.core.annotation.AccountId;
@@ -48,16 +46,7 @@ public class BudgetController {
     @GetMapping("/me")
     public OkResponse<List<MyBudgetResponse>> getMyBudgets(@AccountId String accountId) {
         final List<MyBudgetResponse> budgets = budgetQueryService.getBudgets(accountId).stream()
-            .map(budget -> {
-                final CategoryDto category = budget.category();
-                return new MyBudgetResponse(
-                    budget.id(),
-                    new BudgetCategory(category.id(), category.name()),
-                    budget.amount(),
-                    budget.createdDateTime(),
-                    budget.updatedDateTime()
-                );
-            })
+            .map(MyBudgetResponse::from)
             .toList();
 
         return new OkResponse<>(budgets);
@@ -66,10 +55,7 @@ public class BudgetController {
     @PostMapping("/recommend")
     public OkResponse<List<RecommendBudgetResponse>> recommend(@RequestBody RecommendCommand command) {
         final List<RecommendBudgetResponse> recommendBudgets = budgetQueryService.recommend(command.totalAmount()).stream()
-            .map(recommendBudgetDto -> {
-                final CategoryDto category = recommendBudgetDto.category();
-                return new RecommendBudgetResponse(new BudgetCategory(category.id(), category.name()), recommendBudgetDto.amount());
-            })
+            .map(RecommendBudgetResponse::from)
             .toList();
         return new OkResponse<>(recommendBudgets);
     }

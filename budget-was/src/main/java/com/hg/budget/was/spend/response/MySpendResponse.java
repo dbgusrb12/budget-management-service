@@ -12,13 +12,7 @@ public record MySpendResponse(
 ) {
 
     public static MySpendResponse from(SpendDto spend) {
-        return new MySpendResponse(
-            spend.id(),
-            SpendCategory.from(spend.category()),
-            spend.amount(),
-            spend.memo(),
-            spend.spentDateTime(),
-            spend.excludeTotal()
-        );
+        final SpendCategory category = SpendCategory.from(spend.category());
+        return new MySpendResponse(spend.id(), category, spend.amount(), spend.memo(), spend.spentDateTime(), spend.excludeTotal());
     }
 }
