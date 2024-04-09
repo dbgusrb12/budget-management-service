@@ -11,13 +11,12 @@ public class OkResponse<T> {
     private final String name = ApplicationCode.SUCCESS.name();
     private final String code = ApplicationCode.SUCCESS.getCode();
     private final String message = ApplicationCode.SUCCESS.getMessage();
-    private final T result;
+    private T result;
 
     public OkResponse(T result) {
         this.result = result;
     }
 
     public OkResponse() {
-        this.result = null;
     }
 }
