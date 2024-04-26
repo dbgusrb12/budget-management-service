@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 
 public class AmountPercentAverage {
 
-    private final static int HUNDRED_PERCENT = 100;
-    private final static int ZERO_PERCENT = 0;
+    private static final int HUNDRED_PERCENT = 100;
+    private static final int ZERO_PERCENT = 0;
     private final long totalAmount;
     private final Map<Category, Long> totalAmountByCategory;
 
