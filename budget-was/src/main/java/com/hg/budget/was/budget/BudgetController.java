@@ -53,7 +53,7 @@ public class BudgetController {
     }
 
     @PostMapping("/recommend")
-    public OkResponse<List<RecommendBudgetResponse>> recommendBudget(@RequestBody RecommendCommand command) {
+    public OkResponse<List<RecommendBudgetResponse>> recommendBudget(@Valid @RequestBody RecommendCommand command) {
         final List<RecommendBudgetResponse> recommendBudgets = budgetQueryService.recommend(command.totalAmount()).stream()
             .map(RecommendBudgetResponse::from)
             .toList();
