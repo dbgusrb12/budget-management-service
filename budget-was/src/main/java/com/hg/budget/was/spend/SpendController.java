@@ -46,6 +46,27 @@ public class SpendController {
         return new OkResponse<>(MySpendResponse.from(spend));
     }
 
+    @GetMapping
+    public OkResponse<SpendPageResponse> pageSpend(
+        @AccountId String accountId,
+        @RequestParam(defaultValue = "1") @PositiveOrZero int page,
+        @RequestParam(defaultValue = "5") @Positive int size,
+        @RequestParam LocalDateTime startDateTime,
+        @RequestParam LocalDateTime endDateTime,
+        @RequestParam(required = false) Long categoryId,
+        @RequestParam(required = false) Long minAmount,
+        @RequestParam(required = false) Long maxAmount
+    ) {
+        final SpendPage spendPage = spendQueryService.pageSpend(page, size, startDateTime, endDateTime, categoryId, minAmount, maxAmount, accountId);
+        return new OkResponse<>(SpendPageResponse.from(spendPage));
+    }
+
+    @GetMapping("/{id}")
+    public OkResponse<MySpendResponse> getSpend(@AccountId String accountId, @PathVariable Long id) {
+        final SpendDto spend = spendQueryService.getSpend(id, accountId);
+        return new OkResponse<>(MySpendResponse.from(spend));
+    }
+
     @PutMapping("/{id}")
     public OkResponse<MySpendResponse> updateSpend(
         @AccountId String accountId,
@@ -77,26 +98,5 @@ public class SpendController {
     @PutMapping("/{id}/include-total")
     public void includeTotal(@AccountId String accountId, @PathVariable Long id) {
         spendCommandService.updateExcludeTotal(id, false, accountId);
-    }
-
-    @GetMapping
-    public OkResponse<SpendPageResponse> pageSpend(
-        @AccountId String accountId,
-        @RequestParam(defaultValue = "1") @PositiveOrZero int page,
-        @RequestParam(defaultValue = "5") @Positive int size,
-        @RequestParam LocalDateTime startDateTime,
-        @RequestParam LocalDateTime endDateTime,
-        @RequestParam(required = false) Long categoryId,
-        @RequestParam(required = false) Long minAmount,
-        @RequestParam(required = false) Long maxAmount
-    ) {
-        final SpendPage spendPage = spendQueryService.pageSpend(page, size, startDateTime, endDateTime, categoryId, minAmount, maxAmount, accountId);
-        return new OkResponse<>(SpendPageResponse.from(spendPage));
-    }
-
-    @GetMapping("/{id}")
-    public OkResponse<MySpendResponse> getSpend(@AccountId String accountId, @PathVariable Long id) {
-        final SpendDto spend = spendQueryService.getSpend(id, accountId);
-        return new OkResponse<>(MySpendResponse.from(spend));
     }
 }
