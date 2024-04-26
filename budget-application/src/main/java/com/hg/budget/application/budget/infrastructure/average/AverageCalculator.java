@@ -7,8 +7,8 @@ import java.util.List;
 
 public class AverageCalculator {
 
-    private final static int HUNDRED_PERCENT = 100;
-    private final static int ZERO_PERCENT = 0;
+    private static final int HUNDRED_PERCENT = 100;
+    private static final int ZERO_PERCENT = 0;
     private static final long MIN_PERCENT = 10;
     private final long totalAmount;
     private final List<Average> averages;
