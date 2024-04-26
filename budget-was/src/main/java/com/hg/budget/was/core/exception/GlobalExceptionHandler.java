@@ -3,10 +3,14 @@ package com.hg.budget.was.core.exception;
 import com.hg.budget.application.core.code.ApplicationCode;
 import com.hg.budget.application.core.exception.ApplicationException;
 import com.hg.budget.was.core.response.ErrorResponse;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -66,10 +70,23 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException exception) {
-        final String message = exception.getBindingResult().getFieldErrors().stream()
-            .map(f -> f.getField() + ":" + f.getDefaultMessage())
-            .collect(Collectors.joining(", "));
-        log.error("error message : {}\n{}", exception.getMessage(), message);
+        final List<ValidationError> validationErrors = exception.getBindingResult().getFieldErrors().stream()
+            .map(ValidationError::from)
+            .toList();
+        log.error("error: {} message : {}\nfield: {}", exception.getClass().getSimpleName(), exception.getMessage(), validationErrors);
+        return new ErrorResponse(ApplicationCode.BAD_REQUEST);
+    }
+
+    /**
+     * Controller 에서 @Validated 어노테이션 검증 시 발생하는 에러
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse constraintViolationExceptionHandler(ConstraintViolationException exception) {
+        final List<ValidationError> validationErrors = exception.getConstraintViolations().stream()
+            .map(ValidationError::from)
+            .toList();
+        log.error("error: {} message : {}\nfield: {}", exception.getClass().getSimpleName(), exception.getMessage(), validationErrors);
         return new ErrorResponse(ApplicationCode.BAD_REQUEST);
     }
 
@@ -83,7 +100,7 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(ApplicationCode.UNKNOWN_SERVER_ERROR);
     }
 
-    public void printErrorLog(Exception exception) {
+    private void printErrorLog(Exception exception) {
         final String message = Arrays.stream(exception.getStackTrace())
             .filter(stackTraceElement -> stackTraceElement.getClassName().startsWith("com.hg.budget"))
             .map(stackTraceElement -> "\tat " + stackTraceElement)
@@ -92,6 +109,17 @@ public class GlobalExceptionHandler {
             log.error("not inner package exception", exception);
             return;
         }
-        log.error("error message : {}\n{}", exception.getMessage(), message);
+        log.error("error: {} message : {}\nstacktrace: {}", exception.getClass().getSimpleName(), exception.getMessage(), message);
+    }
+
+    private record ValidationError(String field, String message) {
+
+        private static ValidationError from(ConstraintViolation<?> constraintViolation) {
+            return new ValidationError(constraintViolation.getPropertyPath().toString(), constraintViolation.getMessage());
+        }
+
+        private static ValidationError from(FieldError fieldError) {
+            return new ValidationError(fieldError.getField(), fieldError.getDefaultMessage());
+        }
     }
 }
