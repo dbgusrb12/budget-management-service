@@ -9,6 +9,7 @@ import com.hg.budget.was.core.response.OkResponse;
 import com.hg.budget.was.spend.command.CreateSpendCommand;
 import com.hg.budget.was.spend.command.UpdateSpendCommand;
 import com.hg.budget.was.spend.response.MySpendResponse;
+import com.hg.budget.was.spend.response.RecommendSpendResponse;
 import com.hg.budget.was.spend.response.SpendPageResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
@@ -100,5 +101,11 @@ public class SpendController {
     @PutMapping("/{id}/include-total")
     public void includeTotal(@AccountId String accountId, @PathVariable Long id) {
         spendCommandService.updateExcludeTotal(id, false, accountId);
+    }
+
+    @GetMapping("/recommend")
+    public OkResponse<RecommendSpendResponse> recommendBudget(@AccountId String accountId) {
+        final RecommendSpendResponse response = RecommendSpendResponse.from(spendQueryService.recommendSpend(accountId));
+        return new OkResponse<>(response);
     }
 }
