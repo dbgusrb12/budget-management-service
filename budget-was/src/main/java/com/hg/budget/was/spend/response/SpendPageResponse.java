@@ -6,13 +6,13 @@ import java.util.List;
 
 public record SpendPageResponse(
     long totalAmount,
-    List<TotalAmountResponse> totalAmountByCategories,
+    List<AmountResponse> totalAmountByCategories,
     Page<MySpendResponse> page
 ) {
 
     public static SpendPageResponse from(SpendPage spendPage) {
-        final List<TotalAmountResponse> totalAmountResponses = spendPage.getTotalAmountByCategories().stream()
-            .map(TotalAmountResponse::from)
+        final List<AmountResponse> totalAmountResponses = spendPage.getTotalAmountByCategories().stream()
+            .map(AmountResponse::from)
             .toList();
         final Page<MySpendResponse> pageSpend = spendPage.getPage().map(MySpendResponse::from);
         return new SpendPageResponse(spendPage.getTotalAmount(), totalAmountResponses, pageSpend);

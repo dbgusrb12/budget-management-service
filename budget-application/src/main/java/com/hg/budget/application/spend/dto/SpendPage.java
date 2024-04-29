@@ -12,7 +12,7 @@ import lombok.Getter;
 public class SpendPage {
 
     private long totalAmount;
-    private List<TotalAmount> totalAmountByCategories;
+    private List<AmountDto> totalAmountByCategories;
     private Page<SpendDto> page;
 
     public static SpendPage of(SpendAmountCalculator spendAmountCalculator, Page<SpendDto> spendPage) {
