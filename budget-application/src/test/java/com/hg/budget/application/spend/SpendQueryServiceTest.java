@@ -87,7 +87,7 @@ class SpendQueryServiceTest {
         final var contents = spend.getPage().getContent();
         assertThat(spend.getTotalAmount()).isEqualTo(1000);
         assertThat(spend.getTotalAmountByCategories().get(0).category().getName()).isEqualTo("식비");
-        assertThat(spend.getTotalAmountByCategories().get(0).totalAmount()).isEqualTo(1000L);
+        assertThat(spend.getTotalAmountByCategories().get(0).amount()).isEqualTo(1000L);
         assertThat(contents.get(0).getId()).isEqualTo(1L);
         assertThat(contents.get(0).getAmount()).isEqualTo(1000L);
         assertThat(contents.get(0).getMemo()).isEqualTo("메모");

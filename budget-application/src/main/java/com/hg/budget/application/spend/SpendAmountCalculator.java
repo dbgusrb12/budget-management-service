@@ -1,7 +1,6 @@
 package com.hg.budget.application.spend;
 
-import com.hg.budget.application.category.dto.CategoryDto;
-import com.hg.budget.application.spend.dto.TotalAmount;
+import com.hg.budget.application.spend.dto.AmountDto;
 import com.hg.budget.domain.category.Category;
 import com.hg.budget.domain.spend.Spend;
 import java.util.ArrayList;
@@ -30,14 +29,14 @@ public class SpendAmountCalculator {
             .sum();
     }
 
-    public List<TotalAmount> getTotalAmountByCategory() {
+    public List<AmountDto> getTotalAmountByCategory() {
         final Map<Category, Long> totalAmountByCategory = this.spendList.stream()
             .collect(Collectors.groupingBy(
                 Spend::getCategory,
                 Collectors.mapping(Spend::getAmount, Collectors.summingLong(Long::longValue))
             ));
         return totalAmountByCategory.entrySet().stream()
-            .map(totalAmount -> new TotalAmount(CategoryDto.from(totalAmount.getKey()), totalAmount.getValue()))
+            .map(totalAmount -> AmountDto.of(totalAmount.getKey(), totalAmount.getValue()))
             .toList();
     }
 }
