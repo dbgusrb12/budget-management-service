@@ -3,7 +3,7 @@ package com.hg.budget.application.spend;
 import com.hg.budget.application.core.code.ApplicationCode;
 import com.hg.budget.application.core.exception.ApplicationException;
 import com.hg.budget.application.spend.client.SpendRecommendStrategy;
-import com.hg.budget.application.spend.dto.AmountDto;
+import com.hg.budget.application.spend.dto.RecommendDto;
 import com.hg.budget.application.spend.dto.SpendDto;
 import com.hg.budget.application.spend.dto.SpendPage;
 import com.hg.budget.core.client.DateTimeHolder;
@@ -61,12 +61,12 @@ public class SpendQueryService {
         return SpendPage.of(spendAmountCalculator, spendPage.map(spend -> SpendDto.of(spend, dateTimeHolder)));
     }
 
-    public List<AmountDto> recommendSpend(String accountId) {
+    public List<RecommendDto> recommendSpend(String accountId) {
         final Account account = getAccount(accountId);
         final List<Budget> budgets = budgetService.findBudgets(account);
         final List<Spend> spends = spendService.findSpendList(account);
         return spendRecommendStrategy.recommend(budgets, spends).stream()
-            .map(recommendSpend -> AmountDto.of(recommendSpend.category(), recommendSpend.amount(), recommendSpend.comment().getComment()))
+            .map(recommendSpend -> RecommendDto.of(recommendSpend.category(), recommendSpend.amount(), recommendSpend.comment().getComment()))
             .toList();
     }
 
