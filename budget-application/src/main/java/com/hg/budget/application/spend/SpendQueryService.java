@@ -66,7 +66,7 @@ public class SpendQueryService {
         final List<Budget> budgets = budgetService.findBudgets(account);
         final List<Spend> spends = spendService.findSpendList(account);
         return spendRecommendStrategy.recommend(budgets, spends).stream()
-            .map(recommendSpend -> AmountDto.of(recommendSpend.category(), recommendSpend.amount()))
+            .map(recommendSpend -> AmountDto.of(recommendSpend.category(), recommendSpend.amount(), recommendSpend.comment().getComment()))
             .toList();
     }
 
