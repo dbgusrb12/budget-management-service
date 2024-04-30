@@ -32,15 +32,27 @@ public class AverageSpendRecommend {
     public RecommendSpend recommendAmount() {
         if (isEmptyBudgetAmount()) {
             // 남은 예산이 없을 경우
-            return new RecommendSpend(category, getMinimumRecommendSpendAmount(), RecommendComment.DANGEROUS); // 예산 초과 문구 노출
+            final long recommendAmount = getMinimumRecommendSpendAmount();
+            return new RecommendSpend(category, round(recommendAmount), RecommendComment.DANGEROUS); // 예산 초과 문구 노출
         }
         if (isAffordBudgetAmount()) {
             // 하루 평균 지출 금액이 권장하는 지출 금액보다 적을 때
-            return new RecommendSpend(category, getSpentAmountOfDay(), RecommendComment.EXCELLENT); // 잘 아끼고 있을 때 문구 노출
+            final long recommendAmount = getSpentAmountOfDay();
+            return new RecommendSpend(category, round(recommendAmount), RecommendComment.EXCELLENT); // 잘 아끼고 있을 때 문구 노출
         }
         // 하루 평균 지출 금액이 권장하는 지출 금액보다 높을 때
         final long recommendAmount = Math.max(getMinimumRecommendSpendAmount(), getRecommendSpentAmount());
-        return new RecommendSpend(category, recommendAmount, RecommendComment.BAD); // 기준을 넘었을 때 문구 노출
+        return new RecommendSpend(category, round(recommendAmount), RecommendComment.BAD); // 기준을 넘었을 때 문구 노출
+    }
+
+    private long round(long amount) {
+        if (amount > 100) {
+            return Math.round((float) amount / 100) * 100L;
+        }
+        if (amount > 10) {
+            return Math.round((float) amount / 10) * 10L;
+        }
+        return amount;
     }
 
     /*

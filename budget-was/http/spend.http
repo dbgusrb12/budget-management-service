@@ -7,7 +7,7 @@ Authorization: Bearer {{accessToken}}
   "amount": 1000,
   "memo": "메모",
   "categoryId": 1,
-  "spentDateTime": "2024-07-12T00:00:00"
+  "spentDateTime": "2024-04-20T00:00:00"
 }
 
 > {%
@@ -51,3 +51,7 @@ DELETE {{host}}/api/v1/spend/{{spendId}}
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
+### 지출 추천
+GET {{host}}/api/v1/spend/recommend
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
