@@ -58,7 +58,7 @@ public class SpendQueryService {
         final Category category = getCategory(categoryId);
         final Page<Spend> spendPage = spendService.pageSpendList(page, size, startDateTime, endDateTime, account, category, minAmount, maxAmount);
         final SpendAmountCalculator spendAmountCalculator = new SpendAmountCalculator(spendPage.getContent());
-        return SpendPage.of(spendAmountCalculator, spendPage.map(spend -> SpendDto.of(spend, dateTimeHolder)));
+        return SpendPage.of(spendAmountCalculator.getTotalAmountByCategory(), spendPage.map(spend -> SpendDto.of(spend, dateTimeHolder)));
     }
 
     public List<RecommendDto> recommendSpend(String accountId) {

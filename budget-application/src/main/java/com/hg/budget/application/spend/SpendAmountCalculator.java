@@ -23,12 +23,6 @@ public class SpendAmountCalculator {
         this.spendList.addAll(includeTotalSpendList);
     }
 
-    public long getTotalAmount() {
-        return spendList.stream()
-            .mapToLong(Spend::getAmount)
-            .sum();
-    }
-
     public List<AmountDto> getTotalAmountByCategory() {
         final Map<Category, Long> totalAmountByCategory = this.spendList.stream()
             .collect(Collectors.groupingBy(
