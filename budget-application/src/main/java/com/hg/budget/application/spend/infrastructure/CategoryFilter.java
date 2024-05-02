@@ -13,18 +13,16 @@ import java.util.stream.Collectors;
 
 public class CategoryFilter {
 
+    private final LocalDate today;
     private final Map<Category, Budget> budgetByCategory;
     private final Map<Category, List<Spend>> spendsByCategory;
 
-    public CategoryFilter(List<Budget> budgets, List<Spend> spends) {
-        final LocalDate now = LocalDate.now();
-        final int year = now.getYear();
-        final Month month = now.getMonth();
+    public CategoryFilter(LocalDate today, List<Budget> budgets, List<Spend> spends) {
+        this.today = today;
         this.budgetByCategory = budgets.stream()
             .collect(Collectors.toMap(Budget::getCategory, Function.identity()));
         this.spendsByCategory = spends.stream()
-            .filter(spend -> year == spend.getSpentDateTime().getYear())
-            .filter(spend -> month.equals(spend.getSpentDateTime().getMonth()))
+            .filter(this::isSameMonth)
             .collect(Collectors.groupingBy(
                 Spend::getCategory,
                 Collectors.mapping(Function.identity(), Collectors.toList())
@@ -37,5 +35,14 @@ public class CategoryFilter {
                 final List<Spend> spends = this.spendsByCategory.getOrDefault(categoryBudgetEntry.getKey(), new ArrayList<>());
                 return new AverageSpendRecommend(categoryBudgetEntry.getValue(), spends);
             }).toList();
+    }
+
+    private boolean isSameMonth(Spend spend) {
+        final int year = today.getYear();
+        final Month month = today.getMonth();
+        if (year != spend.getSpentDateTime().getYear()) {
+            return false;
+        }
+        return month.equals(spend.getSpentDateTime().getMonth());
     }
 }
