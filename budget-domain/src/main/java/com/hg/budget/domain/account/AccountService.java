@@ -2,6 +2,7 @@ package com.hg.budget.domain.account;
 
 import com.hg.budget.core.client.DateTimeHolder;
 import com.hg.budget.domain.account.port.AccountRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,5 +39,9 @@ public class AccountService {
         final Account login = loginUser.login(dateTimeHolder);
         accountRepository.update(login);
         return login;
+    }
+
+    public List<Account> findAccounts() {
+        return accountRepository.findAll();
     }
 }

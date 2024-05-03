@@ -6,6 +6,7 @@ import com.hg.budget.domain.account.port.AccountRepository;
 import com.hg.budget.domain.mock.MockAccountRepository;
 import com.hg.budget.domain.mock.MockDateTimeHolder;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -103,5 +104,23 @@ class AccountServiceTest {
         // then
         assertThat(login.notExist()).isTrue();
         assertThat(login.getId()).isNull();
+    }
+
+    @Test
+    @DisplayName("findAccounts 실행 시 모든 유저의 목록을 반환한다.")
+    void findAccountsTest() {
+        // given
+        accountService.createAccount("id1", "password", "nickname1");
+        accountService.createAccount("id2", "password", "nickname2");
+
+        // when
+        List<Account> accounts = accountService.findAccounts();
+
+        // then
+        assertThat(accounts.size()).isEqualTo(2);
+        assertThat(accounts.get(0).getId()).isEqualTo("id1");
+        assertThat(accounts.get(0).getNickname()).isEqualTo("nickname1");
+        assertThat(accounts.get(1).getId()).isEqualTo("id2");
+        assertThat(accounts.get(1).getNickname()).isEqualTo("nickname2");
     }
 }
