@@ -7,7 +7,7 @@ public record TodaySpendResponse(long totalAmount, List<TodayResponse> amountByC
 
     public static TodaySpendResponse from(List<TodaySpendDto> todaySpendList) {
         final long totalAmount = todaySpendList.stream()
-            .mapToLong(TodaySpendDto::spendAmount)
+            .mapToLong(TodaySpendDto::spentAmount)
             .sum();
         final List<TodayResponse> amountByCategories = todaySpendList.stream()
             .map(TodayResponse::from)
@@ -16,11 +16,11 @@ public record TodaySpendResponse(long totalAmount, List<TodayResponse> amountByC
     }
 
 
-    public record TodayResponse(SpendCategory category, long appropriateAmount, long spendAmount, long risk) {
+    public record TodayResponse(SpendCategory category, long appropriateAmount, long spentAmount, long risk) {
 
         public static TodayResponse from(TodaySpendDto todaySpend) {
             final SpendCategory category = SpendCategory.from(todaySpend.category());
-            return new TodayResponse(category, todaySpend.appropriateAmount(), todaySpend.spendAmount(), todaySpend.risk());
+            return new TodayResponse(category, todaySpend.appropriateAmount(), todaySpend.spentAmount(), todaySpend.risk());
         }
     }
 }

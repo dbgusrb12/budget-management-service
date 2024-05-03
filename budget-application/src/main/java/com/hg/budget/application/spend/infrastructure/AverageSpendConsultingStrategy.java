@@ -6,7 +6,6 @@ import com.hg.budget.application.spend.client.dto.TodaySpend;
 import com.hg.budget.core.client.DateTimeHolder;
 import com.hg.budget.domain.budget.Budget;
 import com.hg.budget.domain.spend.Spend;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -28,6 +27,10 @@ public class AverageSpendConsultingStrategy implements SpendConsultingStrategy {
 
     @Override
     public List<TodaySpend> getTodaySpend(List<Budget> budgets, List<Spend> spends) {
-        return new ArrayList<>();
+        final CategoryFilter filter = new CategoryFilter(dateTimeHolder.now().toLocalDate(), budgets, spends);
+        final List<AverageTodaySpend> averageTodaySpends = filter.todayFilter();
+        return averageTodaySpends.stream()
+            .map(AverageTodaySpend::getTodaySpend)
+            .toList();
     }
 }

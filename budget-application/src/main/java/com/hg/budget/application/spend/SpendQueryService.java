@@ -76,7 +76,7 @@ public class SpendQueryService {
         final List<Budget> budgets = budgetService.findBudgets(account);
         final List<Spend> spends = spendService.findSpendList(account);
         return spendConsultingStrategy.getTodaySpend(budgets, spends).stream()
-            .map(todaySpend -> TodaySpendDto.of(todaySpend.category(), todaySpend.appropriateAmount(), todaySpend.spendAmount(), todaySpend.risk()))
+            .map(todaySpend -> TodaySpendDto.of(todaySpend.category(), todaySpend.appropriateAmount(), todaySpend.spentAmount(), todaySpend.risk()))
             .toList();
     }
 

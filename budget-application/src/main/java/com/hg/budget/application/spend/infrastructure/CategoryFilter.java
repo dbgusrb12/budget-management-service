@@ -39,6 +39,16 @@ public class CategoryFilter {
             }).toList();
     }
 
+    public List<AverageTodaySpend> todayFilter() {
+        return budgetByCategory.entrySet().stream()
+            .map(categoryBudgetEntry -> {
+                final List<Spend> spends = this.spendsByCategory.getOrDefault(categoryBudgetEntry.getKey(), new ArrayList<>());
+                final Budget budget = categoryBudgetEntry.getValue();
+                final SpendCalculator spendCalculator = new SpendCalculator(today, budget, spends);
+                return new AverageTodaySpend(budget.getCategory(), spendCalculator);
+            }).toList();
+    }
+
     private boolean isSameMonth(Spend spend) {
         final int year = today.getYear();
         final Month month = today.getMonth();
