@@ -4,7 +4,7 @@ import com.hg.budget.application.spend.client.dto.Recommend;
 import com.hg.budget.application.spend.client.dto.RecommendComment;
 import com.hg.budget.domain.category.Category;
 
-public class AverageSpendRecommend {
+public class AverageSpendRecommend implements Comparable<AverageSpendRecommend> {
 
     private final Category category;
     private final SpendCalculator spendCalculator;
@@ -42,5 +42,10 @@ public class AverageSpendRecommend {
 
     private Recommend generateRecommendSpend(long recommendAmount, RecommendComment comment) {
         return new Recommend(category, round(recommendAmount), comment);
+    }
+
+    @Override
+    public int compareTo(AverageSpendRecommend o) {
+        return this.category.getId().compareTo(o.category.getId());
     }
 }

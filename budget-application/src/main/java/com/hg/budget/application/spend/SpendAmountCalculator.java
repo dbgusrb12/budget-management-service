@@ -4,6 +4,7 @@ import com.hg.budget.application.spend.dto.AmountDto;
 import com.hg.budget.domain.category.Category;
 import com.hg.budget.domain.spend.Spend;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -31,6 +32,7 @@ public class SpendAmountCalculator {
             ));
         return totalAmountByCategory.entrySet().stream()
             .map(totalAmount -> AmountDto.of(totalAmount.getKey(), totalAmount.getValue()))
+            .sorted(Comparator.comparing(amountDto -> amountDto.category().getId()))
             .toList();
     }
 }

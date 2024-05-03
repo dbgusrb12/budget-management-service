@@ -36,7 +36,8 @@ public class CategoryFilter {
                 final Budget budget = categoryBudgetEntry.getValue();
                 final SpendCalculator spendCalculator = new SpendCalculator(today, budget, spends);
                 return new AverageSpendRecommend(budget.getCategory(), spendCalculator);
-            }).toList();
+            }).sorted()
+            .toList();
     }
 
     public List<AverageTodaySpend> todayFilter() {
@@ -46,7 +47,8 @@ public class CategoryFilter {
                 final Budget budget = categoryBudgetEntry.getValue();
                 final SpendCalculator spendCalculator = new SpendCalculator(today, budget, spends);
                 return new AverageTodaySpend(budget.getCategory(), spendCalculator);
-            }).toList();
+            }).sorted()
+            .toList();
     }
 
     private boolean isSameMonth(Spend spend) {

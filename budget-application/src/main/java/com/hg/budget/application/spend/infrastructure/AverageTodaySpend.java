@@ -3,7 +3,7 @@ package com.hg.budget.application.spend.infrastructure;
 import com.hg.budget.application.spend.client.dto.TodaySpend;
 import com.hg.budget.domain.category.Category;
 
-public class AverageTodaySpend {
+public class AverageTodaySpend implements Comparable<AverageTodaySpend> {
 
     private final Category category;
     private final SpendCalculator spendCalculator;
@@ -34,5 +34,10 @@ public class AverageTodaySpend {
         }
 
         return spentAmount * 100 / appropriateAmount;
+    }
+
+    @Override
+    public int compareTo(AverageTodaySpend o) {
+        return this.category.getId().compareTo(o.category.getId());
     }
 }
