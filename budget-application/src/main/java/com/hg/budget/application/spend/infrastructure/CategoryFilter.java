@@ -33,7 +33,9 @@ public class CategoryFilter {
         return budgetByCategory.entrySet().stream()
             .map(categoryBudgetEntry -> {
                 final List<Spend> spends = this.spendsByCategory.getOrDefault(categoryBudgetEntry.getKey(), new ArrayList<>());
-                return new AverageSpendRecommend(categoryBudgetEntry.getValue(), spends);
+                final Budget budget = categoryBudgetEntry.getValue();
+                final SpendCalculator spendCalculator = new SpendCalculator(today, budget, spends);
+                return new AverageSpendRecommend(budget.getCategory(), spendCalculator);
             }).toList();
     }
 
