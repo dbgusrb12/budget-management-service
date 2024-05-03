@@ -2,9 +2,11 @@ package com.hg.budget.application.spend.infrastructure;
 
 import com.hg.budget.application.spend.client.SpendConsultingStrategy;
 import com.hg.budget.application.spend.client.dto.Recommend;
+import com.hg.budget.application.spend.client.dto.TodaySpend;
 import com.hg.budget.core.client.DateTimeHolder;
 import com.hg.budget.domain.budget.Budget;
 import com.hg.budget.domain.spend.Spend;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -22,5 +24,10 @@ public class AverageSpendConsultingStrategy implements SpendConsultingStrategy {
         return averageSpendRecommends.stream()
             .map(AverageSpendRecommend::recommendAmount)
             .toList();
+    }
+
+    @Override
+    public List<TodaySpend> getTodaySpend(List<Budget> budgets, List<Spend> spends) {
+        return new ArrayList<>();
     }
 }
