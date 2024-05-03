@@ -9,10 +9,10 @@ public record RecommendSpendResponse(long totalAmount, List<RecommendResponse> a
         final long totalAmount = recommendSpendList.stream()
             .mapToLong(RecommendDto::amount)
             .sum();
-        final List<RecommendResponse> amountResponse = recommendSpendList.stream()
+        final List<RecommendResponse> amountByCategories = recommendSpendList.stream()
             .map(RecommendResponse::from)
             .toList();
-        return new RecommendSpendResponse(totalAmount, amountResponse);
+        return new RecommendSpendResponse(totalAmount, amountByCategories);
     }
 
     public record RecommendResponse(SpendCategory category, long totalAmount, String comment) {
