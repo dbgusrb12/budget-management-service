@@ -14,10 +14,20 @@ public class AverageTodaySpend implements Comparable<AverageTodaySpend> {
     }
 
     public TodaySpend getTodaySpend() {
-        final long appropriateAmount = spendCalculator.getSpentAmountOfDay();
+        final long appropriateAmount = round(spendCalculator.getSpentAmountOfDay());
         final long spentAmount = spendCalculator.getTotalSpentAmount();
         final long risk = getRisk(appropriateAmount, spentAmount);
         return new TodaySpend(category, appropriateAmount, spentAmount, risk);
+    }
+
+    private long round(long amount) {
+        if (amount > 100) {
+            return Math.round((float) amount / 100) * 100L;
+        }
+        if (amount > 10) {
+            return Math.round((float) amount / 10) * 10L;
+        }
+        return amount;
     }
 
     /*

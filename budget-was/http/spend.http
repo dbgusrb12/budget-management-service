@@ -4,10 +4,10 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-  "amount": 1000,
+  "amount": 30000,
   "memo": "메모",
   "categoryId": 1,
-  "spentDateTime": "2024-04-20T00:00:00"
+  "spentDateTime": "2024-05-03T00:00:00"
 }
 
 > {%
@@ -51,7 +51,12 @@ DELETE {{host}}/api/v1/spend/{{spendId}}
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
-### 지출 추천
+### 오늘 지출 추천
 GET {{host}}/api/v1/spend/recommend
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+### 오늘 지출 안내
+GET {{host}}/api/v1/spend/today
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
