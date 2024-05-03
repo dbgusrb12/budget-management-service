@@ -14,9 +14,6 @@ public class SpendPage {
     private Page<SpendDto> page;
 
     public static SpendPage of(List<AmountDto> totalAmountByCategories, Page<SpendDto> spendPage) {
-        return new SpendPage(
-            totalAmountByCategories,
-            spendPage
-        );
+        return new SpendPage(totalAmountByCategories, spendPage);
     }
 }
