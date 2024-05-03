@@ -2,7 +2,7 @@ package com.hg.budget.application.spend;
 
 import com.hg.budget.application.core.code.ApplicationCode;
 import com.hg.budget.application.core.exception.ApplicationException;
-import com.hg.budget.application.spend.client.SpendRecommendStrategy;
+import com.hg.budget.application.spend.client.SpendConsultingStrategy;
 import com.hg.budget.application.spend.dto.RecommendDto;
 import com.hg.budget.application.spend.dto.SpendDto;
 import com.hg.budget.application.spend.dto.SpendPage;
@@ -35,7 +35,7 @@ public class SpendQueryService {
     private final BudgetService budgetService;
     private final SpendValidator spendValidator;
     private final DateTimeHolder dateTimeHolder;
-    private final SpendRecommendStrategy spendRecommendStrategy;
+    private final SpendConsultingStrategy spendConsultingStrategy;
 
     public SpendDto getSpend(Long id, String accountId) {
         final Account account = getAccount(accountId);
@@ -67,7 +67,7 @@ public class SpendQueryService {
         final Account account = getAccount(accountId);
         final List<Budget> budgets = budgetService.findBudgets(account);
         final List<Spend> spends = spendService.findSpendList(account);
-        return spendRecommendStrategy.recommend(budgets, spends).stream()
+        return spendConsultingStrategy.recommend(budgets, spends).stream()
             .map(recommendSpend -> RecommendDto.of(recommendSpend.category(), recommendSpend.amount(), recommendSpend.comment().getComment()))
             .toList();
     }

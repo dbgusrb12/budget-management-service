@@ -29,7 +29,7 @@ public class CategoryFilter {
             ));
     }
 
-    public List<AverageSpendRecommend> filter() {
+    public List<AverageSpendRecommend> recommendFilter() {
         return budgetByCategory.entrySet().stream()
             .map(categoryBudgetEntry -> {
                 final List<Spend> spends = this.spendsByCategory.getOrDefault(categoryBudgetEntry.getKey(), new ArrayList<>());

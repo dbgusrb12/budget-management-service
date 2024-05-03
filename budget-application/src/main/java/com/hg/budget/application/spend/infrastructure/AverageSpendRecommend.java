@@ -1,7 +1,7 @@
 package com.hg.budget.application.spend.infrastructure;
 
+import com.hg.budget.application.spend.client.dto.Recommend;
 import com.hg.budget.application.spend.client.dto.RecommendComment;
-import com.hg.budget.application.spend.client.dto.RecommendSpend;
 import com.hg.budget.domain.category.Category;
 
 public class AverageSpendRecommend {
@@ -14,7 +14,7 @@ public class AverageSpendRecommend {
         this.spendCalculator = spendCalculator;
     }
 
-    public RecommendSpend recommendAmount() {
+    public Recommend recommendAmount() {
         if (spendCalculator.isEmptyBudgetAmount()) {
             // 남은 예산이 없을 경우
             final long recommendAmount = spendCalculator.getMinimumRecommendSpendAmount();
@@ -40,7 +40,7 @@ public class AverageSpendRecommend {
         return amount;
     }
 
-    private RecommendSpend generateRecommendSpend(long recommendAmount, RecommendComment comment) {
-        return new RecommendSpend(category, round(recommendAmount), comment);
+    private Recommend generateRecommendSpend(long recommendAmount, RecommendComment comment) {
+        return new Recommend(category, round(recommendAmount), comment);
     }
 }
