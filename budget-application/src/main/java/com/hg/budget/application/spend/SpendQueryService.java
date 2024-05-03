@@ -18,7 +18,6 @@ import com.hg.budget.domain.category.CategoryService;
 import com.hg.budget.domain.spend.Spend;
 import com.hg.budget.domain.spend.SpendService;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -73,7 +72,12 @@ public class SpendQueryService {
     }
 
     public List<TodaySpendDto> getTodaySpend(String accountId) {
-        return new ArrayList<>();
+        final Account account = getAccount(accountId);
+        final List<Budget> budgets = budgetService.findBudgets(account);
+        final List<Spend> spends = spendService.findSpendList(account);
+        return spendConsultingStrategy.getTodaySpend(budgets, spends).stream()
+            .map(todaySpend -> TodaySpendDto.of(todaySpend.category(), todaySpend.appropriateAmount(), todaySpend.spendAmount(), todaySpend.risk()))
+            .toList();
     }
 
     private Account getAccount(String accountId) {
