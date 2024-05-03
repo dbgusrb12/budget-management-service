@@ -6,6 +6,7 @@ import com.hg.budget.application.spend.client.SpendRecommendStrategy;
 import com.hg.budget.application.spend.dto.RecommendDto;
 import com.hg.budget.application.spend.dto.SpendDto;
 import com.hg.budget.application.spend.dto.SpendPage;
+import com.hg.budget.application.spend.dto.TodaySpendDto;
 import com.hg.budget.core.client.DateTimeHolder;
 import com.hg.budget.core.dto.Page;
 import com.hg.budget.domain.account.Account;
@@ -17,6 +18,7 @@ import com.hg.budget.domain.category.CategoryService;
 import com.hg.budget.domain.spend.Spend;
 import com.hg.budget.domain.spend.SpendService;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -68,6 +70,10 @@ public class SpendQueryService {
         return spendRecommendStrategy.recommend(budgets, spends).stream()
             .map(recommendSpend -> RecommendDto.of(recommendSpend.category(), recommendSpend.amount(), recommendSpend.comment().getComment()))
             .toList();
+    }
+
+    public List<TodaySpendDto> getTodaySpend(String accountId) {
+        return new ArrayList<>();
     }
 
     private Account getAccount(String accountId) {
