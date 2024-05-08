@@ -1,7 +1,7 @@
 dependencies {
     implementation project(':budget-core')
     implementation project(':budget-domain')
-    implementation project(':budget-client')
+    implementation project(':budget-external')
     implementation 'org.springframework:spring-context'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

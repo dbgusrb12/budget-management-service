@@ -4,5 +4,5 @@ include 'budget-domain'
 include 'budget-application'
 include 'budget-domain-persistence'
 include 'budget-was'
-include 'budget-client'
+include 'budget-external'
 

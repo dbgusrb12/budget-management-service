@@ -4,7 +4,7 @@ import com.hg.budget.application.spend.client.SpendConsultingStrategy;
 import com.hg.budget.application.spend.client.dto.Recommend;
 import com.hg.budget.application.spend.client.dto.RecommendComment;
 import com.hg.budget.application.spend.client.dto.TodaySpend;
-import com.hg.budget.client.notification.client.NotificationSender;
+import com.hg.budget.external.client.NotificationSender;
 import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.account.AccountService;
 import com.hg.budget.domain.budget.Budget;

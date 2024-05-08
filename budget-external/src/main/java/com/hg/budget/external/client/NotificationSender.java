@@ -1,4 +1,4 @@
-package com.hg.budget.client.notification.client;
+package com.hg.budget.external.client;
 
 public interface NotificationSender {
 

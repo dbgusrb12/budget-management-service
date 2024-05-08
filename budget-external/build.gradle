@@ -1,5 +1,6 @@
 dependencies {
     implementation project(':budget-core')
     implementation 'org.springframework:spring-context'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
