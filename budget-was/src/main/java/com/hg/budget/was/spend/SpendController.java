@@ -37,8 +37,10 @@ public class SpendController {
 
     private final SpendCommandService spendCommandService;
     private final SpendQueryService spendQueryService;
+    // FIXME 디버깅 확인용 (삭제 예정)
     private final SpendScheduler spendScheduler;
 
+    // FIXME 디버깅 확인용 (삭제 예정)
     @GetMapping("/debug")
     public void debug() {
         spendScheduler.recommendSpendSchedule();
