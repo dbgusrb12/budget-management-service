@@ -16,7 +16,6 @@ public class MessageFormatter {
 
     public Notification generateRecommendSpendMessage(Account account, List<Recommend> recommends) {
         final NotificationType type = NotificationType.RECOMMEND_SPEND;
-
         final String title = type.getTitle();
         final String subtitle = type.generateSubtitle(account.getNickname());
         final List<Content> contents = recommends.stream()
