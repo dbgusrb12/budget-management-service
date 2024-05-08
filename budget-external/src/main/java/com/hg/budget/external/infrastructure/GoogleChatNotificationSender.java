@@ -4,8 +4,6 @@ import com.hg.budget.external.client.NotificationSender;
 import com.hg.budget.external.client.dto.Notification;
 import com.hg.budget.external.infrastructure.request.Card;
 import com.hg.budget.external.infrastructure.request.SendRequest;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -35,16 +33,5 @@ public class GoogleChatNotificationSender implements NotificationSender {
         final SendRequest request = SendRequest.ofCard(card);
         String response = googleChatApiService.send(request);
         log.info("response : {}", response);
-    }
-
-    @Getter
-    @AllArgsConstructor
-    static class TextParagraph {
-
-        private String text;
-
-        public static TextParagraph from(String text) {
-            return new TextParagraph(text);
-        }
     }
 }
