@@ -7,5 +7,6 @@ spring:
         config:
           google-chat-api-service:
             url: https://chat.googleapis.com/v1/spaces/AAAA3j7aZkA/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=lqtU0d9S2FANzfzpkGYFxWRfMjO60eE57nspa8Zk8zo
+#            url: https://chat.googleapis.com/v1/spaces/AAAACk1UKBI/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=w9RydftcM7qtJR0u26eM6rKOrWVxPrh2gXzkvMRPzqU
             connect-timeout: 5000
             read-timeout: 5000

@@ -4,6 +4,7 @@ import com.hg.budget.application.spend.SpendCommandService;
 import com.hg.budget.application.spend.SpendQueryService;
 import com.hg.budget.application.spend.dto.SpendDto;
 import com.hg.budget.application.spend.dto.SpendPage;
+import com.hg.budget.application.spend.scheduler.SpendScheduler;
 import com.hg.budget.was.core.annotation.AccountId;
 import com.hg.budget.was.core.response.OkResponse;
 import com.hg.budget.was.spend.command.CreateSpendCommand;
@@ -36,6 +37,13 @@ public class SpendController {
 
     private final SpendCommandService spendCommandService;
     private final SpendQueryService spendQueryService;
+    private final SpendScheduler spendScheduler;
+
+    @GetMapping("/debug")
+    public void debug() {
+        spendScheduler.recommendSpendSchedule();
+        spendScheduler.todaySpendSchedule();
+    }
 
     @PostMapping
     public OkResponse<MySpendResponse> createSpend(@AccountId String accountId, @Valid @RequestBody CreateSpendCommand command) {
