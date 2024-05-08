@@ -11,9 +11,14 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class GoogleChatNotificationSender implements NotificationSender {
 
+    private final GoogleChatApiService googleChatApiService;
 
     @Override
     public void send(String receiver, String title, String content) {
         log.info("receiver: {}, title: {}, content: {}", receiver, title, content);
+        final String text = title + "\n\n" + content;
+        final SendRequest request = new SendRequest(text);
+        String response = googleChatApiService.send(request);
+        log.info("response : {}", response);
     }
 }
