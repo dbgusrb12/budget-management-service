@@ -7,6 +7,7 @@
 - core module
 - domain-persistence module
 - domain module
+- external module
 - application module
 - was module
 
