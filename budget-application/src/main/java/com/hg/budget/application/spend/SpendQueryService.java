@@ -38,7 +38,6 @@ public class SpendQueryService {
 
     public SpendDto getSpend(Long id, String accountId) {
         final Account account = getAccount(accountId);
-
         final Spend spend = spendService.findSpend(id);
         spendValidator.validateExist(spend);
         spendValidator.validateOwner(spend, account);
@@ -78,6 +77,10 @@ public class SpendQueryService {
         return spendConsultingStrategy.getTodaySpend(budgets, spends).stream()
             .map(todaySpend -> TodaySpendDto.of(todaySpend.category(), todaySpend.appropriateAmount(), todaySpend.spentAmount(), todaySpend.risk()))
             .toList();
+    }
+
+    public void getSpendSummary() {
+
     }
 
     private Account getAccount(String accountId) {
