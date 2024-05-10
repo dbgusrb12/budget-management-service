@@ -40,13 +40,13 @@ public class CategoryFilter {
             .toList();
     }
 
-    public List<AverageTodaySpend> todayFilter() {
+    public List<AverageSpendGuide> guideFilter() {
         return budgetByCategory.entrySet().stream()
             .map(categoryBudgetEntry -> {
                 final List<Spend> spends = this.spendsByCategory.getOrDefault(categoryBudgetEntry.getKey(), new ArrayList<>());
                 final Budget budget = categoryBudgetEntry.getValue();
                 final SpendCalculator spendCalculator = new SpendCalculator(today, budget, spends);
-                return new AverageTodaySpend(budget.getCategory(), spendCalculator);
+                return new AverageSpendGuide(budget.getCategory(), spendCalculator);
             }).sorted()
             .toList();
     }

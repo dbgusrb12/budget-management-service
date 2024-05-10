@@ -11,9 +11,9 @@ import com.hg.budget.was.spend.command.CreateSpendCommand;
 import com.hg.budget.was.spend.command.UpdateSpendCommand;
 import com.hg.budget.was.spend.response.MySpendResponse;
 import com.hg.budget.was.spend.response.RecommendSpendResponse;
+import com.hg.budget.was.spend.response.SpendGuideResponse;
 import com.hg.budget.was.spend.response.SpendPageResponse;
 import com.hg.budget.was.spend.response.SpendSummaryResponse;
-import com.hg.budget.was.spend.response.TodaySpendResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -45,7 +45,7 @@ public class SpendController {
     @GetMapping("/debug")
     public void debug() {
         spendScheduler.recommendSpendSchedule();
-        spendScheduler.todaySpendSchedule();
+        spendScheduler.spendGuideSchedule();
     }
 
     @PostMapping
@@ -121,9 +121,9 @@ public class SpendController {
         return new OkResponse<>(response);
     }
 
-    @GetMapping("/today")
-    public OkResponse<TodaySpendResponse> getTodaySpend(@AccountId String accountId) {
-        final TodaySpendResponse response = TodaySpendResponse.from(spendQueryService.getTodaySpend(accountId));
+    @GetMapping("/guide")
+    public OkResponse<SpendGuideResponse> getSpendGuide(@AccountId String accountId) {
+        final SpendGuideResponse response = SpendGuideResponse.from(spendQueryService.getSpendGuide(accountId));
         return new OkResponse<>(response);
     }
 

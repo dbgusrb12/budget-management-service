@@ -1,23 +1,23 @@
 package com.hg.budget.application.spend.infrastructure;
 
-import com.hg.budget.application.spend.client.dto.TodaySpend;
+import com.hg.budget.application.spend.client.dto.SpendGuide;
 import com.hg.budget.domain.category.Category;
 
-public class AverageTodaySpend implements Comparable<AverageTodaySpend> {
+public class AverageSpendGuide implements Comparable<AverageSpendGuide> {
 
     private final Category category;
     private final SpendCalculator spendCalculator;
 
-    public AverageTodaySpend(Category category, SpendCalculator spendCalculator) {
+    public AverageSpendGuide(Category category, SpendCalculator spendCalculator) {
         this.category = category;
         this.spendCalculator = spendCalculator;
     }
 
-    public TodaySpend getTodaySpend() {
+    public SpendGuide getSpendGuide() {
         final long appropriateAmount = round(spendCalculator.getSpentAmountOfDay());
         final long spentAmount = spendCalculator.getTotalSpentAmount();
         final long risk = getRisk(appropriateAmount, spentAmount);
-        return new TodaySpend(category, appropriateAmount, spentAmount, risk);
+        return new SpendGuide(category, appropriateAmount, spentAmount, risk);
     }
 
     private long round(long amount) {
@@ -47,7 +47,7 @@ public class AverageTodaySpend implements Comparable<AverageTodaySpend> {
     }
 
     @Override
-    public int compareTo(AverageTodaySpend o) {
+    public int compareTo(AverageSpendGuide o) {
         return this.category.getId().compareTo(o.category.getId());
     }
 }

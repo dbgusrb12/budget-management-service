@@ -57,7 +57,7 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 ### 오늘 지출 안내
-GET {{host}}/api/v1/spend/today
+GET {{host}}/api/v1/spend/guide
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 

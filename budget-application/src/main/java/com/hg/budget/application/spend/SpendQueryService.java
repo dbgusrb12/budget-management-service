@@ -6,12 +6,12 @@ import com.hg.budget.application.core.exception.ApplicationException;
 import com.hg.budget.application.spend.client.SpendConsultingStrategy;
 import com.hg.budget.application.spend.dto.RecommendDto;
 import com.hg.budget.application.spend.dto.SpendDto;
+import com.hg.budget.application.spend.dto.SpendGuideDto;
 import com.hg.budget.application.spend.dto.SpendPage;
 import com.hg.budget.application.spend.dto.SpendSummaryDto;
 import com.hg.budget.application.spend.dto.SpendSummaryDto.CategoryComparisonDto;
 import com.hg.budget.application.spend.dto.SpendSummaryDto.DayOfWeekSpentComparisonDto;
 import com.hg.budget.application.spend.dto.SpendSummaryDto.MonthSpentComparisonDto;
-import com.hg.budget.application.spend.dto.TodaySpendDto;
 import com.hg.budget.core.client.DateTimeHolder;
 import com.hg.budget.core.dto.Page;
 import com.hg.budget.domain.account.Account;
@@ -76,12 +76,12 @@ public class SpendQueryService {
             .toList();
     }
 
-    public List<TodaySpendDto> getTodaySpend(String accountId) {
+    public List<SpendGuideDto> getSpendGuide(String accountId) {
         final Account account = getAccount(accountId);
         final List<Budget> budgets = budgetService.findBudgets(account);
         final List<Spend> spends = spendService.findSpendList(account);
-        return spendConsultingStrategy.getTodaySpend(budgets, spends).stream()
-            .map(todaySpend -> TodaySpendDto.of(todaySpend.category(), todaySpend.appropriateAmount(), todaySpend.spentAmount(), todaySpend.risk()))
+        return spendConsultingStrategy.guide(budgets, spends).stream()
+            .map(spendGuide -> SpendGuideDto.of(spendGuide.category(), spendGuide.appropriateAmount(), spendGuide.spentAmount(), spendGuide.risk()))
             .toList();
     }
 
