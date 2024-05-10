@@ -1,11 +1,16 @@
 package com.hg.budget.application.spend;
 
+import com.hg.budget.application.category.dto.CategoryDto;
 import com.hg.budget.application.core.code.ApplicationCode;
 import com.hg.budget.application.core.exception.ApplicationException;
 import com.hg.budget.application.spend.client.SpendConsultingStrategy;
 import com.hg.budget.application.spend.dto.RecommendDto;
 import com.hg.budget.application.spend.dto.SpendDto;
 import com.hg.budget.application.spend.dto.SpendPage;
+import com.hg.budget.application.spend.dto.SpendSummaryDto;
+import com.hg.budget.application.spend.dto.SpendSummaryDto.CategoryComparisonDto;
+import com.hg.budget.application.spend.dto.SpendSummaryDto.DayOfWeekSpentComparisonDto;
+import com.hg.budget.application.spend.dto.SpendSummaryDto.MonthSpentComparisonDto;
 import com.hg.budget.application.spend.dto.TodaySpendDto;
 import com.hg.budget.core.client.DateTimeHolder;
 import com.hg.budget.core.dto.Page;
@@ -17,6 +22,7 @@ import com.hg.budget.domain.category.Category;
 import com.hg.budget.domain.category.CategoryService;
 import com.hg.budget.domain.spend.Spend;
 import com.hg.budget.domain.spend.SpendService;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -79,8 +85,15 @@ public class SpendQueryService {
             .toList();
     }
 
-    public void getSpendSummary() {
+    public SpendSummaryDto getSpendSummary() {
+        return getMockSpendSummary();
+    }
 
+    public SpendSummaryDto getMockSpendSummary() {
+        final CategoryComparisonDto categoryComparisonDto = new CategoryComparisonDto(CategoryDto.from(Category.of(1L, "식비")), 50);
+        final MonthSpentComparisonDto monthSpentComparisonDto = new MonthSpentComparisonDto(50, List.of(categoryComparisonDto));
+        final DayOfWeekSpentComparisonDto dayOfWeekSpentComparisonDto = new DayOfWeekSpentComparisonDto(DayOfWeek.MONDAY, 50);
+        return new SpendSummaryDto(monthSpentComparisonDto, dayOfWeekSpentComparisonDto, 50);
     }
 
     private Account getAccount(String accountId) {
