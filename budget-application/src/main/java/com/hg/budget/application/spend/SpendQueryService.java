@@ -85,7 +85,7 @@ public class SpendQueryService {
             .toList();
     }
 
-    public SpendSummaryDto getSpendSummary() {
+    public SpendSummaryDto getSpendSummary(String accountId) {
         return getMockSpendSummary();
     }
 

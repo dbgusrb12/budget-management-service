@@ -12,6 +12,7 @@ import com.hg.budget.was.spend.command.UpdateSpendCommand;
 import com.hg.budget.was.spend.response.MySpendResponse;
 import com.hg.budget.was.spend.response.RecommendSpendResponse;
 import com.hg.budget.was.spend.response.SpendPageResponse;
+import com.hg.budget.was.spend.response.SpendSummaryResponse;
 import com.hg.budget.was.spend.response.TodaySpendResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
@@ -123,6 +124,12 @@ public class SpendController {
     @GetMapping("/today")
     public OkResponse<TodaySpendResponse> getTodaySpend(@AccountId String accountId) {
         final TodaySpendResponse response = TodaySpendResponse.from(spendQueryService.getTodaySpend(accountId));
+        return new OkResponse<>(response);
+    }
+
+    @GetMapping("/summary")
+    public OkResponse<SpendSummaryResponse> getSpendSummary(@AccountId String accountId) {
+        final SpendSummaryResponse response = SpendSummaryResponse.from(spendQueryService.getSpendSummary(accountId));
         return new OkResponse<>(response);
     }
 }
