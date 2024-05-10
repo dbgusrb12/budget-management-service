@@ -1,7 +1,9 @@
 package com.hg.budget.was.spend;
 
 import com.hg.budget.application.spend.SpendCommandService;
+import com.hg.budget.application.spend.SpendConsultingService;
 import com.hg.budget.application.spend.SpendQueryService;
+import com.hg.budget.application.spend.SpendStatisticService;
 import com.hg.budget.application.spend.dto.SpendDto;
 import com.hg.budget.application.spend.dto.SpendPage;
 import com.hg.budget.application.spend.scheduler.SpendScheduler;
@@ -38,6 +40,8 @@ public class SpendController {
 
     private final SpendCommandService spendCommandService;
     private final SpendQueryService spendQueryService;
+    private final SpendConsultingService spendConsultingService;
+    private final SpendStatisticService spendStatisticService;
     // FIXME 디버깅 확인용 (삭제 예정)
     private final SpendScheduler spendScheduler;
 
@@ -117,19 +121,19 @@ public class SpendController {
 
     @GetMapping("/recommend")
     public OkResponse<RecommendSpendResponse> recommendSpend(@AccountId String accountId) {
-        final RecommendSpendResponse response = RecommendSpendResponse.from(spendQueryService.recommendSpend(accountId));
+        final RecommendSpendResponse response = RecommendSpendResponse.from(spendConsultingService.recommendSpend(accountId));
         return new OkResponse<>(response);
     }
 
     @GetMapping("/guide")
     public OkResponse<SpendGuideResponse> getSpendGuide(@AccountId String accountId) {
-        final SpendGuideResponse response = SpendGuideResponse.from(spendQueryService.getSpendGuide(accountId));
+        final SpendGuideResponse response = SpendGuideResponse.from(spendConsultingService.getSpendGuide(accountId));
         return new OkResponse<>(response);
     }
 
     @GetMapping("/summary")
     public OkResponse<SpendSummaryResponse> getSpendSummary(@AccountId String accountId) {
-        final SpendSummaryResponse response = SpendSummaryResponse.from(spendQueryService.getSpendSummary(accountId));
+        final SpendSummaryResponse response = SpendSummaryResponse.from(spendStatisticService.getSpendSummary(accountId));
         return new OkResponse<>(response);
     }
 }

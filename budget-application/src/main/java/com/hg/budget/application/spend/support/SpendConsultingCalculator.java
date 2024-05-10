@@ -1,4 +1,4 @@
-package com.hg.budget.application.spend.infrastructure;
+package com.hg.budget.application.spend.support;
 
 import com.hg.budget.domain.budget.Budget;
 import com.hg.budget.domain.spend.Spend;
@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 import lombok.Getter;
 
-public class SpendCalculator {
+public class SpendConsultingCalculator {
 
     private final int dayOfMonth;  // 현재 날짜 (지난 일 수)
     private final int lengthOfMonth; // 해당 월의 총 일 수
@@ -15,7 +15,7 @@ public class SpendCalculator {
     @Getter
     private final long totalSpentAmount; // 지금까지 사용한 지출 총액
 
-    public SpendCalculator(LocalDate today, Budget budget, List<Spend> spends) {
+    public SpendConsultingCalculator(LocalDate today, Budget budget, List<Spend> spends) {
         this.dayOfMonth = today.getDayOfMonth();
         this.lengthOfMonth = today.lengthOfMonth();
         this.remainingDayOfMonth = lengthOfMonth - dayOfMonth + 1;

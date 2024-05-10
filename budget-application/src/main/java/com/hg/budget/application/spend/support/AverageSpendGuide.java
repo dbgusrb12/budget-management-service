@@ -1,23 +1,24 @@
-package com.hg.budget.application.spend.infrastructure;
+package com.hg.budget.application.spend.support;
 
-import com.hg.budget.application.spend.client.dto.SpendGuide;
+import com.hg.budget.application.category.dto.CategoryDto;
+import com.hg.budget.application.spend.dto.SpendGuideDto;
 import com.hg.budget.domain.category.Category;
 
 public class AverageSpendGuide implements Comparable<AverageSpendGuide> {
 
     private final Category category;
-    private final SpendCalculator spendCalculator;
+    private final SpendConsultingCalculator spendConsultingCalculator;
 
-    public AverageSpendGuide(Category category, SpendCalculator spendCalculator) {
+    public AverageSpendGuide(Category category, SpendConsultingCalculator spendConsultingCalculator) {
         this.category = category;
-        this.spendCalculator = spendCalculator;
+        this.spendConsultingCalculator = spendConsultingCalculator;
     }
 
-    public SpendGuide getSpendGuide() {
-        final long appropriateAmount = round(spendCalculator.getSpentAmountOfDay());
-        final long spentAmount = spendCalculator.getTotalSpentAmount();
+    public SpendGuideDto getSpendGuide() {
+        final long appropriateAmount = round(spendConsultingCalculator.getSpentAmountOfDay());
+        final long spentAmount = spendConsultingCalculator.getTotalSpentAmount();
         final long risk = getRisk(appropriateAmount, spentAmount);
-        return new SpendGuide(category, appropriateAmount, spentAmount, risk);
+        return new SpendGuideDto(CategoryDto.from(category), appropriateAmount, spentAmount, risk);
     }
 
     private long round(long amount) {

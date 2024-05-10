@@ -1,4 +1,4 @@
-package com.hg.budget.application.spend.infrastructure;
+package com.hg.budget.application.spend.support;
 
 import com.hg.budget.domain.budget.Budget;
 import com.hg.budget.domain.category.Category;
@@ -11,13 +11,13 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class CategoryFilter {
+public class CategoryAndMonthFilter {
 
     private final LocalDate today;
     private final Map<Category, Budget> budgetByCategory;
     private final Map<Category, List<Spend>> spendsByCategory;
 
-    public CategoryFilter(LocalDate today, List<Budget> budgets, List<Spend> spends) {
+    public CategoryAndMonthFilter(LocalDate today, List<Budget> budgets, List<Spend> spends) {
         this.today = today;
         this.budgetByCategory = budgets.stream()
             .collect(Collectors.toMap(Budget::getCategory, Function.identity()));
@@ -29,24 +29,24 @@ public class CategoryFilter {
             ));
     }
 
-    public List<AverageSpendRecommend> recommendFilter() {
+    public List<AverageSpendRecommend> recommend() {
         return budgetByCategory.entrySet().stream()
             .map(categoryBudgetEntry -> {
                 final List<Spend> spends = this.spendsByCategory.getOrDefault(categoryBudgetEntry.getKey(), new ArrayList<>());
                 final Budget budget = categoryBudgetEntry.getValue();
-                final SpendCalculator spendCalculator = new SpendCalculator(today, budget, spends);
-                return new AverageSpendRecommend(budget.getCategory(), spendCalculator);
+                final SpendConsultingCalculator spendConsultingCalculator = new SpendConsultingCalculator(today, budget, spends);
+                return new AverageSpendRecommend(budget.getCategory(), spendConsultingCalculator);
             }).sorted()
             .toList();
     }
 
-    public List<AverageSpendGuide> guideFilter() {
+    public List<AverageSpendGuide> guide() {
         return budgetByCategory.entrySet().stream()
             .map(categoryBudgetEntry -> {
                 final List<Spend> spends = this.spendsByCategory.getOrDefault(categoryBudgetEntry.getKey(), new ArrayList<>());
                 final Budget budget = categoryBudgetEntry.getValue();
-                final SpendCalculator spendCalculator = new SpendCalculator(today, budget, spends);
-                return new AverageSpendGuide(budget.getCategory(), spendCalculator);
+                final SpendConsultingCalculator spendConsultingCalculator = new SpendConsultingCalculator(today, budget, spends);
+                return new AverageSpendGuide(budget.getCategory(), spendConsultingCalculator);
             }).sorted()
             .toList();
     }
