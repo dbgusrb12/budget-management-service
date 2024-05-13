@@ -45,28 +45,15 @@ public class SpendStatisticService {
         );
     }
 
-    private DayOfWeekSpentComparisonDto calculateDayOfWeekSpentComparison(LocalDate today, List<Spend> spendList) {
-        final List<Spend> spendListByLastWeek = spendList.stream()
-            .filter(spend -> isLastWeek(today, spend))
-            .toList();
-        final List<Spend> spendListByToday = spendList.stream()
-            .filter(spend -> isToday(today, spend))
-            .toList();
-        return new DayOfWeekSpentComparisonDto(
-            today.getDayOfWeek(),
-            calculateComparison(spendListByLastWeek, spendListByToday)
-        );
+    private Account getAccount(String accountId) {
+        final Account account = accountService.findAccount(accountId);
+        if (account.notExist()) {
+            throw new ApplicationException(ApplicationCode.BAD_REQUEST, "유저가 존재하지 않습니다.");
+        }
+        return account;
     }
 
-    private boolean isLastWeek(LocalDate today, Spend spend) {
-        final LocalDate lastWeek = today.minusWeeks(1);
-        return lastWeek.equals(spend.getSpentDateTime().toLocalDate());
-    }
-
-    private boolean isToday(LocalDate today, Spend spend) {
-        return today.equals(spend.getSpentDateTime().toLocalDate());
-    }
-
+    // FIXME 책임 분리 필요
     private MonthSpentComparisonDto calculateMonthSpentComparison(LocalDate today, List<Spend> spendList) {
         final List<Spend> spendListByPreviousMonth = spendList.stream()
             .filter(spend -> isPreviousMonth(today, spend))
@@ -124,6 +111,29 @@ public class SpendStatisticService {
             .toList();
     }
 
+    // FIXME 책임 분리 필요
+    private DayOfWeekSpentComparisonDto calculateDayOfWeekSpentComparison(LocalDate today, List<Spend> spendList) {
+        final List<Spend> spendListByLastWeek = spendList.stream()
+            .filter(spend -> isLastWeek(today, spend))
+            .toList();
+        final List<Spend> spendListByToday = spendList.stream()
+            .filter(spend -> isToday(today, spend))
+            .toList();
+        return new DayOfWeekSpentComparisonDto(
+            today.getDayOfWeek(),
+            calculateComparison(spendListByLastWeek, spendListByToday)
+        );
+    }
+
+    private boolean isLastWeek(LocalDate today, Spend spend) {
+        final LocalDate lastWeek = today.minusWeeks(1);
+        return lastWeek.equals(spend.getSpentDateTime().toLocalDate());
+    }
+
+    private boolean isToday(LocalDate today, Spend spend) {
+        return today.equals(spend.getSpentDateTime().toLocalDate());
+    }
+
     private long calculateComparison(List<Spend> spendListByPrevious, List<Spend> spendListByCurrent) {
         final long previousTotalAmount = spendListByPrevious.stream()
             .mapToLong(Spend::getAmount)
@@ -143,13 +153,5 @@ public class SpendStatisticService {
 
     private long getMockConsumptionRateByOtherUsers() {
         return 50;
-    }
-
-    private Account getAccount(String accountId) {
-        final Account account = accountService.findAccount(accountId);
-        if (account.notExist()) {
-            throw new ApplicationException(ApplicationCode.BAD_REQUEST, "유저가 존재하지 않습니다.");
-        }
-        return account;
     }
 }
