@@ -5,6 +5,8 @@ import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.spend.Spend;
 import com.hg.budget.domain.spend.port.SpendRepository;
 import com.hg.budget.domain.spend.port.specification.SpendSpecification;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -73,9 +75,19 @@ public class MockSpendRepository implements SpendRepository {
             .sorted(Comparator.comparing(Spend::getSpentDateTime))
             .toList();
         final List<Spend> page = spendList.stream()
-            .skip((specification.page() - 1) * specification.size())
+            .skip((long) (specification.page() - 1) * specification.size())
             .limit(specification.size())
             .toList();
         return Page.of(page, this.spendList.size());
+    }
+
+    @Override
+    public List<Spend> findBySpentDate(LocalDate spentDate) {
+        final LocalDateTime start = spentDate.atStartOfDay();
+        final LocalDateTime end = spentDate.plusDays(1).atStartOfDay();
+        return spendList.stream()
+            .filter(spend -> spend.getSpentDateTime().isAfter(start) || spend.getSpentDateTime().isEqual(start))
+            .filter(spend -> spend.getSpentDateTime().isBefore(end) || spend.getSpentDateTime().isEqual(end))
+            .collect(Collectors.toList());
     }
 }
