@@ -10,6 +10,8 @@ import com.hg.budget.application.spend.dto.SpendSummaryDto.MonthSpentComparisonD
 import com.hg.budget.core.client.DateTimeHolder;
 import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.account.AccountService;
+import com.hg.budget.domain.budget.Budget;
+import com.hg.budget.domain.budget.BudgetService;
 import com.hg.budget.domain.category.Category;
 import com.hg.budget.domain.spend.Spend;
 import com.hg.budget.domain.spend.SpendService;
@@ -19,6 +21,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +34,7 @@ public class SpendStatisticService {
 
     private final SpendService spendService;
     private final AccountService accountService;
+    private final BudgetService budgetService;
     private final DateTimeHolder dateTimeHolder;
 
     public SpendSummaryDto getSpendSummary(String accountId) {
@@ -38,11 +43,42 @@ public class SpendStatisticService {
         final LocalDate today = dateTimeHolder.now().toLocalDate();
         final MonthSpentComparisonDto monthSpentComparison = calculateMonthSpentComparison(today, spendList);
         final DayOfWeekSpentComparisonDto dayOfWeekSpentComparison = calculateDayOfWeekSpentComparison(today, spendList);
+        final long consumptionRateByOtherUsers = calculateOtherUsersComparison(account);
         return new SpendSummaryDto(
             monthSpentComparison,
             dayOfWeekSpentComparison,
-            getMockConsumptionRateByOtherUsers()
+            consumptionRateByOtherUsers
         );
+    }
+
+    private long calculateOtherUsersComparison(Account targetAccount) {
+        final List<Account> accounts = accountService.findAccounts();
+        final Map<Account, Long> consumptionRateByAccount = accounts.stream()
+            .map(account -> {
+                final long budgetTotalAmount = budgetService.findBudgets(account).stream()
+                    .mapToLong(Budget::getAmount)
+                    .sum();
+                final long spendTotalAmount = spendService.findSpendList(account).stream()
+                    .mapToLong(Spend::getAmount)
+                    .sum();
+
+                final long consumptionRate = calculateConsumptionRate(budgetTotalAmount, spendTotalAmount);
+                return new Pair(account, consumptionRate);
+            }).collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+        final long targetConsumptionRate = consumptionRateByAccount.getOrDefault(targetAccount, 0L);
+        final long otherUserConsumptionRateAverage = (long) consumptionRateByAccount.values().stream()
+            .mapToLong(l -> l)
+            .average()
+            .orElse(0);
+        return calculateConsumptionRate(otherUserConsumptionRateAverage, targetConsumptionRate);
+    }
+
+    @Getter
+    @AllArgsConstructor
+    static class Pair {
+
+        private Account first;
+        private long second;
     }
 
     private Account getAccount(String accountId) {
