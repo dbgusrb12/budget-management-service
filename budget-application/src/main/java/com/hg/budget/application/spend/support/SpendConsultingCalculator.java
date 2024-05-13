@@ -15,12 +15,12 @@ public class SpendConsultingCalculator {
     @Getter
     private final long totalSpentAmount; // 지금까지 사용한 지출 총액
 
-    public SpendConsultingCalculator(LocalDate today, Budget budget, List<Spend> spends) {
+    public SpendConsultingCalculator(LocalDate today, Budget budget, List<Spend> spendList) {
         this.dayOfMonth = today.getDayOfMonth();
         this.lengthOfMonth = today.lengthOfMonth();
         this.remainingDayOfMonth = lengthOfMonth - dayOfMonth + 1;
         this.budget = budget;
-        this.totalSpentAmount = spends.stream()
+        this.totalSpentAmount = spendList.stream()
             .mapToLong(Spend::getAmount)
             .sum();
     }

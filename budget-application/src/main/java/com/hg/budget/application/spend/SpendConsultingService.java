@@ -48,8 +48,8 @@ public class SpendConsultingService {
     private CategoryAndMonthFilter generateFilter(String accountId) {
         final Account account = getAccount(accountId);
         final List<Budget> budgets = budgetService.findBudgets(account);
-        final List<Spend> spends = spendService.findSpendList(account);
-        return new CategoryAndMonthFilter(dateTimeHolder.now().toLocalDate(), budgets, spends);
+        final List<Spend> spendList = spendService.findSpendList(account);
+        return new CategoryAndMonthFilter(dateTimeHolder.now().toLocalDate(), budgets, spendList);
     }
 
     private Account getAccount(String accountId) {

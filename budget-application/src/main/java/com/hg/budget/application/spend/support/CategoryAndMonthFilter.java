@@ -15,13 +15,13 @@ public class CategoryAndMonthFilter {
 
     private final LocalDate today;
     private final Map<Category, Budget> budgetByCategory;
-    private final Map<Category, List<Spend>> spendsByCategory;
+    private final Map<Category, List<Spend>> spendListByCategory;
 
-    public CategoryAndMonthFilter(LocalDate today, List<Budget> budgets, List<Spend> spends) {
+    public CategoryAndMonthFilter(LocalDate today, List<Budget> budgets, List<Spend> spendList) {
         this.today = today;
         this.budgetByCategory = budgets.stream()
             .collect(Collectors.toMap(Budget::getCategory, Function.identity()));
-        this.spendsByCategory = spends.stream()
+        this.spendListByCategory = spendList.stream()
             .filter(this::isSameMonth)
             .collect(Collectors.groupingBy(
                 Spend::getCategory,
@@ -32,9 +32,9 @@ public class CategoryAndMonthFilter {
     public List<AverageSpendRecommend> recommend() {
         return budgetByCategory.entrySet().stream()
             .map(categoryBudgetEntry -> {
-                final List<Spend> spends = this.spendsByCategory.getOrDefault(categoryBudgetEntry.getKey(), new ArrayList<>());
+                final List<Spend> spendList = this.spendListByCategory.getOrDefault(categoryBudgetEntry.getKey(), new ArrayList<>());
                 final Budget budget = categoryBudgetEntry.getValue();
-                final SpendConsultingCalculator spendConsultingCalculator = new SpendConsultingCalculator(today, budget, spends);
+                final SpendConsultingCalculator spendConsultingCalculator = new SpendConsultingCalculator(today, budget, spendList);
                 return new AverageSpendRecommend(budget.getCategory(), spendConsultingCalculator);
             }).sorted()
             .toList();
@@ -43,9 +43,9 @@ public class CategoryAndMonthFilter {
     public List<AverageSpendGuide> guide() {
         return budgetByCategory.entrySet().stream()
             .map(categoryBudgetEntry -> {
-                final List<Spend> spends = this.spendsByCategory.getOrDefault(categoryBudgetEntry.getKey(), new ArrayList<>());
+                final List<Spend> spendList = this.spendListByCategory.getOrDefault(categoryBudgetEntry.getKey(), new ArrayList<>());
                 final Budget budget = categoryBudgetEntry.getValue();
-                final SpendConsultingCalculator spendConsultingCalculator = new SpendConsultingCalculator(today, budget, spends);
+                final SpendConsultingCalculator spendConsultingCalculator = new SpendConsultingCalculator(today, budget, spendList);
                 return new AverageSpendGuide(budget.getCategory(), spendConsultingCalculator);
             }).sorted()
             .toList();
@@ -53,10 +53,10 @@ public class CategoryAndMonthFilter {
 
     private boolean isSameMonth(Spend spend) {
         final int year = today.getYear();
-        final Month month = today.getMonth();
         if (year != spend.getSpentDateTime().getYear()) {
             return false;
         }
+        final Month month = today.getMonth();
         return month.equals(spend.getSpentDateTime().getMonth());
     }
 }

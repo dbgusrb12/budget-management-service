@@ -90,6 +90,4 @@ public class SpendService {
         );
         return spendRepository.findAll(specification);
     }
-
-
 }
