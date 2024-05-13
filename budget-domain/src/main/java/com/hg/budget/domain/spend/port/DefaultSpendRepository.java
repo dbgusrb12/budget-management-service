@@ -10,9 +10,6 @@ import com.hg.budget.domain.persistence.spend.SpendEntity;
 import com.hg.budget.domain.persistence.spend.SpendEntityRepository;
 import com.hg.budget.domain.spend.Spend;
 import com.hg.budget.domain.spend.port.specification.SpendSpecification;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -70,15 +67,6 @@ public class DefaultSpendRepository implements SpendRepository {
 
         return Page.of(page.getContent(), page.getTotalElements())
             .map(this::toDomain);
-    }
-
-    @Override
-    public List<Spend> findBySpentDate(LocalDate spentDate) {
-        final LocalDateTime start = spentDate.atStartOfDay();
-        final LocalDateTime end = spentDate.atTime(LocalTime.MAX);
-        return spendEntityRepository.findBySpentDateTimeBetween(start, end).stream()
-            .map(this::toDomain)
-            .collect(Collectors.toList());
     }
 
     private Spend toDomain(SpendEntity spend) {

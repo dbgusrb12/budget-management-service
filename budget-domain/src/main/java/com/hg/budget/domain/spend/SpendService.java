@@ -6,7 +6,6 @@ import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.category.Category;
 import com.hg.budget.domain.spend.port.SpendRepository;
 import com.hg.budget.domain.spend.port.specification.SpendSpecification;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -90,9 +89,5 @@ public class SpendService {
             maxAmount
         );
         return spendRepository.findAll(specification);
-    }
-
-    public List<Spend> findSpendList(LocalDate spentDate) {
-        return spendRepository.findBySpentDate(spentDate);
     }
 }
