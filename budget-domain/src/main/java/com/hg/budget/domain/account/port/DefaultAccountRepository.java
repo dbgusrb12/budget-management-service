@@ -4,6 +4,8 @@ import com.hg.budget.core.client.IdGenerator;
 import com.hg.budget.domain.account.Account;
 import com.hg.budget.domain.persistence.account.AccountEntity;
 import com.hg.budget.domain.persistence.account.AccountEntityRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -64,5 +66,19 @@ public class DefaultAccountRepository implements AccountRepository {
             account.getSignInDateTime()
         );
         accountEntityRepository.save(updated);
+    }
+
+    @Override
+    public List<Account> findAll() {
+        return accountEntityRepository.findAll().stream()
+            .map(accountEntity -> Account.of(
+                accountEntity.getAccountId(),
+                accountEntity.getPassword(),
+                accountEntity.getNickname(),
+                accountEntity.getStatus(),
+                accountEntity.getRole(),
+                accountEntity.getSignUpDateTime(),
+                accountEntity.getSignInDateTime()
+            )).collect(Collectors.toList());
     }
 }

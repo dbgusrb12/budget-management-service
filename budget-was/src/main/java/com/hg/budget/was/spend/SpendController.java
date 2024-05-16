@@ -1,16 +1,21 @@
 package com.hg.budget.was.spend;
 
 import com.hg.budget.application.spend.SpendCommandService;
+import com.hg.budget.application.spend.SpendConsultingService;
 import com.hg.budget.application.spend.SpendQueryService;
+import com.hg.budget.application.spend.SpendStatisticService;
 import com.hg.budget.application.spend.dto.SpendDto;
 import com.hg.budget.application.spend.dto.SpendPage;
+import com.hg.budget.application.spend.scheduler.SpendScheduler;
 import com.hg.budget.was.core.annotation.AccountId;
 import com.hg.budget.was.core.response.OkResponse;
 import com.hg.budget.was.spend.command.CreateSpendCommand;
 import com.hg.budget.was.spend.command.UpdateSpendCommand;
 import com.hg.budget.was.spend.response.MySpendResponse;
 import com.hg.budget.was.spend.response.RecommendSpendResponse;
+import com.hg.budget.was.spend.response.SpendGuideResponse;
 import com.hg.budget.was.spend.response.SpendPageResponse;
+import com.hg.budget.was.spend.response.SpendSummaryResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -35,6 +40,17 @@ public class SpendController {
 
     private final SpendCommandService spendCommandService;
     private final SpendQueryService spendQueryService;
+    private final SpendConsultingService spendConsultingService;
+    private final SpendStatisticService spendStatisticService;
+    // FIXME 디버깅 확인용 (삭제 예정)
+    private final SpendScheduler spendScheduler;
+
+    // FIXME 디버깅 확인용 (삭제 예정)
+    @GetMapping("/debug")
+    public void debug() {
+        spendScheduler.recommendSpendSchedule();
+        spendScheduler.spendGuideSchedule();
+    }
 
     @PostMapping
     public OkResponse<MySpendResponse> createSpend(@AccountId String accountId, @Valid @RequestBody CreateSpendCommand command) {
@@ -104,8 +120,20 @@ public class SpendController {
     }
 
     @GetMapping("/recommend")
-    public OkResponse<RecommendSpendResponse> recommendBudget(@AccountId String accountId) {
-        final RecommendSpendResponse response = RecommendSpendResponse.from(spendQueryService.recommendSpend(accountId));
+    public OkResponse<RecommendSpendResponse> recommendSpend(@AccountId String accountId) {
+        final RecommendSpendResponse response = RecommendSpendResponse.from(spendConsultingService.recommendSpend(accountId));
+        return new OkResponse<>(response);
+    }
+
+    @GetMapping("/guide")
+    public OkResponse<SpendGuideResponse> getSpendGuide(@AccountId String accountId) {
+        final SpendGuideResponse response = SpendGuideResponse.from(spendConsultingService.getSpendGuide(accountId));
+        return new OkResponse<>(response);
+    }
+
+    @GetMapping("/summary")
+    public OkResponse<SpendSummaryResponse> getSpendSummary(@AccountId String accountId) {
+        final SpendSummaryResponse response = SpendSummaryResponse.from(spendStatisticService.getSpendSummary(accountId));
         return new OkResponse<>(response);
     }
 }

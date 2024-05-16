@@ -100,7 +100,6 @@ class SpendEntityRepositoryTest {
         assertThat(spendEntity.getExcludeTotal()).isFalse();
     }
 
-
     static class SpendEntityRepositoryTestHelper {
 
         private final AccountEntityRepository accountEntityRepository;

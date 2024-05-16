@@ -1,6 +1,7 @@
 package com.hg.budget.domain.account.port;
 
 import com.hg.budget.domain.account.Account;
+import java.util.List;
 
 public interface AccountRepository {
 
@@ -9,4 +10,6 @@ public interface AccountRepository {
     Account findById(String id);
 
     void update(Account account);
+
+    List<Account> findAll();
 }

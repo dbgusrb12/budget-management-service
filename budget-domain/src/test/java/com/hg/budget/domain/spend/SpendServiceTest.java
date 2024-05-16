@@ -185,7 +185,7 @@ class SpendServiceTest {
 
     @Test
     @DisplayName("findSpendList 로 특정 유저의 모든 지출 내역을 조회 할 수 있다.")
-    void findSpendListTest() {
+    void findSpendListTest_ByAccount() {
         // given
         final var testHelper = new SpendServiceTestHelper();
         final var category = testHelper.createCategory("식비");
@@ -235,7 +235,6 @@ class SpendServiceTest {
         assertThat(spendList.getContent().get(1).getAmount()).isEqualTo(2000L);
         assertThat(spendList.getContent().get(1).getMemo()).isEqualTo("메모2");
     }
-
 
     static class SpendServiceTestHelper {
 

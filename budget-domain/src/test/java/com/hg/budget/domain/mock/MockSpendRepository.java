@@ -42,7 +42,7 @@ public class MockSpendRepository implements SpendRepository {
 
     @Override
     public Page<Spend> findAll(SpendSpecification specification) {
-        final List<Spend> spends = spendList.stream()
+        final List<Spend> spendList = this.spendList.stream()
             .filter(spend ->
                 spend.getSpentDateTime().isAfter(specification.startSpentDateTime())
                     || spend.getSpentDateTime().isEqual(specification.startSpentDateTime())
@@ -72,10 +72,10 @@ public class MockSpendRepository implements SpendRepository {
             })
             .sorted(Comparator.comparing(Spend::getSpentDateTime))
             .toList();
-        final List<Spend> page = spends.stream()
-            .skip((specification.page() - 1) * specification.size())
+        final List<Spend> page = spendList.stream()
+            .skip((long) (specification.page() - 1) * specification.size())
             .limit(specification.size())
             .toList();
-        return Page.of(page, spendList.size());
+        return Page.of(page, this.spendList.size());
     }
 }

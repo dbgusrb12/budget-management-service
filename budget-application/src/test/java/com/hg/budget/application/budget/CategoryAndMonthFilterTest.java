@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class CategoryFilterTest {
+class CategoryAndMonthFilterTest {
 
     @Test
     @DisplayName("category 리스트를 기반으로 CategoryFilter 객체를 생성 할 수 있다.")

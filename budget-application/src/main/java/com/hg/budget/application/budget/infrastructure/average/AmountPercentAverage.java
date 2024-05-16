@@ -39,6 +39,7 @@ public class AmountPercentAverage {
     private List<Average> convertAverage() {
         return totalAmountByCategory.entrySet().stream()
             .map(this::convertAverage)
+            .sorted(Comparator.comparing(average -> average.category().getId()))
             .collect(Collectors.toList());
     }
 
@@ -47,7 +48,6 @@ public class AmountPercentAverage {
         if (cloneAverage.isEmpty()) {
             return cloneAverage;
         }
-        cloneAverage.sort(Comparator.comparing(average -> average.category().getId()));
         final long diff = getDiff(cloneAverage);
         for (int i = 0; i < diff; i++) {
             final int index = i % cloneAverage.size();

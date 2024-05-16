@@ -45,4 +45,9 @@ public class MockAccountRepository implements AccountRepository {
         );
         accountList.add(saved);
     }
+
+    @Override
+    public List<Account> findAll() {
+        return new ArrayList<>(accountList);
+    }
 }
