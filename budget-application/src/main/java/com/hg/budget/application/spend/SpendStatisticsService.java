@@ -186,8 +186,4 @@ public class SpendStatisticsService {
         }
         return currentAmount * 100 / previousAmount;
     }
-
-    private long getMockConsumptionRateByOtherUsers() {
-        return 50;
-    }
 }
