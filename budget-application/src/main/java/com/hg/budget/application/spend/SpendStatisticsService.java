@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class SpendStatisticService {
+public class SpendStatisticsService {
 
     private final SpendService spendService;
     private final AccountService accountService;
@@ -185,9 +185,5 @@ public class SpendStatisticService {
             return currentAmount;
         }
         return currentAmount * 100 / previousAmount;
-    }
-
-    private long getMockConsumptionRateByOtherUsers() {
-        return 50;
     }
 }
