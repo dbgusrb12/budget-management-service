@@ -51,7 +51,7 @@ public class SpendStatisticsService {
         );
     }
 
-    private long calculateOtherUsersComparison(Account targetAccount) {
+    private long calculateOtherUsersComparison(Account me) {
         final List<Account> accounts = accountService.findAccounts();
         final Map<Account, Long> consumptionRateByAccount = accounts.stream()
             .map(account -> {
@@ -65,7 +65,7 @@ public class SpendStatisticsService {
                 final long consumptionRate = calculateConsumptionRate(budgetTotalAmount, spendTotalAmount);
                 return new Pair(account, consumptionRate);
             }).collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
-        final long targetConsumptionRate = consumptionRateByAccount.getOrDefault(targetAccount, 0L);
+        final long targetConsumptionRate = consumptionRateByAccount.getOrDefault(me, 0L);
         final long otherUserConsumptionRateAverage = (long) consumptionRateByAccount.values().stream()
             .mapToLong(l -> l)
             .average()

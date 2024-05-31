@@ -24,6 +24,9 @@ public class SpendAmountCalculator {
         this.spendList.addAll(includeTotalSpendList);
     }
 
+    /*
+     * 카테고리 별 지출 총합
+     */
     public List<AmountDto> getTotalAmountByCategory() {
         final Map<Category, Long> totalAmountByCategory = this.spendList.stream()
             .collect(Collectors.groupingBy(
